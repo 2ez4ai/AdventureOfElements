@@ -688,6 +688,7 @@ GameObject:
   - component: {fileID: 3450204484354143888}
   - component: {fileID: 3450204484354143889}
   - component: {fileID: 3450204484354143894}
+  - component: {fileID: -3116506113858454579}
   m_Layer: 0
   m_Name: 6Board
   m_TagString: Untagged
@@ -773,6 +774,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-3116506113858454579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3450204484354143895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db4a5a831965764b9e3a79246022dda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_row: 6
+  m_col: 6
 --- !u!1 &3450204484472100453
 GameObject:
   m_ObjectHideFlags: 0

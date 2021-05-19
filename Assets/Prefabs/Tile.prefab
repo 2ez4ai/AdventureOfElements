@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 7341497690477080194}
   - component: {fileID: 8669161464765820168}
   - component: {fileID: 3720818331295867078}
+  - component: {fileID: 8790383068642113036}
   m_Layer: 0
   m_Name: Tile
-  m_TagString: Untagged
+  m_TagString: Tiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,6 +97,32 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8790383068642113036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4797276084027792626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c01976864fb82a444b9075f081722632, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_typer: {fileID: 9082220226971652745}
+  m_colorList:
+  - {fileID: 2100000, guid: c99700ca882de944bb4f65221853cf74, type: 2}
+  - {fileID: 2100000, guid: c096c0e75e9757740b21440b8b82ff69, type: 2}
+  - {fileID: 2100000, guid: 26fcc6c4c0c478d419d87121fc374780, type: 2}
+  - {fileID: 2100000, guid: 00386e0850c8c6244b921e87ac307c5c, type: 2}
+  m_typeList:
+  - {fileID: 2100000, guid: ca6a99a673e97be4fa450bb18c2305dc, type: 2}
+  - {fileID: 2100000, guid: 432f491e9063cc34da99cc5d3a224434, type: 2}
+  - {fileID: 2100000, guid: e0f8bcd6b4d27234da60c95abdc4b530, type: 2}
+  - {fileID: 2100000, guid: b913615fe5bc7f949a6e166504bca8ff, type: 2}
+  - {fileID: 2100000, guid: 6f607611b0bbf04419fc08e7b2eb39f1, type: 2}
+  m_selected: 0
+  m_hang: 0
 --- !u!1 &9082220226971652745
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +137,7 @@ GameObject:
   - component: {fileID: 2447874205642467863}
   m_Layer: 0
   m_Name: Pattern
-  m_TagString: Untagged
+  m_TagString: Type
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -187,7 +214,7 @@ MeshCollider:
   m_GameObject: {fileID: 9082220226971652745}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
