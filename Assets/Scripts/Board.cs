@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -81,7 +82,7 @@ public class Board : MonoBehaviour
             m_tilesScripts[i].SetType(m_tilesType[i]);
         }
     }
-
+    /*
     void SetRandomColor(int index){
         m_tilesColor[index] = Random.Range(0, m_numColor);
         m_tilesScripts[index].SetColor(m_tilesColor[index]);
@@ -91,6 +92,7 @@ public class Board : MonoBehaviour
         m_tilesType[index] = Random.Range(0, m_numType);
         m_tilesScripts[index].SetType(m_tilesType[index]);
     }
+    */
 
     (int row, int col) IndexToRC(int index){
         int row = index / k_col;
@@ -133,7 +135,7 @@ public class Board : MonoBehaviour
         // return if there is a match about tiles[index], ur means up and right
         List<int> matchedTiles = new List<int>();
         matchedTiles.Add(index);
-        
+
         // row-wise
         List<int> temp = CheckRowMatch(index, ur);
         foreach (int t in temp){
@@ -146,7 +148,7 @@ public class Board : MonoBehaviour
         foreach (int t in temp){
             matchedTiles.Add(t);
         }
-        
+
         return matchedTiles;
     }
 
@@ -224,5 +226,69 @@ public class Board : MonoBehaviour
             return new List<int>();
         }
         return tempSeq;
+    }
+
+    public bool IsValidSwap(){
+        List<int> selected = new List<int>();
+        for(int i = 0; i < k_col * k_row; i++){
+            if(m_tilesScripts[i].m_selected){
+                selected.Add(i);
+            }
+        }
+        foreach(int i in selected){
+            m_tilesScripts[i].m_selected = false;
+        }
+
+        (int i, int j) A = IndexToRC(selected[0]);
+        (int i, int j) B = IndexToRC(selected[1]);
+        // we may have other direction list
+        List<(int i, int j)> direction = new List<(int i, int j)>{(-1, 0), (1, 0), (0, -1), (0, 1)};
+        foreach((int i, int j) d in direction){
+            if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
+                IsValidMatch(selected[0], selected[1]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    void IsValidMatch(int a, int b){
+        SwapTiles(a, b);
+        List<int> AMatch = MatchesAt(a);
+        List<int> BMatch = MatchesAt(b);
+        bool IsMatch = false;
+        if(AMatch.Count > 2){
+            IsMatch = true;
+            foreach(int t in AMatch){
+                m_tiles[t].SetActive(false);
+            }
+        }
+        if(BMatch.Count > 2){
+            IsMatch = true;
+            foreach(int t in BMatch){
+                m_tiles[t].SetActive(false);
+            }
+        }
+
+        if(!IsMatch){
+            SwapTiles(a, b);
+        }
+    }
+
+    void SwapTiles(int a, int b){
+        // I should use Struct....
+        int tempColor = m_tilesColor[a];
+        int tempType = m_tilesType[a];
+
+        m_tilesColor[a] = m_tilesColor[b];
+        m_tilesColor[b] = tempColor;
+        m_tilesType[a] = m_tilesType[b];
+        m_tilesType[b] = tempType;
+
+        m_tilesScripts[a].SetType(m_tilesType[a]);
+        m_tilesScripts[a].SetColor(m_tilesColor[a]);
+        m_tilesScripts[b].SetType(m_tilesType[b]);
+        m_tilesScripts[b].SetColor(m_tilesColor[b]);
     }
 }

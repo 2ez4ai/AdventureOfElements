@@ -8,7 +8,8 @@ public class RayCastLogic : MonoBehaviour
     GameObject m_board;
 
     Board m_boardScript;
-
+    // at most two tiles can be selected at one time
+    int m_numSelected = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -30,9 +31,30 @@ public class RayCastLogic : MonoBehaviour
             if(Physics.Raycast(ray, out raycastHit, 50.0f)){
                 GameObject hitObj = raycastHit.collider.gameObject;
                 if(hitObj.tag == "Tiles"){
-                    Tile temp = hitObj.GetComponent<Tile>();
-                    temp.m_selected = !temp.m_selected;
+                    UpdateTilesSelection(hitObj);
                 }
+            }
+        }
+    }
+
+    void UpdateTilesSelection(GameObject tile){
+        Tile script = tile.GetComponent<Tile>();
+        if(!script.m_selected){
+            m_numSelected += 1;
+            script.m_selected = true;
+        }
+        else{
+            m_numSelected -= 1;
+            script.m_selected = false;
+        }
+
+        if(m_numSelected == 2){
+            if(m_boardScript.IsValidSwap()){
+                m_numSelected = 0;
+            }
+            else{
+                script.m_selected = true;
+                m_numSelected = 1;
             }
         }
     }
