@@ -8,6 +8,7 @@ class Tile{
     public TileLogic script;
     public int color;
     public int type;
+    public bool empty;
 
     public void SetColor(int i=-1){
         if(i != -1){
@@ -79,6 +80,7 @@ public class Board : MonoBehaviour
             temp.script = m_tilesInit[i].GetComponent<TileLogic>();
             temp.color = Random.Range(0, m_numColor);
             temp.type = Random.Range(0, m_numType);
+            temp.empty = false;
             m_tiles.Add(temp);
         }
 
@@ -244,6 +246,7 @@ public class Board : MonoBehaviour
     }
 
     public bool IsValidSwap(){
+        // if two tiles are selected at one time
         List<int> selected = new List<int>();
         for(int i = 0; i < k_col * k_row; i++){
             if(m_tiles[i].script.m_selected){
@@ -257,7 +260,7 @@ public class Board : MonoBehaviour
         (int i, int j) A = IndexToRC(selected[0]);
         (int i, int j) B = IndexToRC(selected[1]);
         // we may have other direction list
-        List<(int i, int j)> direction = new List<(int i, int j)>{(-1, 0), (1, 0), (0, -1), (0, 1)};
+        List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};
         foreach((int i, int j) d in direction){
             if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
                 IsValidMatch(selected[0], selected[1]);
@@ -269,6 +272,7 @@ public class Board : MonoBehaviour
     }
 
     void IsValidMatch(int a, int b){
+        // remove tiles if valid
         SwapTiles(a, b);
         List<int> AMatch = MatchesAt(a);
         List<int> BMatch = MatchesAt(b);
@@ -277,17 +281,23 @@ public class Board : MonoBehaviour
             IsMatch = true;
             foreach(int t in AMatch){
                 m_tiles[t].tile.SetActive(false);
+                m_tiles[t].empty = true;
             }
         }
         if(BMatch.Count > 2){
             IsMatch = true;
             foreach(int t in BMatch){
                 m_tiles[t].tile.SetActive(false);
+                m_tiles[t].empty = true;
             }
         }
 
         if(!IsMatch){
             SwapTiles(a, b);
+        }
+        else{
+            DropTiles();
+            RemoveAfterDrop();
         }
     }
 
@@ -300,5 +310,65 @@ public class Board : MonoBehaviour
         m_tiles[a].SetColor(m_tiles[b].color);
         m_tiles[b].SetType(tempType);
         m_tiles[b].SetColor(tempColor);
+    }
+
+    void DropTiles(int d=0){
+        // drop tiles from direction d; d = 0123/UDLR
+        bool changed = true;
+        while(changed){
+            changed = false;
+            for(int i = 0; i < m_numTiles; i++){
+                if(m_tiles[i].empty){
+                    changed = true;
+                    m_tiles[i].tile.SetActive(true);
+                    int index = FetchTile(i);
+                    if(index == -1){
+                        m_tiles[i].SetColor(Random.Range(0, m_numColor));
+                        m_tiles[i].SetType(Random.Range(0, m_numType));
+                    }
+                    else{
+                        m_tiles[i].SetColor(m_tiles[index].color);
+                        m_tiles[i].SetType(m_tiles[index].type);
+                    }
+                    m_tiles[i].empty = false;
+                }
+            }
+        }
+    }
+
+    int FetchTile(int index, int d=0){
+        // get a tile from direction d for position at index
+        // return -1 if there is no tiles available
+        List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};
+        List<int> border = new List<int>{k_row, 0, 0, k_col};
+
+        (int row, int col) = IndexToRC(index);
+        int res = -1;
+        row += direction[d].i;
+        col += direction[d].j;
+        while(row>-1 && row<k_row && col>-1 && col<k_col){
+            int newIndex = RCToIndex(row, col);
+            if(!m_tiles[newIndex].empty){
+                m_tiles[newIndex].empty = true;
+                return newIndex;
+            }
+            row += direction[d].i;
+            col += direction[d].j;
+        }
+        return res;
+    }
+
+    void RemoveAfterDrop(){
+        bool unfinished = true;
+        while(unfinished){
+            unfinished = false;
+            for(int i = 0; i < m_numTiles; i++){
+                List<int> temp = MatchesAt(i);
+                if(temp.Count > 1){
+                    unfinished = true;
+                    IsValidMatch(temp[0], temp[1]);
+                }
+            }
+        }
     }
 }
