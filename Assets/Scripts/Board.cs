@@ -31,17 +31,29 @@ public class Board : MonoBehaviour
     const int k_row = 8;
     [SerializeField]
     const int k_col = 8;
-    int m_numTiles;
 
-    [SerializeField]
-    public int m_randomSeed = 64790578;
+    int m_numTiles;
     [SerializeField]
     public int m_numColor;
     [SerializeField]
     public int m_numType;
     GameObject[] m_tilesInit = new GameObject[k_row * k_col];
     List<Tile> m_tiles = new List<Tile>();
-    bool initCheck = false;
+
+    [SerializeField]
+    public int m_randomSeed = 0;
+
+    int m_aTile = -1;    // selected tiles
+    int m_bTile = -1;
+
+    // animation related variables
+    // for swap
+    bool m_isSwapping = false;
+    bool m_isReversing = false;    // to reverse a swap if there is no match
+    // for drop
+    bool m_isDropping = false;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +64,7 @@ public class Board : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        UAniTileSwap();
     }
 
     void Initialization(){
@@ -246,7 +258,8 @@ public class Board : MonoBehaviour
     }
 
     public bool IsValidSwap(){
-        // if two tiles are selected at one time
+        // called when two tiles are selected at one time
+        // returns true if it is a valid swap (the two selected tiles are contiguous or something like that)
         List<int> selected = new List<int>();
         for(int i = 0; i < k_col * k_row; i++){
             if(m_tiles[i].script.m_selected){
@@ -259,24 +272,27 @@ public class Board : MonoBehaviour
 
         (int i, int j) A = IndexToRC(selected[0]);
         (int i, int j) B = IndexToRC(selected[1]);
-        // we may have other direction list
+        // we may have other directions
         List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};
         foreach((int i, int j) d in direction){
             if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
-                IsValidMatch(selected[0], selected[1]);
+                m_aTile = selected[0];
+                m_bTile = selected[1];
+                // HasMatch(selected[0], selected[1]);
                 return true;
             }
         }
-
         return false;
     }
 
-    void IsValidMatch(int a, int b){
+    bool RemoveMatch(int a, int b){
+        // called when the board is changed like a swap is conducted
         // remove tiles if valid
-        SwapTiles(a, b);
+
         List<int> AMatch = MatchesAt(a);
         List<int> BMatch = MatchesAt(b);
         bool IsMatch = false;
+
         if(AMatch.Count > 2){
             IsMatch = true;
             foreach(int t in AMatch){
@@ -293,35 +309,33 @@ public class Board : MonoBehaviour
         }
 
         if(!IsMatch){
-            SwapTiles(a, b);
+            return false;
         }
         else{
             DropTiles();
             RemoveAfterDrop();
         }
+        return true;
     }
 
-    void SwapTiles(int a, int b){
-        // I should use Struct....
-        int tempColor = m_tiles[a].color;
-        int tempType = m_tiles[a].type;
+    void SwapTiles(){
+        // swap materials of two selected tiles
+        int tempColor = m_tiles[m_aTile].color;
+        int tempType = m_tiles[m_aTile].type;
 
-        m_tiles[a].SetType(m_tiles[b].type);
-        m_tiles[a].SetColor(m_tiles[b].color);
-        m_tiles[b].SetType(tempType);
-        m_tiles[b].SetColor(tempColor);
+        m_tiles[m_aTile].SetType(m_tiles[m_bTile].type);
+        m_tiles[m_aTile].SetColor(m_tiles[m_bTile].color);
+        m_tiles[m_bTile].SetType(tempType);
+        m_tiles[m_bTile].SetColor(tempColor);
     }
 
     void DropTiles(int d=0){
-        // drop tiles from direction d; d = 0123/UDLR
-        bool changed = true;
-        while(changed){
-            changed = false;
+        // drop tiles from direction d; d = 0123 means UDLR respectively
             for(int i = 0; i < m_numTiles; i++){
                 if(m_tiles[i].empty){
-                    changed = true;
                     m_tiles[i].tile.SetActive(true);
                     int index = FetchTile(i);
+                    AniTileDrop(i, index);
                     if(index == -1){
                         m_tiles[i].SetColor(Random.Range(0, m_numColor));
                         m_tiles[i].SetType(Random.Range(0, m_numType));
@@ -333,7 +347,6 @@ public class Board : MonoBehaviour
                     m_tiles[i].empty = false;
                 }
             }
-        }
     }
 
     int FetchTile(int index, int d=0){
@@ -366,8 +379,91 @@ public class Board : MonoBehaviour
                 List<int> temp = MatchesAt(i);
                 if(temp.Count > 1){
                     unfinished = true;
-                    IsValidMatch(temp[0], temp[1]);
+                    RemoveMatch(temp[0], temp[1]);
                 }
+            }
+        }
+    }
+
+    void CheckValiableMatch(){
+        // 2n * O(MatchesAtIndex)
+        for(int i = 0; i < m_numTiles; i++){
+            (int r, int c) temp = IndexToRC(i);
+            if(temp.r + 1 < k_row){    // upside check
+                if(RemoveMatch(i, RCToIndex(temp.r+1, temp.c))){
+                    return;
+                }
+            }
+            if(temp.c + 1 < k_col){    // right side
+                if(RemoveMatch(i, RCToIndex(temp.r, temp.c+1))){
+                    return;
+                }
+            }
+        }
+        Shuffle();
+    }
+
+    void Shuffle(){
+        Debug.Log("We need a shuffle!");
+    }
+
+    // animation things
+    public void AniTileSwap(){
+        // animation for swapping tile a and tile b
+        // turn on the triggers
+        m_isSwapping = true;
+        // two tiles start moving
+        Vector3 aPos = m_tiles[m_aTile].tile.transform.position;
+        Vector3 bPos = m_tiles[m_bTile].tile.transform.position;
+        aPos.x = 0.0f;
+        bPos.x = 0.0f;
+        m_tiles[m_aTile].script.m_moveAniV.trigger = true;
+        m_tiles[m_aTile].script.m_moveAniV.target = bPos;
+        m_tiles[m_bTile].script.m_moveAniV.trigger = true;
+        m_tiles[m_bTile].script.m_moveAniV.target = aPos;
+    }
+
+    void AniTileDrop(int destination, int source){
+        // drop source to destination
+        if(source == -1){
+            return;
+        }
+        m_isDropping = true;
+        Vector3 dest = m_tiles[destination].tile.transform.position;
+        dest.x = 0.0f;
+        m_tiles[source].script.m_moveAniV.trigger = true;
+        m_tiles[source].script.m_moveAniV.target = dest;
+        m_tiles[source].script.m_moveAniV.drop = true;
+    }
+
+    void UAniTileSwap(){
+        if(m_isSwapping && !m_tiles[m_aTile].script.m_moveAniV.trigger){
+            // the swap is finished visually, but we still need to change the appearance...
+            m_isSwapping = false;
+            SwapTiles();    // when the animation is done, change logically
+            m_isReversing = !m_isReversing;    // check whether the swap needs to be reversed
+        }
+
+        if(m_isReversing){
+            if(!RemoveMatch(m_aTile, m_bTile)){
+                AniTileSwap();
+            }
+            else{
+                m_isReversing = false;
+            }
+        }
+    }
+
+    void UAniTileDrop(int a, int d){
+        // animation for dropping a to d
+        if(m_isDropping){
+            bool temp = true;
+            for(int i = 0; i < m_numTiles; i++){
+                temp = temp & !m_tiles[i].script.m_moveAniV.trigger;
+            }
+            if(temp){    // all dropping is done
+                m_isDropping = false;
+                DropTiles();
             }
         }
     }

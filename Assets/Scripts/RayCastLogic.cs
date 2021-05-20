@@ -50,6 +50,7 @@ public class RayCastLogic : MonoBehaviour
 
         if(m_numSelected == 2){
             if(m_boardScript.IsValidSwap()){
+                m_boardScript.AniTileSwap();    // play animation for the swap
                 m_numSelected = 0;
             }
             else{
