@@ -3,22 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+class Tile{
+    public GameObject tile;
+    public TileLogic script;
+    public int color;
+    public int type;
+
+    public void SetColor(int i=-1){
+        if(i != -1){
+            color = i;
+        }
+        script.SetColor(color);
+    }
+
+    public void SetType(int i=-1){
+        if(i != -1){
+            type = i;
+        }
+        script.SetType(type);
+    }
+}
+
 public class Board : MonoBehaviour
 {
     [SerializeField]
     const int k_row = 8;
     [SerializeField]
     const int k_col = 8;
+    int m_numTiles;
+
     [SerializeField]
     public int m_randomSeed = 64790578;
     [SerializeField]
     public int m_numColor;
     [SerializeField]
     public int m_numType;
-    GameObject[] m_tiles = new GameObject[k_row * k_col];
-    List<Tile> m_tilesScripts = new List<Tile>();
-    List<int> m_tilesColor = new List<int>();
-    List<int> m_tilesType = new List<int>();
+    GameObject[] m_tilesInit = new GameObject[k_row * k_col];
+    List<Tile> m_tiles = new List<Tile>();
     bool initCheck = false;
 
     // Start is called before the first frame update
@@ -50,12 +71,15 @@ public class Board : MonoBehaviour
     }
 
     void InitTiles(){
-        m_tiles = GameObject.FindGameObjectsWithTag("Tiles");
-
-        for(int i = 0; i < k_row * k_col; i++){
-            m_tilesScripts.Add(m_tiles[i].GetComponent<Tile>());
-            m_tilesColor.Add(Random.Range(0, m_numColor));
-            m_tilesType.Add(Random.Range(0, m_numType));
+        m_tilesInit = GameObject.FindGameObjectsWithTag("Tiles");
+        m_numTiles = k_row * k_col;
+        for(int i = 0; i < m_numTiles; i++){
+            Tile temp = new Tile();
+            temp.tile = m_tilesInit[i];
+            temp.script = m_tilesInit[i].GetComponent<TileLogic>();
+            temp.color = Random.Range(0, m_numColor);
+            temp.type = Random.Range(0, m_numType);
+            m_tiles.Add(temp);
         }
 
     }
@@ -64,35 +88,23 @@ public class Board : MonoBehaviour
         bool unfinished = true;
         while(unfinished){
             unfinished = false;
-            for(int i = 0; i < k_row * k_col; i++){
+            for(int i = 0; i < m_numTiles; i++){
                 List<int> temp = MatchesAt(i);
                 if(temp.Count > 1){
                     unfinished = true;
-                    Debug.Log("fix at "+i);
-                    m_tilesColor[i] = Random.Range(0, m_numColor);
-                    m_tilesType[i] = Random.Range(0, m_numType);
+                    m_tiles[i].color = Random.Range(0, m_numColor);
+                    m_tiles[i].type = Random.Range(0, m_numType);
                 }
             }
         }
     }
 
     void InitDraw(){
-        for(int i = 0; i < k_row * k_col; i++){
-            m_tilesScripts[i].SetColor(m_tilesColor[i]);
-            m_tilesScripts[i].SetType(m_tilesType[i]);
+        foreach(Tile t in m_tiles){
+            t.SetColor();
+            t.SetType();
         }
     }
-    /*
-    void SetRandomColor(int index){
-        m_tilesColor[index] = Random.Range(0, m_numColor);
-        m_tilesScripts[index].SetColor(m_tilesColor[index]);
-    }
-
-    void SetRandomType(int index){
-        m_tilesType[index] = Random.Range(0, m_numType);
-        m_tilesScripts[index].SetType(m_tilesType[index]);
-    }
-    */
 
     (int row, int col) IndexToRC(int index){
         int row = index / k_col;
@@ -108,10 +120,10 @@ public class Board : MonoBehaviour
         // whether two tiles are matchable
         bool type = false;
         bool color = false;
-        if(m_tilesColor[indexA] == m_tilesColor[indexB]){
+        if(m_tiles[indexA].color == m_tiles[indexB].color){
             color = true;
         }
-        if(m_tilesType[indexA] == m_tilesType[indexB]){
+        if(m_tiles[indexA].type == m_tiles[indexB].type){
             type = true;
         }
         if(color && type){    // changing this allows other way to match
@@ -122,7 +134,7 @@ public class Board : MonoBehaviour
 
     List<int> CheckMap(){
         List<int> res = new List<int>();
-        for(int i = 0; i < k_col * k_row; i++){
+        for(int i = 0; i < m_numTiles; i++){
             List<int> temp = MatchesAt(i);
             if(temp.Count > 1){
                 res.Add(i);
@@ -132,7 +144,8 @@ public class Board : MonoBehaviour
     }
 
     List<int> MatchesAt(int index, bool ur=false){
-        // return if there is a match about tiles[index], ur means up and right
+        // if there is no match involves tiles[index], return a list of size 1
+        // ur means up and right search
         List<int> matchedTiles = new List<int>();
         matchedTiles.Add(index);
 
@@ -143,7 +156,7 @@ public class Board : MonoBehaviour
         }
 
         // col-wise
-        temp = new List<int>();
+        //temp = new List<int>();
         temp = CheckColMatch(index, ur);
         foreach (int t in temp){
             matchedTiles.Add(t);
@@ -171,6 +184,7 @@ public class Board : MonoBehaviour
             if(cnt < 2){
                 return new List<int>();
             }
+            return tempSeq;
         }
         // to left
         for(int c = col - 1; c >= 0; c--){
@@ -209,9 +223,10 @@ public class Board : MonoBehaviour
             if(cnt < 2){
                 return new List<int>();
             }
+            return tempSeq;
         }
         // to left
-        for(int r = col - 1; r >= 0; r--){
+        for(int r = row - 1; r >= 0; r--){
             int newIndex = RCToIndex(r, col);
             if(TwoTileCmp(index, newIndex)){
                 cnt += 1;
@@ -231,12 +246,12 @@ public class Board : MonoBehaviour
     public bool IsValidSwap(){
         List<int> selected = new List<int>();
         for(int i = 0; i < k_col * k_row; i++){
-            if(m_tilesScripts[i].m_selected){
+            if(m_tiles[i].script.m_selected){
                 selected.Add(i);
             }
         }
         foreach(int i in selected){
-            m_tilesScripts[i].m_selected = false;
+            m_tiles[i].script.m_selected = false;
         }
 
         (int i, int j) A = IndexToRC(selected[0]);
@@ -261,13 +276,13 @@ public class Board : MonoBehaviour
         if(AMatch.Count > 2){
             IsMatch = true;
             foreach(int t in AMatch){
-                m_tiles[t].SetActive(false);
+                m_tiles[t].tile.SetActive(false);
             }
         }
         if(BMatch.Count > 2){
             IsMatch = true;
             foreach(int t in BMatch){
-                m_tiles[t].SetActive(false);
+                m_tiles[t].tile.SetActive(false);
             }
         }
 
@@ -278,17 +293,12 @@ public class Board : MonoBehaviour
 
     void SwapTiles(int a, int b){
         // I should use Struct....
-        int tempColor = m_tilesColor[a];
-        int tempType = m_tilesType[a];
+        int tempColor = m_tiles[a].color;
+        int tempType = m_tiles[a].type;
 
-        m_tilesColor[a] = m_tilesColor[b];
-        m_tilesColor[b] = tempColor;
-        m_tilesType[a] = m_tilesType[b];
-        m_tilesType[b] = tempType;
-
-        m_tilesScripts[a].SetType(m_tilesType[a]);
-        m_tilesScripts[a].SetColor(m_tilesColor[a]);
-        m_tilesScripts[b].SetType(m_tilesType[b]);
-        m_tilesScripts[b].SetColor(m_tilesColor[b]);
+        m_tiles[a].SetType(m_tiles[b].type);
+        m_tiles[a].SetColor(m_tiles[b].color);
+        m_tiles[b].SetType(tempType);
+        m_tiles[b].SetColor(tempColor);
     }
 }

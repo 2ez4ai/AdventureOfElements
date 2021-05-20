@@ -38,7 +38,7 @@ public class RayCastLogic : MonoBehaviour
     }
 
     void UpdateTilesSelection(GameObject tile){
-        Tile script = tile.GetComponent<Tile>();
+        TileLogic script = tile.GetComponent<TileLogic>();
         if(!script.m_selected){
             m_numSelected += 1;
             script.m_selected = true;

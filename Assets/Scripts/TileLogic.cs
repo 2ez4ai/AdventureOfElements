@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tile : MonoBehaviour
+public class TileLogic : MonoBehaviour
 {
     [SerializeField]
     GameObject m_typer;
