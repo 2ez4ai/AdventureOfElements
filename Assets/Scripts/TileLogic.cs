@@ -63,6 +63,7 @@ public class TileLogic : MonoBehaviour
     {
         USelected();
         UAniMove();
+        UAniTileGenerate();
     }
 
     public void SetColor(int index){
@@ -71,6 +72,11 @@ public class TileLogic : MonoBehaviour
 
     public void SetType(int index){
         m_typeRender.material = m_typeList[index];
+    }
+
+    public void SetState(bool state){
+        m_colorRender.enabled = state;
+        m_typeRender.enabled = state;
     }
 
     void USelected(){
@@ -97,12 +103,13 @@ public class TileLogic : MonoBehaviour
             m_moveAniV.doing = true;
         }
         if(m_moveAniV.doing){
-            if(m_drop && m_newTile){
-                AniTileGenerate();
-            }
-            else{
-                AniTileMove();
-            }
+            AniTileMove();
+        }
+    }
+
+    void UAniTileGenerate(){
+        if(m_newTile){
+            AniTileGenerate();
         }
     }
 
