@@ -11,21 +11,21 @@ class Tile{
     public int type;
     public bool empty;
     public int emptyTilesCnt = 0;    // drop from where
-    public bool drop = false;    // -1: no chagned; else: drop;
-    public bool borderDrop = false;    // the tiles is removed at the border
+    public bool drop = false;
+    // public bool borderDrop = false;    // the tiles is removed at the border
     public Vector3 dropStartV;
     public Vector3 dropDestV;
 
-    public void SetColor(int i=-1){
-        if(i != -1){
-            color = i;
+    public void SetColor(int c = -1){
+        if(c != -1){
+            color = c;
         }
         script.SetColor(color);
     }
 
-    public void SetType(int i=-1){
-        if(i != -1){
-            type = i;
+    public void SetType(int t = -1){
+        if(t != -1){
+            type = t;
         }
         script.SetType(type);
     }
@@ -34,25 +34,10 @@ class Tile{
         script.SetState(state);
     }
 
-/*
-    public void PreDrop(int c, int t){
-        // record the color and type that will be rendered after a drop
-        dropColor = c;
-        dropType = t;
+    public void UpdateLogic(){
+        color = script.GetColorIndex();
+        type = script.GetTypeIndex();
     }
-
-    public void PostDrop(){
-        if(dropState == -1){    // not changed after a drop
-            return;
-        }
-        if(dropState == 0){    // go to the border
-
-        }
-        SetColor(dropColor);
-        SetType(dropType);
-        dropDest = -1;
-    }
-    */
 }
 
 public class Board : MonoBehaviour
@@ -89,7 +74,7 @@ public class Board : MonoBehaviour
     bool m_isReversing = false;    // to reverse a swap if there is no match
     // for drop
     bool m_isDropping = false;
-    bool m_dropStepDown = true;    // we drop tiles step by step
+    bool m_dropRemove = true;    // we drop tiles step by step
 
     // Start is called before the first frame update
     void Start()
@@ -350,8 +335,10 @@ public class Board : MonoBehaviour
             return false;
         }
         else{
-            SetDropState();
-            AniTileDrop();
+            if(m_dropRemove){
+                SetDropState();
+                AniTileDrop();
+            }
         }
         return true;
     }
@@ -447,6 +434,8 @@ public class Board : MonoBehaviour
                 }
                 m_tiles[i].SetState(true);
                 m_tiles[i].empty = false;
+                // Debug.Log("Tile i " + i + startPos);
+                // Debug.Log("To " + destPos);
                 m_tiles[i].dropStartV = startPos;
                 m_tiles[i].dropDestV = destPos;
             }
@@ -457,12 +446,16 @@ public class Board : MonoBehaviour
     }
 
     void RemoveAfterDrop(){
+        m_dropRemove = false;
         for(int i = 0; i < m_numTiles; i++){
             List<int> temp = MatchesAt(i);
             if(temp.Count > 1){
                 RemoveMatch(temp[0], temp[1]);
             }
         }
+        SetDropState();
+        AniTileDrop();
+        m_dropRemove = true;
     }
 
     void CheckValiableMatch(){

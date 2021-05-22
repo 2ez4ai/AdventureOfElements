@@ -66,7 +66,7 @@ public class TileLogic : MonoBehaviour
     {
         USelected();
         UAniMove();
-        UAniRemove();
+        // UAniRemove();
         UAniTileGenerate();
     }
 
@@ -81,6 +81,14 @@ public class TileLogic : MonoBehaviour
     public void SetState(bool state){
         m_colorRender.enabled = state;
         m_typeRender.enabled = state;
+    }
+
+    public int GetColorIndex(){
+        return m_colorList.IndexOf(m_colorRender.material);
+    }
+
+    public int GetTypeIndex(){
+        return m_typeList.IndexOf(m_typeRender.material);
     }
 
     void USelected(){
