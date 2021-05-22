@@ -10,10 +10,9 @@ public class AniMoveVariable{
     public Vector3 target;
 
     public float moveSpeed = 7.0f;
-    public float dropSpeed = 2.0f;
+    public float dropSpeed = 5.0f;
 
-    public int targetColor = -1;
-    public int targetType = -1;
+    public GameObject dropTarget;
 }
 
 public class TileLogic : MonoBehaviour
@@ -35,8 +34,8 @@ public class TileLogic : MonoBehaviour
     public bool m_hang = false;
 
     // fluctuation
-    float m_bound = 0.2f;
-    float m_flucStep = 0.01f;
+    float m_bound = 0.4f;
+    float m_flucStep = 0.02f;
     bool m_selectActivation = false;    // whether the obj is already protruding
 
     // swap animation
@@ -45,6 +44,10 @@ public class TileLogic : MonoBehaviour
     // drop animation
     public bool m_drop = false;
     public bool m_newTile = false;    // generate new Tile here
+    public bool m_remove = false;
+    public bool m_removeDone = false;
+    float m_removeTimer = 0.0f;
+    float m_removeTime = 1.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +66,7 @@ public class TileLogic : MonoBehaviour
     {
         USelected();
         UAniMove();
+        UAniRemove();
         UAniTileGenerate();
     }
 
@@ -103,7 +107,24 @@ public class TileLogic : MonoBehaviour
             m_moveAniV.doing = true;
         }
         if(m_moveAniV.doing){
-            AniTileMove();
+            if(m_drop){
+                AniTileDrop();
+            }
+            else{
+                AniTileSwap();
+            }
+        }
+    }
+
+    void UAniRemove(){
+        if(m_remove){
+            m_remove = false;
+            m_removeDone = false;
+            m_removeTimer = m_removeTime;
+        }
+        m_removeTime -= Time.deltaTime;
+        if(!m_removeDone && m_removeTime < 0.0f){
+            m_removeDone = true;
         }
     }
 
@@ -113,18 +134,25 @@ public class TileLogic : MonoBehaviour
         }
     }
 
-    void AniTileMove(){
+    void AniTileSwap(){
         // move tile a to the target
         float speed = m_moveAniV.moveSpeed;
-        if(m_drop){
-            speed = m_moveAniV.dropSpeed;
+        transform.position = Vector3.MoveTowards(transform.position, m_moveAniV.target, speed * Time.deltaTime);
+        if(Vector3.Distance(transform.position, m_moveAniV.target) < 0.01f){
+            m_moveAniV.doing = false;
+            m_moveAniV.trigger = false;
+            transform.position = m_position;    // when this is done, the material should be changed
         }
+    }
+
+    void AniTileDrop(){
+        float speed = m_moveAniV.dropSpeed;
         transform.position = Vector3.MoveTowards(transform.position, m_moveAniV.target, speed * Time.deltaTime);
         if(Vector3.Distance(transform.position, m_moveAniV.target) < 0.01f){
             m_moveAniV.doing = false;
             m_moveAniV.trigger = false;
             m_drop = false;
-            transform.position = m_position;    // when this is done, the material should be changed
+            //transform.position = m_position;    // when this is done, the material should be changed
         }
     }
 

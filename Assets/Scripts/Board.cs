@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,10 +10,11 @@ class Tile{
     public int color;
     public int type;
     public bool empty;
-
-    public int dropDest = -1;
-    int dropColor = -1;
-    int dropType = -1;
+    public int emptyTilesCnt = 0;    // drop from where
+    public bool drop = false;    // -1: no chagned; else: drop;
+    public bool borderDrop = false;    // the tiles is removed at the border
+    public Vector3 dropStartV;
+    public Vector3 dropDestV;
 
     public void SetColor(int i=-1){
         if(i != -1){
@@ -32,6 +34,7 @@ class Tile{
         script.SetState(state);
     }
 
+/*
     public void PreDrop(int c, int t){
         // record the color and type that will be rendered after a drop
         dropColor = c;
@@ -39,12 +42,17 @@ class Tile{
     }
 
     public void PostDrop(){
-        if(dropColor == -1){    // not changed after a drop
+        if(dropState == -1){    // not changed after a drop
             return;
+        }
+        if(dropState == 0){    // go to the border
+
         }
         SetColor(dropColor);
         SetType(dropType);
+        dropDest = -1;
     }
+    */
 }
 
 public class Board : MonoBehaviour
@@ -55,7 +63,9 @@ public class Board : MonoBehaviour
     const int k_col = 8;
     [SerializeField]
     public int m_dirIndex = 1;
-    List<(int r, int c)> m_direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // move to
+    List<(int r, int c)> m_direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // to where
+    float m_rDist;    // the distance between two row
+    float m_cDist;
 
     int m_numTiles;
     [SerializeField]
@@ -92,11 +102,6 @@ public class Board : MonoBehaviour
     {
         UAniTileSwap();
         UAniTileDrop();
-        // if(Input.GetButtonDown("Fire1")){
-        //     Debug.Log("type of 61: " + m_tiles[61].type);
-        //     Debug.Log("type of 53: " + m_tiles[53].type);
-        //     Debug.Log("type of 45: " + m_tiles[45].type);
-        // }
     }
 
     void Initialization(){
@@ -127,7 +132,8 @@ public class Board : MonoBehaviour
             temp.empty = false;
             m_tiles.Add(temp);
         }
-
+        m_rDist = m_tiles[RCToIndex(1, 0)].tile.transform.position.y - m_tiles[RCToIndex(0, 0)].tile.transform.position.y;
+        m_cDist = m_tiles[RCToIndex(0, 1)].tile.transform.position.z - m_tiles[RCToIndex(0, 0)].tile.transform.position.z;
     }
 
     void InitCheck(){
@@ -344,7 +350,7 @@ public class Board : MonoBehaviour
             return false;
         }
         else{
-            SetDropDest();
+            SetDropState();
             AniTileDrop();
         }
         return true;
@@ -361,69 +367,100 @@ public class Board : MonoBehaviour
         m_tiles[m_bTile].SetColor(tempColor);
     }
 
-    void DropTiles(){
-        // change materials after a drop
-        foreach(Tile t in m_tiles){
-            if(t.empty){
-                t.SetState(true);
-                t.empty = false;
-            }
-            t.PostDrop();
-            t.PreDrop(-1, -1);
-        }
-        //RemoveAfterDrop();
-    }
-
-    int GetDropBorder(int index){
-        // return where the new tile generated
-        (int r, int c) = IndexToRC(index);
-        int iteration = k_row > k_col ? k_row : k_col;
-        for(int i = 0; i < iteration; i++){
-            r -= m_direction[m_dirIndex].r;
-            c -= m_direction[m_dirIndex].c;
-            if(r < 0 || r >= k_row || c < 0 || c >= k_col){
-                r += m_direction[m_dirIndex].r;
-                c += m_direction[m_dirIndex].c;
-                return RCToIndex(r, c);
-            }
-        }
-        return -1;
-    }
-
-    void SetDropDest(){
+    void SetDropState(){
+        // initialization
         for(int i = 0; i < m_numTiles; i++){
+            m_tiles[i].drop = false;
+            m_tiles[i].emptyTilesCnt = 0;
+        }
+
+        // counter how many empty tiles along the direction
+        for(int i = 0; i< m_numTiles; i++){
             if(m_tiles[i].empty){
-                (int destR, int destC) = IndexToRC(i);
-                int r = destR - m_direction[m_dirIndex].r;
-                int c = destC -  m_direction[m_dirIndex].c;
+                int numEmpty = 1;
+                (int eR, int eC) = IndexToRC(i);
+
+                int r = eR - m_direction[m_dirIndex].r;
+                int c = eC -  m_direction[m_dirIndex].c;
                 while(r > -1 && r < k_row && c > -1 && c < k_col){
-                    int temp = RCToIndex(r, c);    // tiles that need to drop
-                    if(!m_tiles[temp].empty && m_tiles[temp].dropDest == -1){    // hasn't been set a destination
-                        m_tiles[temp].dropDest = RCToIndex(destR, destC);
-                        destR -= m_direction[m_dirIndex].r;
-                        destC -= m_direction[m_dirIndex].c;
+                    int temp = RCToIndex(r, c);
+                    if(m_tiles[temp].empty){
+                        numEmpty += 1;
                     }
                     r -= m_direction[m_dirIndex].r;
                     c -= m_direction[m_dirIndex].c;
                 }
-                int borderTile = GetDropBorder(i);
-                m_tiles[borderTile].PreDrop(Random.Range(0, m_numColor), Random.Range(0, m_numType));
+                r = eR + m_direction[m_dirIndex].r;
+                c = eC +  m_direction[m_dirIndex].c;
+                while(r > -1 && r < k_row && c > -1 && c < k_col){
+                    int temp = RCToIndex(r, c);
+                    if(m_tiles[temp].empty){
+                        numEmpty += 1;
+                    }
+                    r += m_direction[m_dirIndex].r;
+                    c += m_direction[m_dirIndex].c;
+                }
+                m_tiles[i].emptyTilesCnt = numEmpty;
             }
         }
+
+        // mark all tiles that need to drop, and update the counter for all
+        for(int i = 0; i < m_numTiles; i++){
+            if(m_tiles[i].empty){
+                m_tiles[i].drop = true;
+                (int destR, int destC) = IndexToRC(i);
+                int r = destR - m_direction[m_dirIndex].r;
+                int c = destC -  m_direction[m_dirIndex].c;
+                while(r > -1 && r < k_row && c > -1 && c < k_col){
+                    int temp = RCToIndex(r, c);
+                    m_tiles[temp].emptyTilesCnt = m_tiles[i].emptyTilesCnt;    // how many empty tiles along the direction
+                    m_tiles[temp].drop = true;
+                    r -= m_direction[m_dirIndex].r;
+                    c -= m_direction[m_dirIndex].c;
+                }
+            }
+        }
+
+        // change their start position (with correct figure) and target position
+        for(int i = 0; i < m_numTiles; i++){
+            if(m_tiles[i].drop){
+                int cnt = m_tiles[i].emptyTilesCnt;
+                Vector3 startPos;
+                Vector3 destPos = m_tiles[i].tile.transform.position;
+                (int r, int c) = IndexToRC(i);
+                r -= cnt * m_direction[m_dirIndex].r;
+                c -= cnt * m_direction[m_dirIndex].c;
+                if(r > -1 && r < k_row && c > -1 && c < k_col){
+                    // start position is on the board
+                    int index = RCToIndex(r, c);
+                    startPos = m_tiles[index].tile.transform.position;
+                    m_tiles[i].SetColor(m_tiles[index].color);
+                    m_tiles[i].SetType(m_tiles[index].type);
+                }
+                else{
+                    // start position is out of the board
+                    startPos = m_tiles[i].tile.transform.position;
+                    startPos.y -= cnt * m_rDist * m_direction[m_dirIndex].r;
+                    startPos.z -= cnt * m_cDist * m_direction[m_dirIndex].c;
+                    m_tiles[i].SetColor(Random.Range(0, m_numColor));
+                    m_tiles[i].SetType(Random.Range(0, m_numType));
+                }
+                m_tiles[i].SetState(true);
+                m_tiles[i].empty = false;
+                m_tiles[i].dropStartV = startPos;
+                m_tiles[i].dropDestV = destPos;
+            }
+        }
+
         m_isDropping = true;
         m_rayBlocker.enabled = true;
     }
 
     void RemoveAfterDrop(){
-        bool unfinished = true;
-        while(unfinished){
-            unfinished = false;
-            for(int i = 0; i < m_numTiles; i++){
-                List<int> temp = MatchesAt(i);
-                if(temp.Count > 1){
-                    unfinished = true;
-                    RemoveMatch(temp[0], temp[1]);
-                }
+        for(int i = 0; i < m_numTiles; i++){
+            List<int> temp = MatchesAt(i);
+            if(temp.Count > 1){
+                RemoveMatch(temp[0], temp[1]);
             }
         }
     }
@@ -451,6 +488,8 @@ public class Board : MonoBehaviour
     }
 
     // animation things
+    // each animation is composed of three parts:
+    // trigger in Board; animation in TileLogic; logic update in Board
     public void AniTileSwap(){
         // animation for swapping tile a and tile b
         // turn on the triggers
@@ -468,16 +507,15 @@ public class Board : MonoBehaviour
     }
 
     void AniTileDrop(){
-        // turn on triggers
-        for(int i = 0; i < m_numTiles; i++){
-            if(m_tiles[i].dropDest != -1){
-                m_tiles[m_tiles[i].dropDest].PreDrop(m_tiles[i].color, m_tiles[i].type);
+        // trigger
+        // change position
+        for(int i = 0; i < m_numTiles; i ++){
+            if(m_tiles[i].drop){
+                m_tiles[i].tile.transform.position = m_tiles[i].dropStartV;
                 // trigger
-                Vector3 tPos = m_tiles[m_tiles[i].dropDest].tile.transform.position;
                 m_tiles[i].script.m_moveAniV.trigger = true;
-                m_tiles[i].script.m_moveAniV.target = tPos;
+                m_tiles[i].script.m_moveAniV.target = m_tiles[i].dropDestV;
                 m_tiles[i].script.m_drop = true;
-                m_tiles[i].dropDest = -1;
             }
         }
     }
@@ -504,22 +542,19 @@ public class Board : MonoBehaviour
     void UAniTileDrop(){
         // animation for dropping a to d
         if(m_isDropping){
-            // check whether a step is down and the drop is done
-            int noCnt = 0;
-            bool noDrop = true;
-            foreach(Tile t in m_tiles){
-                noDrop = noDrop & !t.script.m_drop;    // drop animation done
+            bool hasDrop = false;
+            for(int i = 0; i < m_numTiles; i++){
+                if(m_tiles[i].script.m_drop){
+                    hasDrop = true;
+                }
             }
-            if(noDrop){    // the dropping animation is done
-                DropTiles();    // change the material
-                if(noCnt == 0){
-                    m_isDropping = false;
-                    m_rayBlocker.enabled = false;
-                }
-                else{
-                    AniTileDrop();    // trigger again
-                }
+            if(!hasDrop){
+                RemoveAfterDrop();
+                m_isDropping = false;
+                m_rayBlocker.enabled = false;
             }
         }
     }
+
+
 }
