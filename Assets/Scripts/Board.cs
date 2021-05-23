@@ -93,6 +93,62 @@ public class Board : MonoBehaviour
         UCheckMap();
     }
 
+    // ------------------------------------------------------------------------
+    // helper function things
+    // ------------------------------------------------------------------------
+
+    (int row, int col) IndexToRC(int index){
+        int row = index / k_col;
+        int col = index % k_col;
+        return (row, col);
+    }
+
+    int RCToIndex(int row, int col){
+        return row * k_col + col;
+    }
+
+    bool TilesCmp(int indexA, int indexB){
+        // whether two tiles are the same
+        bool type = false;
+        bool color = false;
+        if(m_tiles[indexA].color == m_tiles[indexB].color){
+            color = true;
+        }
+        if(m_tiles[indexA].type == m_tiles[indexB].type){
+            type = true;
+        }
+        if(color && type){    // changing this allows other way to match
+            return true;
+        }
+        return false;
+    }
+
+    void TilesSwap(int i = -1, int j = -1, bool logically = false){
+        // swap materials of two selected tiles
+        if(i == -1){
+            i = m_aTile;
+            j = m_bTile;
+        }
+        int tempColor = m_tiles[i].color;
+        int tempType = m_tiles[i].type;
+
+        if(logically){
+            m_tiles[i].type = m_tiles[j].type;
+            m_tiles[i].color = m_tiles[j].color;
+            m_tiles[j].type = tempType;
+            m_tiles[j].color = tempColor;
+            return;
+        }
+        m_tiles[i].SetType(m_tiles[j].type);
+        m_tiles[i].SetColor(m_tiles[j].color);
+        m_tiles[j].SetType(tempType);
+        m_tiles[j].SetColor(tempColor);
+    }
+
+    // ------------------------------------------------------------------------
+    // initialization
+    // ------------------------------------------------------------------------
+
     void Initialization(){
         InitSeed();
         InitTiles();
@@ -155,86 +211,34 @@ public class Board : MonoBehaviour
         }
     }
 
-    (int row, int col) IndexToRC(int index){
-        int row = index / k_col;
-        int col = index % k_col;
-        return (row, col);
-    }
+    // ------------------------------------------------------------------------
+    // remove
+    // ------------------------------------------------------------------------
 
-    int RCToIndex(int row, int col){
-        return row * k_col + col;
-    }
+    public bool IsValidSwap(){
+        // called when two tiles are selected at one time
+        // returns true if it is a valid swap (the two selected tiles are contiguous or something like that)
+        // and m_aTile, m_bTile will be set as the selected tiles
+        List<int> selected = new List<int>();
+        for(int i = 0; i < k_col * k_row; i++){
+            if(m_tiles[i].script.m_selected){
+                selected.Add(i);
+                m_tiles[i].script.m_selected = false;
+            }
+        }
 
-    bool TwoTileCmp(int indexA, int indexB){
-        // whether two tiles are matchable
-        bool type = false;
-        bool color = false;
-        if(m_tiles[indexA].color == m_tiles[indexB].color){
-            color = true;
-        }
-        if(m_tiles[indexA].type == m_tiles[indexB].type){
-            type = true;
-        }
-        if(color && type){    // changing this allows other way to match
-            return true;
+        (int i, int j) A = IndexToRC(selected[0]);
+        (int i, int j) B = IndexToRC(selected[1]);
+        // we may have other directions
+        List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};
+        foreach((int i, int j) d in direction){
+            if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
+                m_aTile = selected[0];
+                m_bTile = selected[1];
+                return true;
+            }
         }
         return false;
-    }
-
-    List<(int i, int j)> CheckMap(bool init = false){
-        if(init){
-            InitSwing();
-        }
-        // from bottom left check whether there is a solution to the map
-        List<(int i, int j)> res = new List<(int i, int j)>();    // each element contains two tiles for a solution
-        for(int i = 0; i < m_numTiles; i++){
-            (int r, int c) = IndexToRC(i);
-            // swap with up
-            int upTile = r + 1 < k_row && c < k_col ? RCToIndex(r + 1, c) : m_numTiles;
-            if(upTile < m_numTiles){
-                SwapTiles(i, upTile, true);
-                int hasMatch = MatchesAt(i, true).Count + MatchesAt(upTile).Count;
-                if(hasMatch > 0){
-                    res.Add((i, upTile));
-                }
-                SwapTiles(i, upTile, true);
-            }
-            // swap with up
-            int rightTile = r < k_row && c + 1 < k_col ? RCToIndex(r, c + 1) : m_numTiles;
-            if(rightTile < m_numTiles){
-                SwapTiles(i, rightTile, true);
-                int hasMatch = MatchesAt(i, true).Count + MatchesAt(rightTile).Count;
-                if(hasMatch > 0){
-                    res.Add((i, rightTile));
-                }
-                SwapTiles(i, rightTile, true);
-            }
-        }
-        return res;
-    }
-
-    List<int> MatchesAt(int index, bool ur=false){
-        // if there is no match involves tiles[index], return a list of size 1
-        // ur means up and right search
-        List<int> matchedTiles = new List<int>();
-        matchedTiles.Add(index);    // add as a marker
-
-        // row-wise
-        List<int> temp = CheckRowMatch(index, ur);
-        foreach (int t in temp){
-            matchedTiles.Add(t);
-        }
-
-        // col-wise
-        temp = CheckColMatch(index, ur);
-        foreach (int t in temp){
-            matchedTiles.Add(t);
-        }
-
-        if(matchedTiles.Count < 2){
-            return new List<int>();
-        }
-        return matchedTiles;
     }
 
     List<int> CheckRowMatch(int index, bool ur=false){
@@ -245,7 +249,7 @@ public class Board : MonoBehaviour
         // to right
         for(int c = col + 1; c < k_col; c++){
             int newIndex = RCToIndex(row, c);
-            if(TwoTileCmp(index, newIndex)){
+            if(TilesCmp(index, newIndex)){
                 cnt += 1;
                 tempSeq.Add(newIndex);
             }
@@ -262,7 +266,7 @@ public class Board : MonoBehaviour
         // to left
         for(int c = col - 1; c >= 0; c--){
             int newIndex = RCToIndex(row, c);
-            if(TwoTileCmp(index, newIndex)){
+            if(TilesCmp(index, newIndex)){
                 cnt += 1;
                 tempSeq.Add(newIndex);
             }
@@ -284,7 +288,7 @@ public class Board : MonoBehaviour
         // to right
         for(int r = row + 1; r < k_row; r++){
             int newIndex = RCToIndex(r, col);
-            if(TwoTileCmp(index, newIndex)){
+            if(TilesCmp(index, newIndex)){
                 cnt += 1;
                 tempSeq.Add(newIndex);
             }
@@ -301,7 +305,7 @@ public class Board : MonoBehaviour
         // to left
         for(int r = row - 1; r >= 0; r--){
             int newIndex = RCToIndex(r, col);
-            if(TwoTileCmp(index, newIndex)){
+            if(TilesCmp(index, newIndex)){
                 cnt += 1;
                 tempSeq.Add(newIndex);
             }
@@ -316,37 +320,32 @@ public class Board : MonoBehaviour
         return tempSeq;
     }
 
-    public bool IsValidSwap(){
-        // called when two tiles are selected at one time
-        // returns true if it is a valid swap (the two selected tiles are contiguous or something like that)
-        List<int> selected = new List<int>();
-        for(int i = 0; i < k_col * k_row; i++){
-            if(m_tiles[i].script.m_selected){
-                selected.Add(i);
-            }
-        }
-        foreach(int i in selected){
-            m_tiles[i].script.m_selected = false;
+    List<int> MatchesAt(int index, bool ur=false){
+        // if there is no match involves tiles[index], return a list of size 0
+        // ur means only up and right search
+        List<int> matchedTiles = new List<int>();
+        matchedTiles.Add(index);    // add as a marker
+
+        // row-wise
+        List<int> temp = CheckRowMatch(index, ur);
+        foreach (int t in temp){
+            matchedTiles.Add(t);
         }
 
-        (int i, int j) A = IndexToRC(selected[0]);
-        (int i, int j) B = IndexToRC(selected[1]);
-        // we may have other directions
-        List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};
-        foreach((int i, int j) d in direction){
-            if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
-                m_aTile = selected[0];
-                m_bTile = selected[1];
-                return true;
-            }
+        // col-wise
+        temp = CheckColMatch(index, ur);
+        foreach (int t in temp){
+            matchedTiles.Add(t);
         }
-        return false;
+
+        if(matchedTiles.Count < 2){
+            return new List<int>();
+        }
+        return matchedTiles;
     }
 
     bool RemoveMatch(int a, int b){
-        // called when the board is changed like a swap is conducted
-        // set tiles empty if valid
-
+        // remove matches at a and b, set tiles empty if valid
         List<int> AMatch = MatchesAt(a);
         List<int> BMatch = MatchesAt(b);
         bool IsMatch = false;
@@ -370,28 +369,6 @@ public class Board : MonoBehaviour
             return false;
         }
         return true;
-    }
-
-    void SwapTiles(int i = -1, int j = -1, bool logically = false){
-        // swap materials of two selected tiles
-        if(i == -1){
-            i = m_aTile;
-            j = m_bTile;
-        }
-        int tempColor = m_tiles[i].color;
-        int tempType = m_tiles[i].type;
-
-        if(logically){
-            m_tiles[i].type = m_tiles[j].type;
-            m_tiles[i].color = m_tiles[j].color;
-            m_tiles[j].type = tempType;
-            m_tiles[j].color = tempColor;
-            return;
-        }
-        m_tiles[i].SetType(m_tiles[j].type);
-        m_tiles[i].SetColor(m_tiles[j].color);
-        m_tiles[j].SetType(tempType);
-        m_tiles[j].SetColor(tempColor);
     }
 
     void SetDropState(){
@@ -485,7 +462,7 @@ public class Board : MonoBehaviour
         m_isDropping = true;
     }
 
-    void RemoveAfterDrop(){
+    void RemoveMatchAfterDrop(){
         bool finished = true;
         for(int i = 0; i < m_numTiles; i++){
             List<int> temp = MatchesAt(i);
@@ -502,6 +479,39 @@ public class Board : MonoBehaviour
         AniTileDrop();
     }
 
+    List<(int i, int j)> CheckMap(bool init = false){
+        if(init){
+            InitSwing();
+        }
+
+        // from bottom left check whether there is a solution to the map
+        List<(int i, int j)> res = new List<(int i, int j)>();    // each element contains two tiles for a solution
+        for(int i = 0; i < m_numTiles; i++){
+            (int r, int c) = IndexToRC(i);
+            // swap with up
+            int upTile = r + 1 < k_row && c < k_col ? RCToIndex(r + 1, c) : m_numTiles;
+            if(upTile < m_numTiles){
+                TilesSwap(i, upTile, true);
+                int hasMatch = MatchesAt(i, true).Count + MatchesAt(upTile).Count;
+                if(hasMatch > 0){
+                    res.Add((i, upTile));
+                }
+                TilesSwap(i, upTile, true);
+            }
+            // swap with up
+            int rightTile = r < k_row && c + 1 < k_col ? RCToIndex(r, c + 1) : m_numTiles;
+            if(rightTile < m_numTiles){
+                TilesSwap(i, rightTile, true);
+                int hasMatch = MatchesAt(i, true).Count + MatchesAt(rightTile).Count;
+                if(hasMatch > 0){
+                    res.Add((i, rightTile));
+                }
+                TilesSwap(i, rightTile, true);
+            }
+        }
+        return res;
+    }
+
     void Shuffle(){
         List<(int i, int j)> solutions = CheckMap();
         bool hasMatching = false;
@@ -512,7 +522,7 @@ public class Board : MonoBehaviour
         }
         if(solutions.Count == 0 || hasMatching){
             for(int i = 0; i < m_numTiles; i++){
-                SwapTiles(i, Random.Range(0, m_numTiles));
+                TilesSwap(i, Random.Range(0, m_numTiles));
             }
             Shuffle();
         }
@@ -521,9 +531,11 @@ public class Board : MonoBehaviour
         }
     }
 
-    // animation things
-    // each animation is composed of three parts:
-    // trigger in Board; animation in TileLogic; logic update in Board
+    // ------------------------------------------------------------------------
+    // animation triggers
+    //      to turn on the trigger of related variables
+    // ------------------------------------------------------------------------
+
     public void AniTileSwap(){
         // animation for swapping tile a and tile b
         // turn on the triggers
@@ -555,12 +567,26 @@ public class Board : MonoBehaviour
         }
     }
 
+    void UCheckMap(){
+        if(Input.GetButtonDown("Jump") && !m_rayBlocker.enabled){
+            List<(int i, int j)> solutions = CheckMap(true);
+            (int i, int j) sol = solutions[Random.Range(0, solutions.Count)];
+            m_tiles[sol.i].script.SetSwing(true);
+            m_tiles[sol.j].script.SetSwing(true);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // animation updates
+    //      to detect whether an animation is done and start next job
+    // ------------------------------------------------------------------------
+
     void UAniTileSwap(){
         // called every swap
         if(m_isSwapping && !m_tiles[m_aTile].script.m_moveAniV.trigger){
             // the swap is finished visually, but we still need to change the appearance...
             m_isSwapping = false;
-            SwapTiles();    // when the animation is done, change logically
+            TilesSwap();    // when the animation is done, change logically
             m_isReversing = !m_isReversing;    // check whether the swap needs to be reversed, the default value is false
             m_rayBlocker.enabled = false;
             // m_rayBlockerR.enabled = false;
@@ -596,18 +622,9 @@ public class Board : MonoBehaviour
                 m_isDropping = false;
                 m_rayBlocker.enabled = false;  // no blocker
                 // m_rayBlockerR.enabled = false;
-                RemoveAfterDrop();
+                RemoveMatchAfterDrop();
                 Shuffle();
             }
-        }
-    }
-
-    void UCheckMap(){
-        if(Input.GetButtonDown("Jump") && !m_rayBlocker.enabled){
-            List<(int i, int j)> solutions = CheckMap(true);
-            (int i, int j) sol = solutions[Random.Range(0, solutions.Count)];
-            m_tiles[sol.i].script.SetSwing(true);
-            m_tiles[sol.j].script.SetSwing(true);
         }
     }
 }
