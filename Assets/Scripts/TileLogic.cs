@@ -31,12 +31,18 @@ public class TileLogic : MonoBehaviour
     Vector3 m_position;
 
     public bool m_selected = false;
+    bool m_swing = false;
     public bool m_hang = false;
 
     // fluctuation
-    float m_bound = 0.4f;
+    float m_flucBound = 0.4f;
     float m_flucStep = 0.02f;
-    bool m_selectActivation = false;    // whether the obj is already protruding
+    bool m_selectActivation = false;    // whether the obj is protruding
+
+    // swing
+    float m_swingBound = 0.1f;
+    float m_swingStep = 0.5f;
+    bool m_swingActivation = false;
 
     // swap animation
     public AniMoveVariable m_moveAniV = new AniMoveVariable();    // the swap and drop would not be done simultaneously
@@ -66,7 +72,7 @@ public class TileLogic : MonoBehaviour
     {
         USelected();
         UAniMove();
-        // UAniRemove();
+        USwing();
         UAniTileGenerate();
     }
 
@@ -83,6 +89,17 @@ public class TileLogic : MonoBehaviour
         m_typeRender.enabled = state;
     }
 
+    public void SetSwing(bool state){
+        m_swing = state;
+        if(state){
+            m_swingStep = 0.5f;
+        }
+        else{
+            m_swing = false;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
     public int GetColorIndex(){
         return m_colorList.IndexOf(m_colorRender.material);
     }
@@ -93,6 +110,7 @@ public class TileLogic : MonoBehaviour
 
     void USelected(){
         if(m_selected && !m_selectActivation){
+            // protrude at 1.25
             transform.position = new Vector3(1.25f, transform.position.y, transform.position.z);
             m_selectActivation = true;
         }
@@ -103,9 +121,28 @@ public class TileLogic : MonoBehaviour
         if(m_selected){
             // fluctuation
             transform.position = new Vector3(transform.position.x + m_flucStep, transform.position.y, transform.position.z);
-            if (transform.position.x < 1.25f - m_bound || transform.position.x > 1.25f + m_bound)
+            if (transform.position.x < 1.25f - m_flucBound || transform.position.x > 1.25f + m_flucBound)
             {
                 m_flucStep *= -1.0f;
+            }
+        }
+    }
+
+    void USwing(){
+        if(m_swing){
+            if(m_selected){
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            if(m_moveAniV.trigger || m_drop){
+                m_swing = false;    // stop
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else{
+                transform.Rotate(new Vector3(m_swingStep, 0, 0));
+                if (transform.rotation.x < - m_swingBound || transform.rotation.x > m_swingBound)
+                {
+                    m_swingStep *= -1.0f;
+                }
             }
         }
     }
@@ -160,7 +197,6 @@ public class TileLogic : MonoBehaviour
             m_moveAniV.doing = false;
             m_moveAniV.trigger = false;
             m_drop = false;
-            //transform.position = m_position;    // when this is done, the material should be changed
         }
     }
 
