@@ -69,6 +69,8 @@ public class Board : MonoBehaviour
     // animation related variables
     [SerializeField]
     Collider m_rayBlocker;
+    [SerializeField]
+    MeshRenderer m_rayBlockerR;
     // for swap
     bool m_isSwapping = false;
     bool m_isReversing = false;    // to reverse a swap if there is no match
@@ -193,12 +195,13 @@ public class Board : MonoBehaviour
         }
 
         // col-wise
-        //temp = new List<int>();
         temp = CheckColMatch(index, ur);
         foreach (int t in temp){
             matchedTiles.Add(t);
         }
-
+        if(matchedTiles.Count < 3){
+            return new List<int>();
+        }
         return matchedTiles;
     }
 
@@ -301,7 +304,6 @@ public class Board : MonoBehaviour
             if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
                 m_aTile = selected[0];
                 m_bTile = selected[1];
-                // HasMatch(selected[0], selected[1]);
                 return true;
             }
         }
@@ -310,7 +312,7 @@ public class Board : MonoBehaviour
 
     bool RemoveMatch(int a, int b){
         // called when the board is changed like a swap is conducted
-        // remove tiles if valid
+        // set tiles empty if valid
 
         List<int> AMatch = MatchesAt(a);
         List<int> BMatch = MatchesAt(b);
@@ -333,12 +335,6 @@ public class Board : MonoBehaviour
 
         if(!IsMatch){
             return false;
-        }
-        else{
-            if(m_dropRemove){
-                SetDropState();
-                AniTileDrop();
-            }
         }
         return true;
     }
@@ -434,47 +430,50 @@ public class Board : MonoBehaviour
                 }
                 m_tiles[i].SetState(true);
                 m_tiles[i].empty = false;
-                // Debug.Log("Tile i " + i + startPos);
-                // Debug.Log("To " + destPos);
                 m_tiles[i].dropStartV = startPos;
                 m_tiles[i].dropDestV = destPos;
             }
         }
 
-        m_isDropping = true;
         m_rayBlocker.enabled = true;
+        // m_rayBlockerR.enabled = true;
+        m_isDropping = true;
     }
 
     void RemoveAfterDrop(){
-        m_dropRemove = false;
+        bool finished = true;
         for(int i = 0; i < m_numTiles; i++){
             List<int> temp = MatchesAt(i);
-            if(temp.Count > 1){
-                RemoveMatch(temp[0], temp[1]);
+            foreach(int t in temp){
+                m_tiles[t].SetState(false);
+                m_tiles[t].empty = true;
+                finished = false;
             }
+        }
+        if(finished){
+            return;
         }
         SetDropState();
         AniTileDrop();
-        m_dropRemove = true;
     }
 
-    void CheckValiableMatch(){
-        // 2n * O(MatchesAtIndex)
-        for(int i = 0; i < m_numTiles; i++){
-            (int r, int c) temp = IndexToRC(i);
-            if(temp.r + 1 < k_row){    // upside check
-                if(RemoveMatch(i, RCToIndex(temp.r+1, temp.c))){
-                    return;
-                }
-            }
-            if(temp.c + 1 < k_col){    // right side
-                if(RemoveMatch(i, RCToIndex(temp.r, temp.c+1))){
-                    return;
-                }
-            }
-        }
-        Shuffle();
-    }
+    // void CheckValiableMatch(){
+    //     // 2n * O(MatchesAtIndex)
+    //     for(int i = 0; i < m_numTiles; i++){
+    //         (int r, int c) temp = IndexToRC(i);
+    //         if(temp.r + 1 < k_row){    // upside check
+    //             if(RemoveMatch(i, RCToIndex(temp.r+1, temp.c))){
+    //                 return;
+    //             }
+    //         }
+    //         if(temp.c + 1 < k_col){    // right side
+    //             if(RemoveMatch(i, RCToIndex(temp.r, temp.c+1))){
+    //                 return;
+    //             }
+    //         }
+    //     }
+    //     Shuffle();
+    // }
 
     void Shuffle(){
         Debug.Log("We need a shuffle!");
@@ -487,7 +486,8 @@ public class Board : MonoBehaviour
         // animation for swapping tile a and tile b
         // turn on the triggers
         m_isSwapping = true;
-        m_rayBlocker.enabled = true;
+        m_rayBlocker.enabled = true;    // play animation; diabled click
+        // m_rayBlockerR.enabled = true;
         // two tiles start moving
         Vector3 aPos = m_tiles[m_aTile].tile.transform.position;
         Vector3 bPos = m_tiles[m_bTile].tile.transform.position;
@@ -514,19 +514,27 @@ public class Board : MonoBehaviour
     }
 
     void UAniTileSwap(){
+        // called every swap
         if(m_isSwapping && !m_tiles[m_aTile].script.m_moveAniV.trigger){
             // the swap is finished visually, but we still need to change the appearance...
             m_isSwapping = false;
-            m_rayBlocker.enabled = false;
             SwapTiles();    // when the animation is done, change logically
-            m_isReversing = !m_isReversing;    // check whether the swap needs to be reversed
+            m_isReversing = !m_isReversing;    // check whether the swap needs to be reversed, the default value is false
+            m_rayBlocker.enabled = false;
+            // m_rayBlockerR.enabled = false;
         }
 
         if(m_isReversing){
+            // check
             if(!RemoveMatch(m_aTile, m_bTile)){
+                // no valid remove
                 AniTileSwap();
             }
             else{
+                // the matched tiles are set to be empty now
+                // fill in the empty tiles
+                SetDropState();
+                AniTileDrop();
                 m_isReversing = false;
             }
         }
@@ -542,12 +550,13 @@ public class Board : MonoBehaviour
                 }
             }
             if(!hasDrop){
-                RemoveAfterDrop();
+                // drop done
+                Debug.Log("Dropping done!");
                 m_isDropping = false;
-                m_rayBlocker.enabled = false;
+                m_rayBlocker.enabled = false;  // no blocker
+                // m_rayBlockerR.enabled = false;
+                RemoveAfterDrop();
             }
         }
     }
-
-
 }
