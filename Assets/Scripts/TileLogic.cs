@@ -85,8 +85,8 @@ public class TileLogic : MonoBehaviour
     }
 
     public void SetState(bool state){
-        m_colorRender.enabled = state;
-        m_typeRender.enabled = state;
+        m_colorRender.enabled = !state;
+        m_typeRender.enabled = !state;
     }
 
     public void SetSwing(bool state){

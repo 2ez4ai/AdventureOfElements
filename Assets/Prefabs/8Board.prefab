@@ -716,8 +716,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_randomSeed: 0
+  m_dirIndex: 1
   m_numColor: 3
   m_numType: 5
+  m_creatureScript: {fileID: 0}
+  m_rayBlocker: {fileID: 0}
+  m_rayBlockerR: {fileID: 0}
 --- !u!1 &5717915020855131796
 GameObject:
   m_ObjectHideFlags: 0

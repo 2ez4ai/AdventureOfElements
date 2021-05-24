@@ -44,6 +44,10 @@ class Tile{
 public class Board : MonoBehaviour
 {
     [SerializeField]
+    public int m_randomSeed = 0;
+
+    // board settings
+    [SerializeField]
     const int k_row = 8;
     [SerializeField]
     const int k_col = 8;
@@ -53,6 +57,7 @@ public class Board : MonoBehaviour
     float m_rDist;    // the distance between two row
     float m_cDist;
 
+    // tiles settings
     int m_numTiles;
     [SerializeField]
     public int m_numColor;
@@ -60,12 +65,14 @@ public class Board : MonoBehaviour
     public int m_numType;
     GameObject[] m_tilesInit = new GameObject[k_row * k_col];
     List<Tile> m_tiles = new List<Tile>();
-
-    [SerializeField]
-    public int m_randomSeed = 0;
-
     int m_aTile = -1;    // selected tiles
     int m_bTile = -1;
+
+    // others
+    //[SerializeField]
+    //Player m_player;
+    [SerializeField]
+    Creature m_creatureScript;
 
     // animation related variables
     [SerializeField]
@@ -77,7 +84,6 @@ public class Board : MonoBehaviour
     bool m_isReversing = false;    // to reverse a swap if there is no match
     // for drop
     bool m_isDropping = false;
-    bool m_dropRemove = true;    // we drop tiles step by step
 
     // Start is called before the first frame update
     void Start()
@@ -143,6 +149,17 @@ public class Board : MonoBehaviour
         m_tiles[i].SetColor(m_tiles[j].color);
         m_tiles[j].SetType(tempType);
         m_tiles[j].SetColor(tempColor);
+    }
+
+    void SetTileEmpty(int index, bool state){
+        if(m_tiles[index].empty && state){
+            return;    // already be removed
+        }
+        m_tiles[index].SetState(state);
+        m_tiles[index].empty = state;
+        if(state){    // there is a remove
+            m_creatureScript.UpdateDamage(m_tiles[index].color, m_tiles[index].type);
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -230,7 +247,8 @@ public class Board : MonoBehaviour
         (int i, int j) A = IndexToRC(selected[0]);
         (int i, int j) B = IndexToRC(selected[1]);
         // we may have other directions
-        List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};
+        // List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)};
+        List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // four direction swap
         foreach((int i, int j) d in direction){
             if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
                 m_aTile = selected[0];
@@ -353,15 +371,13 @@ public class Board : MonoBehaviour
         if(AMatch.Count > 0){
             IsMatch = true;
             foreach(int t in AMatch){
-                m_tiles[t].SetState(false);
-                m_tiles[t].empty = true;
+                SetTileEmpty(t, true);
             }
         }
         if(BMatch.Count > 0){
             IsMatch = true;
             foreach(int t in BMatch){
-                m_tiles[t].SetState(false);
-                m_tiles[t].empty = true;
+                SetTileEmpty(t, true);
             }
         }
 
@@ -450,8 +466,7 @@ public class Board : MonoBehaviour
                     m_tiles[i].SetColor(Random.Range(0, m_numColor));
                     m_tiles[i].SetType(Random.Range(0, m_numType));
                 }
-                m_tiles[i].SetState(true);
-                m_tiles[i].empty = false;
+                SetTileEmpty(i, false);
                 m_tiles[i].dropStartV = startPos;
                 m_tiles[i].dropDestV = destPos;
             }
@@ -467,8 +482,7 @@ public class Board : MonoBehaviour
         for(int i = 0; i < m_numTiles; i++){
             List<int> temp = MatchesAt(i);
             foreach(int t in temp){
-                m_tiles[t].SetState(false);
-                m_tiles[t].empty = true;
+                SetTileEmpty(t, true);
                 finished = false;
             }
         }
@@ -624,6 +638,7 @@ public class Board : MonoBehaviour
                 // m_rayBlockerR.enabled = false;
                 RemoveMatchAfterDrop();
                 Shuffle();
+                m_creatureScript.TakeDamage();
             }
         }
     }
