@@ -9,7 +9,7 @@ public class AniMoveVariable{
     public bool doing = false;
     public Vector3 target;
 
-    public float moveSpeed = 7.0f;
+    public float moveSpeed = 5.0f;
     public float dropSpeed = 10.0f;
 
     public GameObject dropTarget;

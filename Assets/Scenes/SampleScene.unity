@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HP: 100
   m_attackType: 0
-  m_injureType: 0
+  m_injureType: -1
   m_injureColor: -1
   m_UIHP: {fileID: 1151166047}
 --- !u!1001 &591032276
@@ -269,7 +269,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_numColor
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_randomSeed

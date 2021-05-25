@@ -13,6 +13,7 @@ class Tile{
     public bool empty;
     public int emptyTilesCnt = 0;    // drop from where
     public bool drop = false;
+    public bool dropUsed = false;
     // public bool borderDrop = false;    // the tiles is removed at the border
     public Vector3 dropStartV;
     public Vector3 dropDestV;
@@ -390,9 +391,10 @@ public class Board : MonoBehaviour
     void SetDropState(){
         // initialization
         InitSwing();
-        for(int i = 0; i < m_numTiles; i++){
-            m_tiles[i].drop = false;
-            m_tiles[i].emptyTilesCnt = 0;
+        foreach(Tile t in m_tiles){
+            t.dropUsed = false;
+            t.drop = false;
+            t.emptyTilesCnt = 0;
         }
 
         // counter how many empty tiles along the direction
@@ -400,7 +402,6 @@ public class Board : MonoBehaviour
             if(m_tiles[i].empty){
                 int numEmpty = 1;
                 (int eR, int eC) = IndexToRC(i);
-
                 int r = eR - m_direction[m_dirIndex].r;
                 int c = eC -  m_direction[m_dirIndex].c;
                 while(r > -1 && r < k_row && c > -1 && c < k_col){
@@ -422,6 +423,7 @@ public class Board : MonoBehaviour
                     c += m_direction[m_dirIndex].c;
                 }
                 m_tiles[i].emptyTilesCnt = numEmpty;
+                m_tiles[i].dropUsed = true;
             }
         }
 
@@ -446,19 +448,28 @@ public class Board : MonoBehaviour
         for(int i = 0; i < m_numTiles; i++){
             if(m_tiles[i].drop){
                 int cnt = m_tiles[i].emptyTilesCnt;
-                Vector3 startPos;
-                Vector3 destPos = m_tiles[i].tile.transform.position;
+                Vector3 startPos = Vector3.zero;
+                bool setDone = false;
                 (int r, int c) = IndexToRC(i);
-                r -= cnt * m_direction[m_dirIndex].r;
-                c -= cnt * m_direction[m_dirIndex].c;
-                if(r > -1 && r < k_row && c > -1 && c < k_col){
+                // find unused first
+                r -= m_direction[m_dirIndex].r;
+                c -= m_direction[m_dirIndex].c;
+                while(r > -1 && r < k_row && c > -1 && c < k_col){
                     // start position is on the board
                     int index = RCToIndex(r, c);
+                    if(m_tiles[index].dropUsed){
+                        r -= m_direction[m_dirIndex].r;
+                        c -= m_direction[m_dirIndex].c;
+                        continue;
+                    }
                     startPos = m_tiles[index].tile.transform.position;
+                    m_tiles[index].dropUsed = true;
                     m_tiles[i].SetColor(m_tiles[index].color);
                     m_tiles[i].SetType(m_tiles[index].type);
+                    setDone = true;
+                    break;
                 }
-                else{
+                if(!setDone){
                     // start position is out of the board
                     startPos = m_tiles[i].tile.transform.position;
                     startPos.y -= cnt * m_rDist * m_direction[m_dirIndex].r;
@@ -468,6 +479,8 @@ public class Board : MonoBehaviour
                 }
                 SetTileEmpty(i, false);
                 m_tiles[i].dropStartV = startPos;
+                // target position is its corrent position
+                Vector3 destPos = m_tiles[i].tile.transform.position;
                 m_tiles[i].dropDestV = destPos;
             }
         }
@@ -487,6 +500,7 @@ public class Board : MonoBehaviour
             }
         }
         if(finished){
+            Shuffle();
             return;
         }
         SetDropState();
@@ -637,7 +651,6 @@ public class Board : MonoBehaviour
                 m_rayBlocker.enabled = false;  // no blocker
                 // m_rayBlockerR.enabled = false;
                 RemoveMatchAfterDrop();
-                Shuffle();
                 m_creatureScript.TakeDamage();
             }
         }
