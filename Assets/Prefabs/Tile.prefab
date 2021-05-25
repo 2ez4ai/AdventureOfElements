@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8669161464765820168}
   - component: {fileID: 3720818331295867078}
   - component: {fileID: 8790383068642113036}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tile
   m_TagString: Tiles
   m_Icon: {fileID: 0}
@@ -116,13 +116,23 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 26fcc6c4c0c478d419d87121fc374780, type: 2}
   - {fileID: 2100000, guid: 00386e0850c8c6244b921e87ac307c5c, type: 2}
   m_typeList:
+  - {fileID: 2100000, guid: e0f8bcd6b4d27234da60c95abdc4b530, type: 2}
+  - {fileID: 2100000, guid: 6f607611b0bbf04419fc08e7b2eb39f1, type: 2}
   - {fileID: 2100000, guid: ca6a99a673e97be4fa450bb18c2305dc, type: 2}
   - {fileID: 2100000, guid: 432f491e9063cc34da99cc5d3a224434, type: 2}
-  - {fileID: 2100000, guid: e0f8bcd6b4d27234da60c95abdc4b530, type: 2}
   - {fileID: 2100000, guid: b913615fe5bc7f949a6e166504bca8ff, type: 2}
-  - {fileID: 2100000, guid: 6f607611b0bbf04419fc08e7b2eb39f1, type: 2}
+  m_effectMat:
+  - {fileID: 2100000, guid: 5b4273230a6c56843a4f3d1a2739568d, type: 2}
+  - {fileID: 2100000, guid: d87c1392e6365164abf750bfe5d5e22b, type: 2}
+  - {fileID: 2100000, guid: a8056604d8d9d8a40913b7b1acbb1524, type: 2}
+  - {fileID: 2100000, guid: 0bd173c0257f4f745915db9b78985476, type: 2}
+  - {fileID: 2100000, guid: e3085160ef03fda4e9aeda6832b3c406, type: 2}
   m_selected: 0
   m_hang: 0
+  m_drop: 0
+  m_newTile: 0
+  m_remove: 0
+  m_removeDone: 0
 --- !u!1 &9082220226971652745
 GameObject:
   m_ObjectHideFlags: 0

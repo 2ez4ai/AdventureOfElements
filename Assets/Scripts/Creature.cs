@@ -9,8 +9,6 @@ public class Creature : MonoBehaviour
     [SerializeField]
     int m_HP = 100;
     [SerializeField]
-    int m_attackType = 0;
-    [SerializeField]
     int m_injureType = 0;
     [SerializeField]
     int m_injureColor = -1;
@@ -37,18 +35,19 @@ public class Creature : MonoBehaviour
     public void TakeDamage(){
         m_HP -= damage;
         m_UIHP.text = "HP : " + m_HP;
-        Debug.Log("Take damage " + damage);
         if(m_HP < 1){
             Debug.Log("You win!");
         }
         damage = 0;
     }
 
-    public void UpdateDamage(int c, int t){
+    public bool ValidDamage(int c, int t){
         if(c == m_injureColor || m_injureColor == -1){
             if(t == m_injureType || m_injureType == -1){
                 damage += 1;
+                return true;
         }
         }
+        return false;
     }
 }

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class Tile{
+public class Tile{
     public GameObject tile;
     public TileLogic script;
     public int color;
@@ -33,7 +33,7 @@ class Tile{
     }
 
     public void SetState(bool state){
-        script.SetState(state);
+        script.SetRemoveState(state);
     }
 
     public void UpdateLogic(){
@@ -70,8 +70,8 @@ public class Board : MonoBehaviour
     int m_bTile = -1;
 
     // others
-    //[SerializeField]
-    //Player m_player;
+    [SerializeField]
+    Player m_playerScript;
     [SerializeField]
     Creature m_creatureScript;
 
@@ -159,7 +159,10 @@ public class Board : MonoBehaviour
         m_tiles[index].SetState(state);
         m_tiles[index].empty = state;
         if(state){    // there is a remove
-            m_creatureScript.UpdateDamage(m_tiles[index].color, m_tiles[index].type);
+            m_creatureScript.ValidDamage(m_tiles[index].color, m_tiles[index].type);
+            // if(m_creatureScript.ValidDamage(m_tiles[index].color, m_tiles[index].type)){
+            //     AniDamageToCreature(index);
+            // }
         }
     }
 
@@ -560,6 +563,14 @@ public class Board : MonoBehaviour
     }
 
     // ------------------------------------------------------------------------
+    // battle
+    // ------------------------------------------------------------------------
+    public List<Tile> TilesToPlayer(){
+        List<Tile> tiles = new List<Tile>(m_tiles);
+        return tiles;
+    }
+
+    // ------------------------------------------------------------------------
     // animation triggers
     //      to turn on the trigger of related variables
     // ------------------------------------------------------------------------
@@ -604,6 +615,9 @@ public class Board : MonoBehaviour
         }
     }
 
+    void AniDamageToCreature(int index){
+        // trigger the animation of damage dealer of tile index
+    }
     // ------------------------------------------------------------------------
     // animation updates
     //      to detect whether an animation is done and start next job
@@ -631,6 +645,7 @@ public class Board : MonoBehaviour
                 // fill in the empty tiles
                 SetDropState();
                 AniTileDrop();
+                m_playerScript.IncreStepCnt();
                 m_isReversing = false;
             }
         }

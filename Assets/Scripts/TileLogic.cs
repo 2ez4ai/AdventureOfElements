@@ -23,11 +23,13 @@ public class TileLogic : MonoBehaviour
     List<Material> m_colorList = new List<Material>();
     [SerializeField]
     List<Material> m_typeList = new List<Material>();
-    //[SerializeField]
-    //public int direction = 1;    // drop direction, 1:down
+    [SerializeField]
+    List<Material> m_effectMat = new List<Material>();    // effect
 
     MeshRenderer m_colorRender;
     MeshRenderer m_typeRender;
+    int m_colorIndex;
+    int m_typeIndex;
     Vector3 m_position;
 
     public bool m_selected = false;
@@ -50,6 +52,8 @@ public class TileLogic : MonoBehaviour
     // drop animation
     public bool m_drop = false;
     public bool m_newTile = false;    // generate new Tile here
+
+    // remove animation
     public bool m_remove = false;
     public bool m_removeDone = false;
     float m_removeTimer = 0.0f;
@@ -73,20 +77,25 @@ public class TileLogic : MonoBehaviour
         USelected();
         UAniMove();
         USwing();
+        UAniRemove();
         UAniTileGenerate();
     }
 
     public void SetColor(int index){
-        m_colorRender.material = m_colorList[index];
+        m_colorIndex = index;
+        m_colorRender.material = m_colorList[m_colorIndex];
     }
 
     public void SetType(int index){
-        m_typeRender.material = m_typeList[index];
+        m_typeIndex = index;
+        m_typeRender.material = m_typeList[m_typeIndex];
     }
 
-    public void SetState(bool state){
-        m_colorRender.enabled = !state;
+    public void SetRemoveState(bool state){
+        // if false, means it is removed
+        // m_colorRender.enabled = !state;
         m_typeRender.enabled = !state;
+        m_remove = true;
     }
 
     public void SetSwing(bool state){
@@ -101,11 +110,11 @@ public class TileLogic : MonoBehaviour
     }
 
     public int GetColorIndex(){
-        return m_colorList.IndexOf(m_colorRender.material);
+        return m_colorIndex;
     }
 
     public int GetTypeIndex(){
-        return m_typeList.IndexOf(m_typeRender.material);
+        return m_typeIndex;
     }
 
     void USelected(){
@@ -162,14 +171,17 @@ public class TileLogic : MonoBehaviour
     }
 
     void UAniRemove(){
-        if(m_remove){
-            m_remove = false;
+        if(!m_typeRender.enabled && m_remove){
+            // this tile is going to be removed
+            m_colorRender.material = m_effectMat[m_colorIndex];
             m_removeDone = false;
             m_removeTimer = m_removeTime;
         }
+
         m_removeTime -= Time.deltaTime;
-        if(!m_removeDone && m_removeTime < 0.0f){
-            m_removeDone = true;
+        if(!m_removeDone && m_removeTime < 0){
+            m_colorRender.enabled = false;    // remove the tiles
+            m_removeDone = true;    // start drop
         }
     }
 
