@@ -9,8 +9,8 @@ public class AniMoveVariable{
     public bool doing = false;
     public Vector3 target;
 
-    public float moveSpeed = 5.0f;
-    public float dropSpeed = 10.0f;
+    public float moveSpeed = 8.0f;
+    public float dropSpeed = 16.0f;
 
     public GameObject dropTarget;
 }
@@ -19,6 +19,8 @@ public class TileLogic : MonoBehaviour
 {
     [SerializeField]
     GameObject m_typer;
+    [SerializeField]
+    GameObject m_particle;
     [SerializeField]
     List<Material> m_colorMat = new List<Material>();
     [SerializeField]
@@ -57,7 +59,7 @@ public class TileLogic : MonoBehaviour
     bool m_remove = false;
     public bool m_removeDone = true;
     float m_removeTimer = 0.0f;
-    float m_removeTime = 0.3f;
+    float m_removeTime = 0.4f;
 
     // Start is called before the first frame update
     void Start()
@@ -128,10 +130,12 @@ public class TileLogic : MonoBehaviour
         if(m_selected && !m_selectActivation){
             // protrude at 1.25
             transform.position = new Vector3(1.25f, transform.position.y, transform.position.z);
+            m_colorRender.material = m_effectMat[m_typeIndex];
             m_selectActivation = true;
         }
         if(!m_selected && m_selectActivation){
             transform.position = new Vector3(0.0f, transform.position.y, transform.position.z);
+            m_colorRender.material = m_colorMat[m_colorIndex];
             m_selectActivation = false;
         }
         if(m_selected){
@@ -184,15 +188,29 @@ public class TileLogic : MonoBehaviour
             m_removeTimer = m_removeTime;
             m_remove = false;
         }
-        m_removeTimer -= Time.deltaTime;
 
+        // change size
+        m_removeTimer -= Time.deltaTime;
+        if(m_removeTimer > 0.0f && m_removeTimer < 0.5f * m_removeTime){
+            float size = m_removeTimer / (0.5f * m_removeTime);
+            transform.localScale = Vector3.one * size;
+        }
+        // // flying particle; not desired so far... may can be used as an attack
+        // if(m_removeTimer > 0.0f && m_removeTimer < 0.4f * m_removeTime){
+        //     m_particle.SetActive(true);
+        //     m_particle.GetComponent<TrailRenderer>().material.SetColor("_EmissionColor", m_effectMat[m_typeIndex].GetColor("_EmissionColor") * 2.0f);
+        //     m_particle.transform.position = Vector3.Lerp(m_position, new Vector3(2.1f, -4.5f, -12), 1.0f - m_removeTimer / (0.2f * m_removeTime));
+        // }
+
+        // reset
         if(!m_removeDone && m_removeTimer < 0){
             Debug.Log("Remove done!");
+            transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+            m_particle.SetActive(false);
             m_colorRender.material = m_colorMat[m_colorIndex];
             m_colorRender.enabled = false;
             m_typeRender.enabled = false;
             m_removeDone = true;    // start drop
-
         }
     }
 
