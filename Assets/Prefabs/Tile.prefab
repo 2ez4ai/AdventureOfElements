@@ -110,12 +110,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_typer: {fileID: 9082220226971652745}
-  m_colorList:
+  m_colorMat:
   - {fileID: 2100000, guid: c99700ca882de944bb4f65221853cf74, type: 2}
   - {fileID: 2100000, guid: c096c0e75e9757740b21440b8b82ff69, type: 2}
   - {fileID: 2100000, guid: 26fcc6c4c0c478d419d87121fc374780, type: 2}
-  - {fileID: 2100000, guid: 00386e0850c8c6244b921e87ac307c5c, type: 2}
-  m_typeList:
+  m_typeMat:
   - {fileID: 2100000, guid: e0f8bcd6b4d27234da60c95abdc4b530, type: 2}
   - {fileID: 2100000, guid: 6f607611b0bbf04419fc08e7b2eb39f1, type: 2}
   - {fileID: 2100000, guid: ca6a99a673e97be4fa450bb18c2305dc, type: 2}
@@ -131,8 +130,7 @@ MonoBehaviour:
   m_hang: 0
   m_drop: 0
   m_newTile: 0
-  m_remove: 0
-  m_removeDone: 0
+  m_removeDone: 1
 --- !u!1 &9082220226971652745
 GameObject:
   m_ObjectHideFlags: 0

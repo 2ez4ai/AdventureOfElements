@@ -20,9 +20,9 @@ public class TileLogic : MonoBehaviour
     [SerializeField]
     GameObject m_typer;
     [SerializeField]
-    List<Material> m_colorList = new List<Material>();
+    List<Material> m_colorMat = new List<Material>();
     [SerializeField]
-    List<Material> m_typeList = new List<Material>();
+    List<Material> m_typeMat = new List<Material>();
     [SerializeField]
     List<Material> m_effectMat = new List<Material>();    // effect
 
@@ -54,10 +54,10 @@ public class TileLogic : MonoBehaviour
     public bool m_newTile = false;    // generate new Tile here
 
     // remove animation
-    public bool m_remove = false;
-    public bool m_removeDone = false;
+    bool m_remove = false;
+    public bool m_removeDone = true;
     float m_removeTimer = 0.0f;
-    float m_removeTime = 1.0f;
+    float m_removeTime = 0.3f;
 
     // Start is called before the first frame update
     void Start()
@@ -83,19 +83,26 @@ public class TileLogic : MonoBehaviour
 
     public void SetColor(int index){
         m_colorIndex = index;
-        m_colorRender.material = m_colorList[m_colorIndex];
+        m_colorRender.material = m_colorMat[m_colorIndex];
     }
 
     public void SetType(int index){
         m_typeIndex = index;
-        m_typeRender.material = m_typeList[m_typeIndex];
+        m_typeRender.material = m_typeMat[m_typeIndex];
     }
 
     public void SetRemoveState(bool state){
-        // if false, means it is removed
+        // if true, means it is removed
+        // actually, no parameter is needed
         // m_colorRender.enabled = !state;
-        m_typeRender.enabled = !state;
-        m_remove = true;
+        if(state){
+            m_remove = true;
+            m_removeDone = false;
+        }
+        else{
+            m_colorRender.enabled = true;
+            m_typeRender.enabled = true;
+        }
     }
 
     public void SetSwing(bool state){
@@ -171,17 +178,21 @@ public class TileLogic : MonoBehaviour
     }
 
     void UAniRemove(){
-        if(!m_typeRender.enabled && m_remove){
+        if(m_remove){
             // this tile is going to be removed
-            m_colorRender.material = m_effectMat[m_colorIndex];
-            m_removeDone = false;
+            m_colorRender.material = m_effectMat[m_typeIndex];
             m_removeTimer = m_removeTime;
+            m_remove = false;
         }
+        m_removeTimer -= Time.deltaTime;
 
-        m_removeTime -= Time.deltaTime;
-        if(!m_removeDone && m_removeTime < 0){
-            m_colorRender.enabled = false;    // remove the tiles
+        if(!m_removeDone && m_removeTimer < 0){
+            Debug.Log("Remove done!");
+            m_colorRender.material = m_colorMat[m_colorIndex];
+            m_colorRender.enabled = false;
+            m_typeRender.enabled = false;
             m_removeDone = true;    // start drop
+
         }
     }
 

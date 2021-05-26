@@ -6,9 +6,8 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    GameObject m_board;
-
     Board m_boardScript;
+
     Creature m_creatureScript;
     int m_numColor;
     int m_numType;
@@ -32,7 +31,6 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_boardScript = m_board.GetComponent<Board>();
         m_numColor = m_boardScript.m_numColor;
         m_numType = m_boardScript.m_numType;
     }

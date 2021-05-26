@@ -32,7 +32,7 @@ public class Tile{
         script.SetType(type);
     }
 
-    public void SetState(bool state){
+    public void SetEmptyState(bool state){
         script.SetRemoveState(state);
     }
 
@@ -83,6 +83,8 @@ public class Board : MonoBehaviour
     // for swap
     bool m_isSwapping = false;
     bool m_isReversing = false;    // to reverse a swap if there is no match
+    // for remove
+    bool m_isRemoving = false;
     // for drop
     bool m_isDropping = false;
 
@@ -90,12 +92,14 @@ public class Board : MonoBehaviour
     void Start()
     {
         Initialization();
+        Debug.Log("Init done!");
     }
 
     // Update is called once per frame
     void Update()
     {
         UAniTileSwap();
+        UAniRemove();
         UAniTileDrop();
         UCheckMap();
     }
@@ -156,9 +160,10 @@ public class Board : MonoBehaviour
         if(m_tiles[index].empty && state){
             return;    // already be removed
         }
-        m_tiles[index].SetState(state);
         m_tiles[index].empty = state;
+        m_tiles[index].SetEmptyState(state);
         if(state){    // there is a remove
+            m_rayBlocker.enabled = true;
             m_creatureScript.ValidDamage(m_tiles[index].color, m_tiles[index].type);
             // if(m_creatureScript.ValidDamage(m_tiles[index].color, m_tiles[index].type)){
             //     AniDamageToCreature(index);
@@ -193,8 +198,8 @@ public class Board : MonoBehaviour
             Tile temp = new Tile();
             temp.tile = m_tilesInit[i];
             temp.script = m_tilesInit[i].GetComponent<TileLogic>();
-            temp.color = Random.Range(0, m_numColor);
-            temp.type = Random.Range(0, m_numType);
+            temp.color = Random.Range(0, m_numColor);    // logically
+            temp.type = Random.Range(0, m_numType);    // logically
             temp.empty = false;
             m_tiles.Add(temp);
         }
@@ -239,7 +244,7 @@ public class Board : MonoBehaviour
     public bool IsValidSwap(){
         // called when two tiles are selected at one time
         // returns true if it is a valid swap (the two selected tiles are contiguous or something like that)
-        // and m_aTile, m_bTile will be set as the selected tiles
+        // set m_aTile, m_bTile as the selected tiles
         List<int> selected = new List<int>();
         for(int i = 0; i < k_col * k_row; i++){
             if(m_tiles[i].script.m_selected){
@@ -252,7 +257,7 @@ public class Board : MonoBehaviour
         (int i, int j) B = IndexToRC(selected[1]);
         // we may have other directions
         // List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)};
-        List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // four direction swap
+        List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // four direction swap is allowed here
         foreach((int i, int j) d in direction){
             if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
                 m_aTile = selected[0];
@@ -388,6 +393,8 @@ public class Board : MonoBehaviour
         if(!IsMatch){
             return false;
         }
+
+        m_rayBlocker.enabled = true;    // start removing
         return true;
     }
 
@@ -447,7 +454,7 @@ public class Board : MonoBehaviour
             }
         }
 
-        // change their start position (with correct figure) and target position
+        // change their color, type, start position, and target position
         for(int i = 0; i < m_numTiles; i++){
             if(m_tiles[i].drop){
                 int cnt = m_tiles[i].emptyTilesCnt;
@@ -506,8 +513,9 @@ public class Board : MonoBehaviour
             Shuffle();
             return;
         }
-        SetDropState();
-        AniTileDrop();
+        else{
+            m_isRemoving = true;
+        }
     }
 
     List<(int i, int j)> CheckMap(bool init = false){
@@ -578,8 +586,8 @@ public class Board : MonoBehaviour
     public void AniTileSwap(){
         // animation for swapping tile a and tile b
         // turn on the triggers
-        m_isSwapping = true;
-        m_rayBlocker.enabled = true;    // play animation; diabled click
+        m_isSwapping = true;    // will trigger UAniTileSwap()
+        m_rayBlocker.enabled = true;    // play animation; disabled mouse click
         // m_rayBlockerR.enabled = true;
         // two tiles start moving
         Vector3 aPos = m_tiles[m_aTile].tile.transform.position;
@@ -643,10 +651,26 @@ public class Board : MonoBehaviour
             else{
                 // the matched tiles are set to be empty now
                 // fill in the empty tiles
+                m_playerScript.IncreStepCnt();
+                m_isRemoving = true;    // trigger UAniRemove()
+                m_isReversing = false;
+            }
+        }
+    }
+
+    void UAniRemove(){
+        // check whether remove animation is done
+        if(m_isRemoving){
+            bool removeAniDone = true;
+            foreach(Tile t in m_tiles){
+                removeAniDone &= t.script.m_removeDone;
+            }
+            if(removeAniDone){
+                m_rayBlocker.enabled = false;
+                Debug.Log("Here we go!");
                 SetDropState();
                 AniTileDrop();
-                m_playerScript.IncreStepCnt();
-                m_isReversing = false;
+                m_isRemoving = false;
             }
         }
     }
