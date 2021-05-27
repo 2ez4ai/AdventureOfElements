@@ -48,38 +48,29 @@ public class Board : MonoBehaviour
     public int m_randomSeed = 0;
 
     // board settings
-    [SerializeField]
-    const int k_row = 8;
-    [SerializeField]
-    const int k_col = 8;
-    [SerializeField]
-    public int m_dirIndex = 1;
+    [SerializeField] const int k_row = 8;
+    [SerializeField] const int k_col = 8;
+    [SerializeField] public int m_dirIndex = 1;
     List<(int r, int c)> m_direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // to where
     float m_rDist;    // the distance between two row
     float m_cDist;
 
     // tiles settings
     int m_numTiles;
-    [SerializeField]
-    public int m_numColor;
-    [SerializeField]
-    public int m_numType;
+    [SerializeField] public int m_numColor;
+    [SerializeField] public int m_numType;
     GameObject[] m_tilesInit = new GameObject[k_row * k_col];
     List<Tile> m_tiles = new List<Tile>();
     int m_aTile = -1;    // selected tiles
     int m_bTile = -1;
 
     // others
-    [SerializeField]
-    Player m_playerScript;
-    [SerializeField]
-    Creature m_creatureScript;
+    [SerializeField] Player m_playerScript;
+    [SerializeField] Creature m_creatureScript;
 
     // animation related variables
-    [SerializeField]
-    Collider m_rayBlocker;
-    [SerializeField]
-    MeshRenderer m_rayBlockerR;
+    [SerializeField] Collider m_rayBlocker;
+    [SerializeField] MeshRenderer m_rayBlockerR;
     // for swap
     bool m_isSwapping = false;
     bool m_isReversing = false;    // to reverse a swap if there is no match
@@ -667,7 +658,6 @@ public class Board : MonoBehaviour
             }
             if(removeAniDone){
                 m_rayBlocker.enabled = false;
-                Debug.Log("Here we go!");
                 SetDropState();
                 AniTileDrop();
                 m_isRemoving = false;

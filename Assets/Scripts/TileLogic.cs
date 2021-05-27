@@ -17,16 +17,11 @@ public class AniMoveVariable{
 
 public class TileLogic : MonoBehaviour
 {
-    [SerializeField]
-    GameObject m_typer;
-    [SerializeField]
-    GameObject m_particle;
-    [SerializeField]
-    List<Material> m_colorMat = new List<Material>();
-    [SerializeField]
-    List<Material> m_typeMat = new List<Material>();
-    [SerializeField]
-    List<Material> m_effectMat = new List<Material>();    // effect
+    [SerializeField] GameObject m_typer;
+    [SerializeField] GameObject m_particle;
+    [SerializeField] List<Material> m_colorMat = new List<Material>();
+    [SerializeField] List<Material> m_typeMat = new List<Material>();
+    [SerializeField] List<Material> m_effectMat = new List<Material>();    // effect
 
     MeshRenderer m_colorRender;
     MeshRenderer m_typeRender;
@@ -195,16 +190,18 @@ public class TileLogic : MonoBehaviour
             float size = m_removeTimer / (0.5f * m_removeTime);
             transform.localScale = Vector3.one * size;
         }
-        // // flying particle; not desired so far... may can be used as an attack
-        // if(m_removeTimer > 0.0f && m_removeTimer < 0.4f * m_removeTime){
+        // flying particle; not desired so far... may can be used as an attack
+        // if(m_removeTimer > 0.0f && m_removeTimer < 0.6f * m_removeTime){
         //     m_particle.SetActive(true);
         //     m_particle.GetComponent<TrailRenderer>().material.SetColor("_EmissionColor", m_effectMat[m_typeIndex].GetColor("_EmissionColor") * 2.0f);
-        //     m_particle.transform.position = Vector3.Lerp(m_position, new Vector3(2.1f, -4.5f, -12), 1.0f - m_removeTimer / (0.2f * m_removeTime));
+        //     Vector3 targetPosition = m_position;
+        //     targetPosition.x = 2.0f;
+        //     targetPosition.y += 2.0f;
+        //     m_particle.transform.position = Vector3.Lerp(m_position, targetPosition, 1.0f - m_removeTimer / (0.6f * m_removeTime));
         // }
 
         // reset
         if(!m_removeDone && m_removeTimer < 0){
-            Debug.Log("Remove done!");
             transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
             m_particle.SetActive(false);
             m_colorRender.material = m_colorMat[m_colorIndex];

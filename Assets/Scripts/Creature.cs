@@ -6,17 +6,13 @@ using UnityEngine.UI;
 
 public class Creature : MonoBehaviour
 {
-    [SerializeField]
-    int m_HP = 100;
-    [SerializeField]
-    int m_injureType = 0;
-    [SerializeField]
-    int m_injureColor = -1;
+    [SerializeField] int m_HP = 100;
+    [SerializeField] int m_injureType = 0;
+    [SerializeField] int m_injureColor = -1;
     //[SerializeField]
     //Player m_player;
 
-    [SerializeField]
-    Text m_UIHP;
+    [SerializeField] Text m_UIHP;
 
     int damage = 0;
 

@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    Board m_boardScript;
+    [SerializeField] Board m_boardScript;
 
     Creature m_creatureScript;
     int m_numColor;
@@ -18,12 +17,9 @@ public class Player : MonoBehaviour
 
     // for battle
     int m_HP = 100;
-    [SerializeField]
-    Text m_UIHP;
-    [SerializeField]
-    public int m_injureType = 0;    // changed by Creature
-    [SerializeField]
-    public int m_injureColor = -1;
+    [SerializeField] Text m_UIHP;
+    [SerializeField] public int m_injureType = 0;    // changed by Creature
+    [SerializeField] public int m_injureColor = -1;
     public int m_injureFreq = 4;    // how often an attack will be launched
 
     List<List<int>> m_lastMoveTiles = new List<List<int>>();    // the color and type of the tiles removed
