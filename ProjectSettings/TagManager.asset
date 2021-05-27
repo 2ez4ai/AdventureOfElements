@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tiles
   - Type
+  - Tips
   layers:
   - Default
   - TransparentFX
