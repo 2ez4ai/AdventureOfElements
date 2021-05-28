@@ -6,27 +6,17 @@ using UnityEngine.UI;
 
 public class CreatureLogic : MonoBehaviour
 {
-    [SerializeField] int m_HP = 100;
-    int m_maxHP = 100;
-    [SerializeField] int m_injureType = 0;
-    [SerializeField] int m_injureColor = -1;
-    //[SerializeField]
-    //Player m_player;
+    public int m_HP = 100;
+    public int m_maxHP = 100;
+    public int m_injureType = 0;
 
     [SerializeField] Text m_UIHP;
+    [SerializeField] MouseOver m_mouseOverHP;
 
     int damage = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+    public void Init(){
+        SetHPUI();
     }
 
     public void TakeDamage(){
@@ -38,13 +28,25 @@ public class CreatureLogic : MonoBehaviour
         damage = 0;
     }
 
-    public bool ValidDamage(int c, int t){
-        if(c == m_injureColor || m_injureColor == -1){
-            if(t == m_injureType || m_injureType == -1){
-                damage += 1;
-                return true;
-        }
+    public bool UpdateStepDamage(int c, int t){
+        // update the damage the creature will take in this step
+        if(t == m_injureType || m_injureType == -1){
+            damage += 1;
+            return true;
         }
         return false;
+    }
+
+    void UpdateIconTooltip(MouseOver script, string name, string level, string description){
+        script.m_name = name;
+        script.m_level = level;
+        script.m_description = description;
+    }
+
+    void SetHPUI(){
+        string hpInfo = m_HP + " / " + m_maxHP;
+        m_UIHP.text = ": " + hpInfo;
+        string description = "The creature has " + hpInfo + " HP left. You will win the battle when it is 0.";
+        UpdateIconTooltip(m_mouseOverHP, "HP", "", description);
     }
 }

@@ -65,7 +65,7 @@ public class Board : MonoBehaviour
     int m_bTile = -1;
 
     // others
-    [SerializeField] Player m_playerScript;
+    [SerializeField] PlayerLogic m_playerScript;
     [SerializeField] CreatureLogic m_creatureScript;
 
     // animation related variables
@@ -155,10 +155,7 @@ public class Board : MonoBehaviour
         m_tiles[index].SetEmptyState(state);
         if(state){    // there is a remove
             m_rayBlocker.enabled = true;
-            m_creatureScript.ValidDamage(m_tiles[index].color, m_tiles[index].type);
-            // if(m_creatureScript.ValidDamage(m_tiles[index].color, m_tiles[index].type)){
-            //     AniDamageToCreature(index);
-            // }
+            m_creatureScript.UpdateStepDamage(m_tiles[index].color, m_tiles[index].type);
         }
     }
 

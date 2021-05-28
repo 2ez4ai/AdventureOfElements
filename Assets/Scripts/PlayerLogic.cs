@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class PlayerLogic : MonoBehaviour
 {
     [SerializeField] Board m_boardScript;
 
-    CreatureLogic m_creatureScript;
+    // CreatureLogic m_creatureScript;
     int m_numColor;
     int m_numType;
 
@@ -20,16 +20,13 @@ public class Player : MonoBehaviour
     int m_maxHP = 100;
     [SerializeField] Text m_UIHP;
     [SerializeField] MouseOver m_UIHPIcon;
-    [SerializeField] public int m_injureType = 0;    // changed by Creature
-    [SerializeField] public int m_injureMultiplier = 1;
+    public int m_injureType = 0;    // changed by Controller
+    public int m_injureMultiplier = 1;
+    public int m_injureFreq = 4;    // how often an attack will be launched
     [SerializeField] Text m_UIInjureMultiplier;
     [SerializeField] MouseOver m_UIInjureIcon;
-    public int m_injureColor = -1;
-    public int m_injureFreq = 4;    // how often an attack will be launched
     [SerializeField] Text m_UIFreq;
     [SerializeField] MouseOver m_UIFreqIcon;
-
-    List<List<int>> m_lastMoveTiles = new List<List<int>>();    // the color and type of the tiles removed
 
     // Start is called before the first frame update
     void Start()
@@ -89,25 +86,22 @@ public class Player : MonoBehaviour
 
     // UI
     void InitUI(){
-        SetInjureUI();
-        SetStepCntUI();
-        SetHPUI();
+        // SetInjureUI();
+        // SetStepCntUI();
+        // SetHPUI();
     }
 
-    void UpdateIconTooltip(MouseOver script, string name, string level, string description, int iconIndex = -1){
+    void UpdateIconTooltip(MouseOver script, string name, string level, string description){
         script.m_name = name;
         script.m_level = level;
         script.m_description = description;
-        if(iconIndex != -1){
-            script.ChangeIcon(iconIndex);
-        }
     }
 
     void SetInjureUI(){
         m_UIInjureMultiplier.text = "x " + m_injureMultiplier;
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
         string description = "The damage caused by the creature depends on the number of <i>" + name[m_injureType] + "</i> tiles.";
-        UpdateIconTooltip(m_UIInjureIcon, "Attack Type", "", description, m_injureType);
+        UpdateIconTooltip(m_UIInjureIcon, "Attack Type", "", description);
     }
 
     void SetStepCntUI(){
@@ -144,18 +138,13 @@ public class Player : MonoBehaviour
     }
 
     public int CntDamage(List<Tile> tiles){
+        // cnt damage over tiles
         int damage = 0;
         foreach(Tile t in tiles){
-            if(t.color == m_injureColor || m_injureColor == -1){
-                if(t.type == m_injureType || m_injureType == -1){
-                    damage += 1;
-                }
+            if(t.type == m_injureType || m_injureType == -1){
+                damage += 1;
             }
         }
-        return damage;
-    }
-
-    public void AddLastMove(int c, int t){
-        m_lastMoveTiles[c][t] += 1;
+        return damage * m_injureMultiplier;
     }
 }
