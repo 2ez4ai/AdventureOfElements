@@ -17,10 +17,17 @@ public class Player : MonoBehaviour
 
     // for battle
     int m_HP = 100;
+    int m_maxHP = 100;
     [SerializeField] Text m_UIHP;
+    [SerializeField] MouseOver m_UIHPIcon;
     [SerializeField] public int m_injureType = 0;    // changed by Creature
-    [SerializeField] public int m_injureColor = -1;
+    [SerializeField] public int m_injureMultiplier = 1;
+    [SerializeField] Text m_UIInjureMultiplier;
+    [SerializeField] MouseOver m_UIInjureIcon;
+    public int m_injureColor = -1;
     public int m_injureFreq = 4;    // how often an attack will be launched
+    [SerializeField] Text m_UIFreq;
+    [SerializeField] MouseOver m_UIFreqIcon;
 
     List<List<int>> m_lastMoveTiles = new List<List<int>>();    // the color and type of the tiles removed
 
@@ -29,6 +36,7 @@ public class Player : MonoBehaviour
     {
         m_numColor = m_boardScript.m_numColor;
         m_numType = m_boardScript.m_numType;
+        InitUI();
     }
 
     // Update is called once per frame
@@ -38,14 +46,14 @@ public class Player : MonoBehaviour
         UTakeDamage();
     }
 
-    void InitLastMove(){
-        for(int i = 0; i < m_numColor; i++){
-            for(int j = 0; j < m_numType; j++){
-                // for each pair of color and type
-                m_lastMoveTiles[i][j] = 0;
-            }
-        }
-    }
+    // void InitLastMove(){
+    //     for(int i = 0; i < m_numColor; i++){
+    //         for(int j = 0; j < m_numType; j++){
+    //             // for each pair of color and type
+    //             m_lastMoveTiles[i][j] = 0;
+    //         }
+    //     }
+    // }
 
     void ClickMouse(){
         if(Input.GetButtonDown("Fire1")){
@@ -85,12 +93,50 @@ public class Player : MonoBehaviour
     }
 
     // ------------------------------------------------------------------------
-    // battel things
+    // battle things
     // ------------------------------------------------------------------------
+
+    // UI
+    void InitUI(){
+        SetInjureUI();
+        SetStepCntUI();
+        SetHPUI();
+    }
+
+    void UpdateIconTooltip(MouseOver script, string name, string level, string description, int iconIndex = -1){
+        script.m_name = name;
+        script.m_level = level;
+        script.m_description = description;
+        if(iconIndex != -1){
+            script.ChangeIcon(iconIndex);
+        }
+    }
+
+    void SetInjureUI(){
+        m_UIInjureMultiplier.text = "x " + m_injureMultiplier;
+        List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
+        string description = "The damage caused by the creature depends on the number of <i>" + name[m_injureType] + "</i> tiles.";
+        UpdateIconTooltip(m_UIInjureIcon, "Attack Type", "", description, m_injureType);
+    }
+
+    void SetStepCntUI(){
+        int step = m_injureFreq - stepCnt > 0? m_injureFreq - stepCnt: m_injureFreq;
+        string stepInfo = step + "";
+        m_UIFreq.text = ": " + stepInfo;
+        string description = "The next attack will be lauched in " + stepInfo + " steps.";
+        UpdateIconTooltip(m_UIFreqIcon, "Attack Cooldown", "", description);
+    }
+
+    void SetHPUI(){
+        string hpInfo = m_HP + " / " + m_maxHP;
+        m_UIHP.text = ": " + hpInfo;
+        string description = "Your current HP is " + hpInfo + ". You will lose game when it is 0.";
+        UpdateIconTooltip(m_UIHPIcon, "HP", "", description);
+    }
 
     public void IncreStepCnt(){
         stepCnt += 1;
-        Debug.Log("Step: " + stepCnt);
+        SetStepCntUI();
     }
 
     public void UTakeDamage(){
@@ -99,7 +145,7 @@ public class Player : MonoBehaviour
             List<Tile> tiles = m_boardScript.TilesToPlayer();
             int damage = CntDamage(tiles);
             m_HP -= damage;
-            m_UIHP.text = "HP : " + m_HP;
+            SetHPUI();
             if(m_HP < 1){
                 Debug.Log("You Lose!");
             }
@@ -122,8 +168,8 @@ public class Player : MonoBehaviour
         m_lastMoveTiles[c][t] += 1;
     }
 
-    public void DealDamage(){
-        // called only when drop is done
-        InitLastMove();
-    }
+    // public void DealDamage(){
+    //     // called only when drop is done
+    //     InitLastMove();
+    // }
 }

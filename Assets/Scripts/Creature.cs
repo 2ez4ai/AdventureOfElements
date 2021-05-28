@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Creature : MonoBehaviour
 {
     [SerializeField] int m_HP = 100;
+    int m_maxHP = 100;
     [SerializeField] int m_injureType = 0;
     [SerializeField] int m_injureColor = -1;
     //[SerializeField]
@@ -30,7 +31,7 @@ public class Creature : MonoBehaviour
 
     public void TakeDamage(){
         m_HP -= damage;
-        m_UIHP.text = "HP : " + m_HP;
+        m_UIHP.text = ": " + m_HP + " / " + m_maxHP;
         if(m_HP < 1){
             Debug.Log("You win!");
         }

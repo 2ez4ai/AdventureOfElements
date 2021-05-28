@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,9 @@ using UnityEngine.UI;
 
 public class Tooltip : MonoBehaviour
 {
-    [SerializeField] Text m_text;
+    [SerializeField] Text m_name;
+    [SerializeField] Text m_level;
+    [SerializeField] Text m_description;
 
     // Start is called before the first frame update
     void Start()
@@ -13,9 +16,11 @@ public class Tooltip : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void UpdateInfo(){
+    public void UpdateInfo(string name, string level, string description){
+        m_name.text = name;
+        m_level.text = level;
+        m_description.text = description;
         gameObject.SetActive(true);
-        m_text.text = "Test";
     }
 
     public void CloseInfo(){
