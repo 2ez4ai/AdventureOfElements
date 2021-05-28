@@ -66,7 +66,7 @@ public class Board : MonoBehaviour
 
     // others
     [SerializeField] Player m_playerScript;
-    [SerializeField] Creature m_creatureScript;
+    [SerializeField] CreatureLogic m_creatureScript;
 
     // animation related variables
     [SerializeField] Collider m_rayBlocker;

@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] Board m_boardScript;
 
-    Creature m_creatureScript;
+    CreatureLogic m_creatureScript;
     int m_numColor;
     int m_numType;
 
@@ -45,15 +45,6 @@ public class Player : MonoBehaviour
         ClickMouse();
         UTakeDamage();
     }
-
-    // void InitLastMove(){
-    //     for(int i = 0; i < m_numColor; i++){
-    //         for(int j = 0; j < m_numType; j++){
-    //             // for each pair of color and type
-    //             m_lastMoveTiles[i][j] = 0;
-    //         }
-    //     }
-    // }
 
     void ClickMouse(){
         if(Input.GetButtonDown("Fire1")){
@@ -130,7 +121,7 @@ public class Player : MonoBehaviour
     void SetHPUI(){
         string hpInfo = m_HP + " / " + m_maxHP;
         m_UIHP.text = ": " + hpInfo;
-        string description = "Your current HP is " + hpInfo + ". You will lose game when it is 0.";
+        string description = "Your current HP is " + hpInfo + ". You will lose the game when it is 0.";
         UpdateIconTooltip(m_UIHPIcon, "HP", "", description);
     }
 
@@ -167,9 +158,4 @@ public class Player : MonoBehaviour
     public void AddLastMove(int c, int t){
         m_lastMoveTiles[c][t] += 1;
     }
-
-    // public void DealDamage(){
-    //     // called only when drop is done
-    //     InitLastMove();
-    // }
 }
