@@ -30,6 +30,7 @@ public class CreatureLogic : MonoBehaviour
 
     public bool UpdateStepDamage(int c, int t){
         // update the damage the creature will take in this step
+        damage += 1;
         if(t == m_injureType || m_injureType == -1){
             damage += 1;
             return true;

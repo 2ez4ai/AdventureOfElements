@@ -676,9 +676,8 @@ public class Board : MonoBehaviour
                 // drop done
                 m_isDropping = false;
                 m_rayBlocker.enabled = false;  // no blocker
-                // m_rayBlockerR.enabled = false;
-                RemoveMatchAfterDrop();
                 m_creatureScript.TakeDamage();
+                RemoveMatchAfterDrop();
             }
         }
     }
