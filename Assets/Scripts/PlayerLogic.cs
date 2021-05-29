@@ -44,7 +44,6 @@ public class PlayerLogic : MonoBehaviour
     void Update()
     {
         ClickMouse();
-        UTakeDamage();
     }
 
     void ClickMouse(){
@@ -130,7 +129,7 @@ public class PlayerLogic : MonoBehaviour
         SetStepCntUI();
     }
 
-    public void UTakeDamage(){
+    public void TakeDamage(){
         List<Tile> tiles = m_boardScript.TilesToPlayer();
         int damage = CntDamage(tiles);
         SetAttackUI(damage);

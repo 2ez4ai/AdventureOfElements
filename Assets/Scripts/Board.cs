@@ -499,6 +499,7 @@ public class Board : MonoBehaviour
         }
         if(finished){
             Shuffle();
+            m_playerScript.TakeDamage();
             return;
         }
         else{
@@ -663,7 +664,7 @@ public class Board : MonoBehaviour
     }
 
     void UAniTileDrop(){
-        // animation for dropping a to d
+        // animation for dropping s to d
         if(m_isDropping){
             bool hasDrop = false;
             for(int i = 0; i < m_numTiles; i++){

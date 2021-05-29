@@ -66,13 +66,13 @@ public class LevelController : MonoBehaviour
         m_player.m_injureFreq = attackFreq;
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
         m_creatureMouseOverAttack.ChangeIcon(attackTypeIcon);
-        m_creatureMouseOverAttack.m_name = "Attack Type";
+        m_creatureMouseOverAttack.m_name = name[attackType] + " Attack";
         m_creatureMouseOverAttack.m_description = "The damage caused by the creature depends on the number of <i>" + name[attackType] + "</i> tiles on the board.";
 
         // Injure Info: both UI and logic
         m_creature.m_injureType = injureType;
         m_creatureMouseOverInjure.ChangeIcon(injureTypeIcon);
-        m_creatureMouseOverInjure.m_name = "Injure Type";
+        m_creatureMouseOverInjure.m_name = name[injureType] + " Weakness";
         m_creatureMouseOverInjure.m_description = "The creature will take extra damage from the remove of <i>" + name[injureType] + "</i> tiles.";
 
         m_player.InitUI();
