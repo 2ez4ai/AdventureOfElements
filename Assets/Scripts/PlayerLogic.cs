@@ -15,18 +15,22 @@ public class PlayerLogic : MonoBehaviour
     int m_numSelected = 0;
     int stepCnt = 0;
 
+    // ------------------------------------------------------------------------
     // for battle
+    // ------------------------------------------------------------------------
+    // player
     int m_HP = 100;
     int m_maxHP = 100;
     [SerializeField] Text m_UIHP;
     [SerializeField] MouseOver m_UIHPIcon;
+    // creature damage & freq
     public int m_injureType = 0;    // changed by Controller
     public int m_injureMultiplier = 1;
     public int m_injureFreq = 4;    // how often an attack will be launched
-    [SerializeField] Text m_UIInjureMultiplier;
-    [SerializeField] MouseOver m_UIInjureIcon;
-    [SerializeField] Text m_UIFreq;
-    [SerializeField] MouseOver m_UIFreqIcon;
+    [SerializeField] Text m_textAttack;
+    [SerializeField] MouseOver m_mouseOverSwordIcon;
+    [SerializeField] Text m_textFreq;
+    [SerializeField] MouseOver m_mouseOverFreqIcon;
 
     // Start is called before the first frame update
     void Start()
@@ -85,10 +89,12 @@ public class PlayerLogic : MonoBehaviour
     // ------------------------------------------------------------------------
 
     // UI
-    void InitUI(){
-        // SetInjureUI();
-        // SetStepCntUI();
-        // SetHPUI();
+    public void InitUI(){
+        SetHPUI();
+        SetStepCntUI();
+        List<Tile> tiles = m_boardScript.TilesToPlayer();
+        int damage = CntDamage(tiles);
+        SetAttackUI(damage);
     }
 
     void UpdateIconTooltip(MouseOver script, string name, string level, string description){
@@ -97,19 +103,19 @@ public class PlayerLogic : MonoBehaviour
         script.m_description = description;
     }
 
-    void SetInjureUI(){
-        m_UIInjureMultiplier.text = "x " + m_injureMultiplier;
+    void SetAttackUI(int damage){
+        m_textAttack.text = "x " + m_injureMultiplier + " (" + damage + ")";
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
-        string description = "The damage caused by the creature depends on the number of <i>" + name[m_injureType] + "</i> tiles.";
-        UpdateIconTooltip(m_UIInjureIcon, "Attack Type", "", description);
+        string description = "Given the current number of <i>" + name[m_injureType] + "</i> tiles on the board, the next attack would cause " + damage + " damage.";
+        UpdateIconTooltip(m_mouseOverSwordIcon, "Attack Type", "", description);
     }
 
     void SetStepCntUI(){
         int step = m_injureFreq - stepCnt > 0? m_injureFreq - stepCnt: m_injureFreq;
         string stepInfo = step + "";
-        m_UIFreq.text = ": " + stepInfo;
+        m_textFreq.text = ": " + stepInfo;
         string description = "The next attack will be lauched in " + stepInfo + " steps.";
-        UpdateIconTooltip(m_UIFreqIcon, "Attack Cooldown", "", description);
+        UpdateIconTooltip(m_mouseOverFreqIcon, "Attack Cooldown", "", description);
     }
 
     void SetHPUI(){
@@ -125,11 +131,12 @@ public class PlayerLogic : MonoBehaviour
     }
 
     public void UTakeDamage(){
+        List<Tile> tiles = m_boardScript.TilesToPlayer();
+        int damage = CntDamage(tiles);
+        SetAttackUI(damage);
         if(stepCnt == m_injureFreq){
             stepCnt = 0;
-            List<Tile> tiles = m_boardScript.TilesToPlayer();
-            int damage = CntDamage(tiles);
-            m_HP -= damage;
+            m_HP = m_HP - damage < 0? 0: m_HP-damage;
             SetHPUI();
             if(m_HP < 1){
                 Debug.Log("You Lose!");

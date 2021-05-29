@@ -88,6 +88,15 @@ public class TileLogic : MonoBehaviour
         m_typeRender.material = m_typeMat[m_typeIndex];
     }
 
+    public void SetEffect(bool state){
+        if(state){
+            m_colorRender.material = m_effectMat[m_typeIndex];
+        }
+        else{
+            m_colorRender.material = m_colorMat[m_colorIndex];
+        }
+    }
+
     public void SetRemoveState(bool state){
         // if true, means it is removed
         // actually, no parameter is needed
@@ -125,12 +134,12 @@ public class TileLogic : MonoBehaviour
         if(m_selected && !m_selectActivation){
             // protrude at 1.25
             transform.position = new Vector3(1.25f, transform.position.y, transform.position.z);
-            m_colorRender.material = m_effectMat[m_typeIndex];
+            SetEffect(true);
             m_selectActivation = true;
         }
         if(!m_selected && m_selectActivation){
             transform.position = new Vector3(0.0f, transform.position.y, transform.position.z);
-            m_colorRender.material = m_colorMat[m_colorIndex];
+            SetEffect(false);
             m_selectActivation = false;
         }
         if(m_selected){

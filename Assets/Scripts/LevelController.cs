@@ -22,14 +22,14 @@ public class LevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //GenerateCreature();
+        GenerateCreature();
         LoadCreature();
     }
 
     // Update is called once per frame
     void Update()
     {
-        LoadCreature();
+        // LoadCreature();
     }
 
     void GenerateCreature(){
@@ -59,7 +59,6 @@ public class LevelController : MonoBehaviour
         // HP Info: logic only
         m_creature.m_HP = maxHP;
         m_creature.m_maxHP = maxHP;
-        m_creature.Init();
 
         // Attack Info: both UI and logic
         m_player.m_injureType = attackType;
@@ -71,8 +70,12 @@ public class LevelController : MonoBehaviour
         m_creatureMouseOverAttack.m_description = "The damage caused by the creature depends on the number of <i>" + name[attackType] + "</i> tiles on the board.";
 
         // Injure Info: both UI and logic
+        m_creature.m_injureType = injureType;
         m_creatureMouseOverInjure.ChangeIcon(injureTypeIcon);
         m_creatureMouseOverInjure.m_name = "Injure Type";
         m_creatureMouseOverInjure.m_description = "The creature will take extra damage from the remove of <i>" + name[injureType] + "</i> tiles.";
+
+        m_player.InitUI();
+        m_creature.InitUI();
     }
 }

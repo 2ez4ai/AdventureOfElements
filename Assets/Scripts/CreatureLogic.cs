@@ -10,18 +10,18 @@ public class CreatureLogic : MonoBehaviour
     public int m_maxHP = 100;
     public int m_injureType = 0;
 
-    [SerializeField] Text m_UIHP;
+    [SerializeField] Text m_textHP;
     [SerializeField] MouseOver m_mouseOverHP;
 
     int damage = 0;
 
-    public void Init(){
+    public void InitUI(){
         SetHPUI();
     }
 
     public void TakeDamage(){
-        m_HP -= damage;
-        m_UIHP.text = ": " + m_HP + " / " + m_maxHP;
+        m_HP = m_HP - damage < 0? 0: m_HP-damage;
+        m_textHP.text = ": " + m_HP + " / " + m_maxHP;
         if(m_HP < 1){
             Debug.Log("You win!");
         }
@@ -45,7 +45,7 @@ public class CreatureLogic : MonoBehaviour
 
     void SetHPUI(){
         string hpInfo = m_HP + " / " + m_maxHP;
-        m_UIHP.text = ": " + hpInfo;
+        m_textHP.text = ": " + hpInfo;
         string description = "The creature has " + hpInfo + " HP left. You will win the battle when it is 0.";
         UpdateIconTooltip(m_mouseOverHP, "HP", "", description);
     }
