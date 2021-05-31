@@ -31,12 +31,14 @@ public class PlayerLogic : MonoBehaviour
     [SerializeField] MouseOver m_mouseOverSwordIcon;
     [SerializeField] Text m_textFreq;
     [SerializeField] MouseOver m_mouseOverFreqIcon;
+    [SerializeField] MouseOver m_mouseOverAvatar;
 
     // Start is called before the first frame update
     void Start()
     {
         m_numColor = m_boardScript.m_numColor;
         m_numType = m_boardScript.m_numType;
+        UpdateIconTooltip(m_mouseOverAvatar, "You? Me? Whatever.", "Lv. 99", "Producer: Jingye Wang. Thanks for your play. Hope you enjoy this.");
         InitUI();
     }
 

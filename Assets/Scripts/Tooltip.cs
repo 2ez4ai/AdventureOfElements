@@ -10,6 +10,8 @@ public class Tooltip : MonoBehaviour
     [SerializeField] Text m_level;
     [SerializeField] Text m_description;
 
+    public bool m_disabled = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,13 +19,17 @@ public class Tooltip : MonoBehaviour
     }
 
     public void UpdateInfo(string name, string level, string description){
-        m_name.text = name;
-        m_level.text = level;
-        m_description.text = description;
-        gameObject.SetActive(true);
+        if(!m_disabled){
+            m_name.text = name;
+            m_level.text = level;
+            m_description.text = description;
+            gameObject.SetActive(true);
+        }
     }
 
     public void CloseInfo(){
-        gameObject.SetActive(false);
+        if(!m_disabled){
+            gameObject.SetActive(false);
+        }
     }
 }
