@@ -8,6 +8,7 @@ public class LevelController : MonoBehaviour
     // use to control levels, skills.
     // ------------------------------------------------------------------------
 
+    [SerializeField] Board m_board;
     [SerializeField] PlayerLogic m_player;
     [SerializeField] CreatureLogic m_creature;
     [SerializeField] List<Creature> m_creatureList = new List<Creature>();
@@ -15,6 +16,8 @@ public class LevelController : MonoBehaviour
     [SerializeField] MouseOver m_creatureMouseOverAvatar;
     [SerializeField] MouseOver m_creatureMouseOverAttack;
     [SerializeField] MouseOver m_creatureMouseOverInjure;
+
+    [SerializeField] DialogScript m_dialogScript;
 
     int m_level = 1;
     int m_creatureIndex = 0;
@@ -30,6 +33,7 @@ public class LevelController : MonoBehaviour
     void Update()
     {
         // LoadCreature();
+        BattleUpdate();
     }
 
     void GenerateCreature(){
@@ -77,5 +81,43 @@ public class LevelController : MonoBehaviour
 
         m_player.InitUI();
         m_creature.InitUI();
+    }
+
+    int HPChecker(){
+        // check the HP of the player and the creature to determine whether the current battle is done
+        // return :
+        //      0 : not finished yet
+        //      1 : the player win
+        //      2 : the player lose
+        int playerHP = m_player.m_HP;
+        int creatureHP = m_creature.m_HP;
+        if(playerHP == 0){
+            // Lose
+            m_dialogScript.TurnOn(false);
+            return 2;
+        }
+        if(creatureHP == 0){
+            m_dialogScript.TurnOn(true);
+            return 1;
+        }
+        return 0;
+    }
+
+    void BattleUpdate(){
+        int state = HPChecker();
+        switch (state){
+            case 0 :
+                break;
+            case 1 :
+                GenerateCreature();
+                LoadCreature();
+                Debug.Log("You win.");
+                break;
+            case 2:
+                GenerateCreature();
+                LoadCreature();
+                Debug.Log("You lose.");
+                break;
+        }
     }
 }

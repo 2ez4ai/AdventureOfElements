@@ -5,30 +5,15 @@ using UnityEngine.UI;
 
 public class DialogScript : MonoBehaviour
 {
-    [SerializeField] bool m_enable = false;
-    [SerializeField] Button m_btn;
-
     // disable other interaction
     [SerializeField] Collider m_rayBlocker;
     [SerializeField] Tooltip m_tooltip;
     [SerializeField] MouseOver m_mouseOverWeakness;
     [SerializeField] MouseOver m_mouseOverAttack;
 
-    int m_skillSelection = -1;
-
-    private void Start() {
-        // add listener
-        m_btn.onClick.AddListener(TurnOff);
-    }
-
-    private void Update() {
-        if(m_enable){
-            TurnOn();
-        }
-        else{
-            TurnOff();
-        }
-    }
+    // win or lose
+    [SerializeField] GameObject m_winBoard;
+    [SerializeField] GameObject m_loseBoard;
 
     void GenerateSkills(){
         // generate selections
@@ -37,16 +22,24 @@ public class DialogScript : MonoBehaviour
     void SelectSkill(int choice){
     }
 
-    public void TurnOn(){
-        gameObject.SetActive(true);
+    public void TurnOn(bool win){
         m_tooltip.m_disabled = true;
         m_rayBlocker.enabled = true;
         m_mouseOverWeakness.enabled = false;
         m_mouseOverAttack.enabled = false;
+        gameObject.SetActive(true);
+        if(win){
+            m_winBoard.SetActive(true);
+        }
+        else{
+            m_loseBoard.SetActive(false);
+        }
     }
 
     public void TurnOff(){
         gameObject.SetActive(false);
+        m_winBoard.SetActive(false);
+        m_loseBoard.SetActive(false);
         m_tooltip.m_disabled = false;
         m_rayBlocker.enabled = false;
         m_mouseOverWeakness.enabled = true;

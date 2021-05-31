@@ -19,7 +19,7 @@ public class PlayerLogic : MonoBehaviour
     // for battle
     // ------------------------------------------------------------------------
     // player
-    int m_HP = 100;
+    public int m_HP = 100;
     int m_maxHP = 100;
     [SerializeField] Text m_UIHP;
     [SerializeField] MouseOver m_UIHPIcon;
@@ -107,7 +107,7 @@ public class PlayerLogic : MonoBehaviour
     void SetAttackUI(int damage){
         m_textAttack.text = "x " + m_injureMultiplier + " (" + damage + ")";
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
-        string description = "Given the current number of <i>" + name[m_injureType] + "</i> tiles on the board, the next attack would cause " + damage + " damage.";
+        string description = "Given the current number of <i>" + name[m_injureType] + "</i> tiles on the board, the next attack would cause " + damage + " or so damage.";
         UpdateIconTooltip(m_mouseOverSwordIcon, "Attack Type", "", description);
     }
 

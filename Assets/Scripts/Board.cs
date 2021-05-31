@@ -82,8 +82,8 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        InitSeed();
         Initialization();
-        Debug.Log("Init done!");
     }
 
     // Update is called once per frame
@@ -163,13 +163,6 @@ public class Board : MonoBehaviour
     // initialization
     // ------------------------------------------------------------------------
 
-    void Initialization(){
-        InitSeed();
-        InitTiles();
-        InitCheck();    // make sure there is no matching at the begining
-        InitDraw();
-    }
-
     void InitSeed(){
         // init random seed
         if(m_randomSeed == 0){
@@ -179,7 +172,15 @@ public class Board : MonoBehaviour
         Random.InitState(m_randomSeed);
     }
 
+    public void Initialization(){
+        InitTiles();
+        InitCheck();    // make sure there is no matching at the begining
+        InitDraw();
+    }
+
     void InitTiles(){
+        m_tilesInit = new GameObject[k_row * k_col];
+        m_tiles = new List<Tile>();
         m_tilesInit = GameObject.FindGameObjectsWithTag("Tiles");
         m_numTiles = k_row * k_col;
         for(int i = 0; i < m_numTiles; i++){
