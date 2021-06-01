@@ -11,6 +11,7 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public string m_name;
     public string m_level;
+    public string m_effect;
     public string m_description;
 
     [SerializeField]
@@ -37,7 +38,7 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
-        m_tooltip.UpdateInfo(m_name, m_level, m_description);
+        m_tooltip.UpdateInfo(m_name, m_level, m_effect, m_description);
         if(m_showTiles != -1){
             ShowTiles(true);
         }

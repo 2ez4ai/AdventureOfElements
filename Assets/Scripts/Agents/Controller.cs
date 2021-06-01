@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelController : MonoBehaviour
+public class Controller : MonoBehaviour
 {
     // ------------------------------------------------------------------------
     // use to control levels, skills.
@@ -18,6 +18,8 @@ public class LevelController : MonoBehaviour
     [SerializeField] MouseOver m_creatureMouseOverInjure;
 
     [SerializeField] DialogScript m_dialogScript;
+    [SerializeField] List<Skill> m_skillList = new List<Skill>();
+    [SerializeField] SkillSelection m_skillSelection;
 
     int m_level = 1;
     int m_creatureIndex = 0;
@@ -37,7 +39,7 @@ public class LevelController : MonoBehaviour
 
     void GenerateCreature(){
         m_board.Initialization();
-        m_player.m_HP = 50;
+        m_player.m_HP = 150;
         m_creatureIndex = Random.Range(0, m_creatureList.Count);
     }
 
@@ -59,7 +61,7 @@ public class LevelController : MonoBehaviour
         m_creatureMouseOverAvatar.ChangeIcon(creatureAvatar);
         m_creatureMouseOverAvatar.m_name = creatureName;
         m_creatureMouseOverAvatar.m_level = "Lv. " + creatureLv;
-        m_creatureMouseOverAvatar.m_description = creatureDescription;
+        m_creatureMouseOverAvatar.m_effect = creatureDescription;
 
         // HP Info: logic only
         m_creature.m_HP = maxHP;
@@ -73,16 +75,26 @@ public class LevelController : MonoBehaviour
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
         m_creatureMouseOverAttack.ChangeIcon(attackTypeIcon);
         m_creatureMouseOverAttack.m_name = name[attackType] + " Attack";
-        m_creatureMouseOverAttack.m_description = "The damage caused by the creature depends on the number of <i>" + name[attackType] + "</i> tiles on the board.";
+        m_creatureMouseOverAttack.m_effect = "The damage caused by the creature depends on the number of <i>" + name[attackType] + "</i> tiles on the board.";
 
         // Injure Info: both UI and logic
         m_creature.m_injureType = injureType;
         m_creatureMouseOverInjure.ChangeIcon(injureTypeIcon);
         m_creatureMouseOverInjure.m_name = name[injureType] + " Weakness";
-        m_creatureMouseOverInjure.m_description = "The creature will take extra damage from the remove of <i>" + name[injureType] + "</i> tiles.";
+        m_creatureMouseOverInjure.m_effect = "The creature will take extra damage from the remove of <i>" + name[injureType] + "</i> tiles.";
 
         m_player.InitUI();
         m_creature.InitUI();
+    }
+
+    void GenerateLoadSkills(){
+        int n = m_skillList.Count;
+        for(int i = 0; i < 3; i++){
+            int skillIndex = Random.Range(0, n);
+            Debug.Log("Index:" + skillIndex);
+            m_skillSelection.UpdateSelection(i, m_skillList[i].m_sprite, m_skillList[i].m_name, "Lv. " + m_skillList[i].m_lv, m_skillList[i].m_effect, m_skillList[i].m_description);
+        }
+
     }
 
     int HPChecker(){
@@ -112,6 +124,7 @@ public class LevelController : MonoBehaviour
                 case 0 :
                     break;
                 case 1 :
+                    GenerateLoadSkills();
                     GenerateCreature();
                     LoadCreature();
                     Debug.Log("You win.");

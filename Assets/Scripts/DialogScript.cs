@@ -17,10 +17,6 @@ public class DialogScript : MonoBehaviour
     [SerializeField] GameObject m_winBoard;
     [SerializeField] GameObject m_loseBoard;
 
-    void GenerateSkills(){
-        // generate selections
-    }
-
     void SelectSkill(int choice){
     }
 

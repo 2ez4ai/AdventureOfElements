@@ -38,7 +38,7 @@ public class PlayerLogic : MonoBehaviour
     {
         m_numColor = m_boardScript.m_numColor;
         m_numType = m_boardScript.m_numType;
-        UpdateIconTooltip(m_mouseOverAvatar, "You? Me? Whatever.", "Lv. 99", "Thanks for your play. Hope you enjoy this." + "\n <i>Produced by Jingye Wang.</i>");
+        UpdateIconTooltip(m_mouseOverAvatar, "You? Me? Whatever.", "Lv. 99", "Thanks for your play. Hope you enjoy this.", "Produced by Jingye Wang.");
         InitUI();
     }
 
@@ -98,32 +98,33 @@ public class PlayerLogic : MonoBehaviour
         SetAttackUI(damage);
     }
 
-    void UpdateIconTooltip(MouseOver script, string name, string level, string description){
+    void UpdateIconTooltip(MouseOver script, string name, string level, string effect, string description = ""){
         script.m_name = name;
         script.m_level = level;
+        script.m_effect = effect;
         script.m_description = description;
     }
 
     void SetAttackUI(int damage){
         m_textAttack.text = "x " + m_injureMultiplier + " (" + damage + ")";
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
-        string description = "Given the current number of <i>" + name[m_injureType] + "</i> tiles on the board, the next attack would cause " + damage + " or so damage.";
-        UpdateIconTooltip(m_mouseOverSwordIcon, "Attack Type", "", description);
+        string effect = "Given the current number of <i>" + name[m_injureType] + "</i> tiles on the board, the next attack would cause " + damage + " or so damage.";
+        UpdateIconTooltip(m_mouseOverSwordIcon, "Attack Type", "", effect);
     }
 
     void SetStepCntUI(){
         int step = m_injureFreq - m_stepCnt > 0? m_injureFreq - m_stepCnt: m_injureFreq;
         string stepInfo = step + "";
         m_textFreq.text = ": " + stepInfo;
-        string description = "The next attack will be lauched in " + stepInfo + " steps.";
-        UpdateIconTooltip(m_mouseOverFreqIcon, "Attack Cooldown", "", description);
+        string effect = "The next attack will be lauched in " + stepInfo + " steps.";
+        UpdateIconTooltip(m_mouseOverFreqIcon, "Attack Cooldown", "", effect);
     }
 
     void SetHPUI(){
         string hpInfo = m_HP + " / " + m_maxHP;
         m_UIHP.text = ": " + hpInfo;
-        string description = "Your current HP is " + hpInfo + ". You will lose the game when it is 0.";
-        UpdateIconTooltip(m_UIHPIcon, "HP", "", description);
+        string effect = "Your current HP is " + hpInfo + ". You will lose the game when it is 0.";
+        UpdateIconTooltip(m_UIHPIcon, "HP", "", effect);
     }
 
     public void IncreStepCnt(){

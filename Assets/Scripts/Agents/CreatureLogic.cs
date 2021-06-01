@@ -38,16 +38,16 @@ public class CreatureLogic : MonoBehaviour
         return false;
     }
 
-    void UpdateIconTooltip(MouseOver script, string name, string level, string description){
+    void UpdateIconTooltip(MouseOver script, string name, string level, string effect){
         script.m_name = name;
         script.m_level = level;
-        script.m_description = description;
+        script.m_effect = effect;
     }
 
     void SetHPUI(){
         string hpInfo = m_HP + " / " + m_maxHP;
         m_textHP.text = ": " + hpInfo;
-        string description = "The creature has " + hpInfo + " HP left. You will win the battle when it is 0.";
-        UpdateIconTooltip(m_mouseOverHP, "HP", "", description);
+        string effect = "The creature has " + hpInfo + " HP left. You will win the battle when it is 0.";
+        UpdateIconTooltip(m_mouseOverHP, "HP", "", effect);
     }
 }
