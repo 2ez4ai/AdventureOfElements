@@ -7,6 +7,7 @@ TagManager:
   - Tiles
   - Type
   - Tips
+  - SkillSlot
   layers:
   - Default
   - TransparentFX

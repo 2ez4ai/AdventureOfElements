@@ -15,9 +15,9 @@ MonoBehaviour:
   m_sprite: {fileID: 21300000, guid: c0b786f5073229f43836f4b81579d88d, type: 3}
   m_ID: 0
   m_name: Baozi
-  m_lv: -1
+  m_lv: 0
   m_effect: Restore 20 health.
-  m_description: A traditional Chinese food, often shaped as buns with various fillings.
-  m_keyValue: 20
+  m_description: A traditional Chinese food shaped as buns with various fillings.
+  m_keyValue: 14000000
   m_disposable: 1
   m_belonging: 1

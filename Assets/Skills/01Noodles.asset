@@ -15,10 +15,10 @@ MonoBehaviour:
   m_sprite: {fileID: 21300000, guid: 67cb91f39de202c4eaf8de6a088ac258, type: 3}
   m_ID: 1
   m_name: Noodles
-  m_lv: -1
+  m_lv: 0
   m_effect: Restore 40 health.
   m_description: "Noodles made from wheat dough has became a prominent food in China
     since the Han dynasty (25\u2013220 CE)."
-  m_keyValue: 40
+  m_keyValue: 28000000
   m_disposable: 1
   m_belonging: 1

@@ -20,6 +20,8 @@ public class Controller : MonoBehaviour
     [SerializeField] DialogScript m_dialogScript;
     [SerializeField] List<Skill> m_skillList = new List<Skill>();
     [SerializeField] SkillSelection m_skillSelection;
+    [SerializeField] SkillSlots m_playerSkillSlots;
+    // [SerializeField] SkillSlots m_creatureSkillSlots;
 
     int m_level = 1;
     int m_creatureIndex = 0;
@@ -92,7 +94,7 @@ public class Controller : MonoBehaviour
         for(int i = 0; i < 3; i++){
             int skillIndex = Random.Range(0, n);
             string lv = "";
-            if(m_skillList[i].m_lv != -1){
+            if(m_skillList[i].m_lv != 0){
                 lv = "Lv. " + m_skillList[i].m_lv;
             }
             m_skillSelection.UpdateSelection(i, m_skillList[i].m_sprite, m_skillList[i].m_name, lv, m_skillList[i].m_effect, m_skillList[i].m_description);
@@ -143,13 +145,14 @@ public class Controller : MonoBehaviour
         switch(index){
             case 0:    // restore hp
             case 1:
-                int temp = m_player.m_HP + m_skillList[index].m_keyValue;
+                int temp = m_player.m_HP + m_skillList[index].m_keyValue[m_skillList[index].m_lv];
                 m_player.m_HP = temp > m_player.m_maxHP ? m_player.m_maxHP : temp;
                 m_player.InitUI();
                 break;
             case 2:    // increase maximum HP
-                m_player.m_maxHP += m_skillList[index].m_keyValue;
+                m_player.m_maxHP += m_skillList[index].m_keyValue[m_skillList[index].m_lv];
                 m_player.InitUI();
+                m_playerSkillSlots.FillSkillSlot(m_skillList[index]);
                 break;
         }
     }
