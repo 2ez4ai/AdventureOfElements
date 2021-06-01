@@ -39,7 +39,7 @@ public class Controller : MonoBehaviour
 
     void GenerateCreature(){
         m_board.Initialization();
-        m_player.m_HP = 150;
+        // m_player.m_HP = 150;
         m_creatureIndex = Random.Range(0, m_creatureList.Count);
     }
 
@@ -91,10 +91,13 @@ public class Controller : MonoBehaviour
         int n = m_skillList.Count;
         for(int i = 0; i < 3; i++){
             int skillIndex = Random.Range(0, n);
-            Debug.Log("Index:" + skillIndex);
-            m_skillSelection.UpdateSelection(i, m_skillList[i].m_sprite, m_skillList[i].m_name, "Lv. " + m_skillList[i].m_lv, m_skillList[i].m_effect, m_skillList[i].m_description);
+            string lv = "";
+            if(m_skillList[i].m_lv != -1){
+                lv = "Lv. " + m_skillList[i].m_lv;
+            }
+            m_skillSelection.UpdateSelection(i, m_skillList[i].m_sprite, m_skillList[i].m_name, lv, m_skillList[i].m_effect, m_skillList[i].m_description);
         }
-
+        m_skillSelection.m_activate = true;
     }
 
     int HPChecker(){
