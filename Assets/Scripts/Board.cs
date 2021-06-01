@@ -78,17 +78,19 @@ public class Board : MonoBehaviour
     bool m_isRemoving = false;
     // for drop
     bool m_isDropping = false;
+    public bool m_stepDone = true;    // whether a swap is processed
 
     // Start is called before the first frame update
     void Start()
     {
         InitSeed();
-        Initialization();
+        //Initialization();
     }
 
     // Update is called once per frame
     void Update()
     {
+        UDisableInteraction();
         UAniTileSwap();
         UAniRemove();
         UAniTileDrop();
@@ -154,8 +156,18 @@ public class Board : MonoBehaviour
         m_tiles[index].empty = state;
         m_tiles[index].SetEmptyState(state);
         if(state){    // there is a remove
-            m_rayBlocker.enabled = true;
             m_creatureScript.UpdateStepDamage(m_tiles[index].color, m_tiles[index].type);
+        }
+    }
+
+    void UDisableInteraction(){
+        if(m_stepDone){
+            m_rayBlocker.enabled = false;
+            // m_rayBlockerR.enabled = false;
+        }
+        else{
+            m_rayBlocker.enabled = true;
+            // m_rayBlockerR.enabled = true;
         }
     }
 
@@ -383,7 +395,6 @@ public class Board : MonoBehaviour
             return false;
         }
 
-        m_rayBlocker.enabled = true;    // start removing
         return true;
     }
 
@@ -484,8 +495,6 @@ public class Board : MonoBehaviour
             }
         }
 
-        m_rayBlocker.enabled = true;
-        // m_rayBlockerR.enabled = true;
         m_isDropping = true;
     }
 
@@ -501,6 +510,7 @@ public class Board : MonoBehaviour
         if(finished){
             Shuffle();
             m_playerScript.TakeDamage();
+            m_stepDone = true;
             return;
         }
         else{
@@ -576,9 +586,8 @@ public class Board : MonoBehaviour
     public void AniTileSwap(){
         // animation for swapping tile a and tile b
         // turn on the triggers
+        m_stepDone = false;
         m_isSwapping = true;    // will trigger UAniTileSwap()
-        m_rayBlocker.enabled = true;    // play animation; disabled mouse click
-        // m_rayBlockerR.enabled = true;
         // two tiles start moving
         Vector3 aPos = m_tiles[m_aTile].tile.transform.position;
         Vector3 bPos = m_tiles[m_bTile].tile.transform.position;
@@ -605,7 +614,7 @@ public class Board : MonoBehaviour
     }
 
     void UCheckMap(){
-        if(Input.GetButtonDown("Jump") && !m_rayBlocker.enabled){
+        if(Input.GetButtonDown("Jump") && m_stepDone){
             List<(int i, int j)> solutions = CheckMap(true);
             (int i, int j) sol = solutions[Random.Range(0, solutions.Count)];
             m_tiles[sol.i].script.SetSwing(true);
@@ -628,8 +637,6 @@ public class Board : MonoBehaviour
             m_isSwapping = false;
             TilesSwap();    // when the animation is done, change logically
             m_isReversing = !m_isReversing;    // check whether the swap needs to be reversed, the default value is false
-            m_rayBlocker.enabled = false;
-            // m_rayBlockerR.enabled = false;
         }
 
         if(m_isReversing){
@@ -637,6 +644,7 @@ public class Board : MonoBehaviour
             if(!RemoveMatch(m_aTile, m_bTile)){
                 // no valid remove
                 AniTileSwap();
+                m_stepDone = true;
             }
             else{
                 // the matched tiles are set to be empty now
@@ -656,7 +664,6 @@ public class Board : MonoBehaviour
                 removeAniDone &= t.script.m_removeDone;
             }
             if(removeAniDone){
-                m_rayBlocker.enabled = false;
                 SetDropState();
                 AniTileDrop();
                 m_isRemoving = false;
@@ -676,7 +683,6 @@ public class Board : MonoBehaviour
             if(!hasDrop){
                 // drop done
                 m_isDropping = false;
-                m_rayBlocker.enabled = false;  // no blocker
                 m_creatureScript.TakeDamage();
                 RemoveMatchAfterDrop();
             }

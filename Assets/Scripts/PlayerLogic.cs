@@ -13,7 +13,6 @@ public class PlayerLogic : MonoBehaviour
 
     // for selection
     int m_numSelected = 0;
-    int stepCnt = 0;
 
     // ------------------------------------------------------------------------
     // for battle
@@ -26,6 +25,7 @@ public class PlayerLogic : MonoBehaviour
     // creature damage & freq
     public int m_injureType = 0;    // changed by Controller
     public int m_injureMultiplier = 1;
+    public int m_stepCnt = 0;
     public int m_injureFreq = 4;    // how often an attack will be launched
     [SerializeField] Text m_textAttack;
     [SerializeField] MouseOver m_mouseOverSwordIcon;
@@ -38,7 +38,7 @@ public class PlayerLogic : MonoBehaviour
     {
         m_numColor = m_boardScript.m_numColor;
         m_numType = m_boardScript.m_numType;
-        UpdateIconTooltip(m_mouseOverAvatar, "You? Me? Whatever.", "Lv. 99", "Producer: Jingye Wang. Thanks for your play. Hope you enjoy this.");
+        UpdateIconTooltip(m_mouseOverAvatar, "You? Me? Whatever.", "Lv. 99", "Thanks for your play. Hope you enjoy this." + "\n <i>Produced by Jingye Wang.</i>");
         InitUI();
     }
 
@@ -112,7 +112,7 @@ public class PlayerLogic : MonoBehaviour
     }
 
     void SetStepCntUI(){
-        int step = m_injureFreq - stepCnt > 0? m_injureFreq - stepCnt: m_injureFreq;
+        int step = m_injureFreq - m_stepCnt > 0? m_injureFreq - m_stepCnt: m_injureFreq;
         string stepInfo = step + "";
         m_textFreq.text = ": " + stepInfo;
         string description = "The next attack will be lauched in " + stepInfo + " steps.";
@@ -127,7 +127,7 @@ public class PlayerLogic : MonoBehaviour
     }
 
     public void IncreStepCnt(){
-        stepCnt += 1;
+        m_stepCnt += 1;
         SetStepCntUI();
     }
 
@@ -135,8 +135,8 @@ public class PlayerLogic : MonoBehaviour
         List<Tile> tiles = m_boardScript.TilesToPlayer();
         int damage = CntDamage(tiles);
         SetAttackUI(damage);
-        if(stepCnt == m_injureFreq){
-            stepCnt = 0;
+        if(m_stepCnt == m_injureFreq){
+            m_stepCnt = 0;
             m_HP = m_HP - damage < 0? 0: m_HP-damage;
             SetHPUI();
             if(m_HP < 1){

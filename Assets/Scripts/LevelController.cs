@@ -32,11 +32,12 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // LoadCreature();
         BattleUpdate();
     }
 
     void GenerateCreature(){
+        m_board.Initialization();
+        m_player.m_HP = 50;
         m_creatureIndex = Random.Range(0, m_creatureList.Count);
     }
 
@@ -68,6 +69,7 @@ public class LevelController : MonoBehaviour
         m_player.m_injureType = attackType;
         m_player.m_injureMultiplier = attackMultiplier;
         m_player.m_injureFreq = attackFreq;
+        m_player.m_stepCnt = 0;
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
         m_creatureMouseOverAttack.ChangeIcon(attackTypeIcon);
         m_creatureMouseOverAttack.m_name = name[attackType] + " Attack";
@@ -104,20 +106,22 @@ public class LevelController : MonoBehaviour
     }
 
     void BattleUpdate(){
-        int state = HPChecker();
-        switch (state){
-            case 0 :
-                break;
-            case 1 :
-                GenerateCreature();
-                LoadCreature();
-                Debug.Log("You win.");
-                break;
-            case 2:
-                GenerateCreature();
-                LoadCreature();
-                Debug.Log("You lose.");
-                break;
+        if(m_board.m_stepDone){
+            int state = HPChecker();
+            switch (state){
+                case 0 :
+                    break;
+                case 1 :
+                    GenerateCreature();
+                    LoadCreature();
+                    Debug.Log("You win.");
+                    break;
+                case 2:
+                    GenerateCreature();
+                    LoadCreature();
+                    Debug.Log("You lose.");
+                    break;
+            }
         }
     }
 }

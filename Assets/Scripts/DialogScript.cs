@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class DialogScript : MonoBehaviour
 {
+    public bool m_stateOn;
+
     // disable other interaction
     [SerializeField] Collider m_rayBlocker;
     [SerializeField] Tooltip m_tooltip;
@@ -32,7 +34,7 @@ public class DialogScript : MonoBehaviour
             m_winBoard.SetActive(true);
         }
         else{
-            m_loseBoard.SetActive(false);
+            m_loseBoard.SetActive(true);
         }
     }
 
