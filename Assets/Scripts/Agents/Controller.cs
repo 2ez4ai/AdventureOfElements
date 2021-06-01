@@ -97,7 +97,7 @@ public class Controller : MonoBehaviour
             }
             m_skillSelection.UpdateSelection(i, m_skillList[i].m_sprite, m_skillList[i].m_name, lv, m_skillList[i].m_effect, m_skillList[i].m_description);
         }
-        m_skillSelection.m_activate = true;
+        m_skillSelection.m_activated = true;
     }
 
     int HPChecker(){
@@ -121,7 +121,7 @@ public class Controller : MonoBehaviour
     }
 
     void BattleUpdate(){
-        if(m_board.m_stepDone){
+        if(m_board.m_stepDone && !m_skillSelection.m_activated){
             int state = HPChecker();
             switch (state){
                 case 0 :
@@ -133,11 +133,24 @@ public class Controller : MonoBehaviour
                     Debug.Log("You win.");
                     break;
                 case 2:
-                    GenerateCreature();
-                    LoadCreature();
                     Debug.Log("You lose.");
                     break;
             }
+        }
+    }
+
+    public void SkillUpdate(int index){
+        switch(index){
+            case 0:    // restore hp
+            case 1:
+                int temp = m_player.m_HP + m_skillList[index].m_keyValue;
+                m_player.m_HP = temp > m_player.m_maxHP ? m_player.m_maxHP : temp;
+                m_player.InitUI();
+                break;
+            case 2:    // increase maximum HP
+                m_player.m_maxHP += m_skillList[index].m_keyValue;
+                m_player.InitUI();
+                break;
         }
     }
 }

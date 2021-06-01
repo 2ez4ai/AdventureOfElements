@@ -19,7 +19,7 @@ public class PlayerLogic : MonoBehaviour
     // ------------------------------------------------------------------------
     // player
     public int m_HP = 100;
-    int m_maxHP = 100;
+    public int m_maxHP = 100;
     [SerializeField] Text m_UIHP;
     [SerializeField] MouseOver m_UIHPIcon;
     // creature damage & freq

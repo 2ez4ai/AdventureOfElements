@@ -16,7 +16,7 @@ MonoBehaviour:
   m_name: Creature1
   m_lv: 1
   m_description: This is creature 1.
-  m_maxHP: 75
+  m_maxHP: 25
   m_attackType: 3
   m_attackTypeIcon: {fileID: 21300000, guid: 58f556d6aa4ba0c458a304509fad3980, type: 3}
   m_attackMultiplier: 2

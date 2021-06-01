@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
   m_Name: 02Blessing
   m_EditorClassIdentifier: 
-  m_avatar: {fileID: 21300000, guid: 503c1d91db3e72f4d8a02dcbcfa0aeca, type: 3}
+  m_sprite: {fileID: 21300000, guid: 503c1d91db3e72f4d8a02dcbcfa0aeca, type: 3}
   m_ID: 2
   m_name: Noodles
   m_lv: 1
-  m_effect: Add 15 maximum HP.
+  m_effect: Increase maximum HP by 15.
   m_description: A special circlet with blessing from ancient immortals.
   m_keyValue: 15
   m_disposable: 0
