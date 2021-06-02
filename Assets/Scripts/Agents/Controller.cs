@@ -96,10 +96,29 @@ public class Controller : MonoBehaviour
             int skillIndex = Random.Range(0, n);
             Skill skill = m_skillList[skillIndex];
             string lv = "";
+            string effect = skill.m_effectPre;
             if(skill.m_lv != 0){
                 lv = "Lv. " + skill.m_lv;
+                for(int l = 0; l < skill.m_keyValue.Count; l ++){
+                    string temp = " ";
+                    if(l != 0){
+                        temp = "/";
+                    }
+                    if(l + 1 == skill.m_lv){
+                        temp += "<b><i>" + skill.m_keyValue[l] + "</i></b>";
+                    }
+                    else{
+                        temp += "<i>" + skill.m_keyValue[l] + "</i>";
+                    }
+                    if(l == skill.m_keyValue.Count - 1){
+                        temp += " ";
+                    }
+                    effect += temp;
+                }
+                effect += skill.m_effectPost;
             }
-            m_skillSelection.SelectionItems(i, skill.m_sprite, skill.m_ID, skill.m_name, lv, skill.m_effect, skill.m_description);
+
+            m_skillSelection.SelectionItems(i, skill.m_sprite, skill.m_ID, skill.m_name, lv, effect, skill.m_description);
         }
     }
 

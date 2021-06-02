@@ -1032,10 +1032,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e7124b1b1371341b2e9446964bed50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_dialog: {fileID: 711857163}
-  m_btnType: 1
-  m_btn: {fileID: 0}
-  m_pressed: 0
 --- !u!114 &308502287
 MonoBehaviour:
   m_ObjectHideFlags: 0

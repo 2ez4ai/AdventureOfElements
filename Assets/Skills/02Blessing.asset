@@ -16,7 +16,8 @@ MonoBehaviour:
   m_ID: 2
   m_name: Blessing Ornament
   m_lv: 1
-  m_effect: Increase maximum HP by 15.
+  m_effectPre: Increase maximum HP by
+  m_effectPost: .
   m_description: A special ornament with blessing from ancient immortals.
   m_keyValue: 0f0000001e0000002d000000
   m_disposable: 0
