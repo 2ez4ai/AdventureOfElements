@@ -16,12 +16,17 @@ public class Controller : MonoBehaviour
     [SerializeField] MouseOver m_creatureMouseOverAvatar;
     [SerializeField] MouseOver m_creatureMouseOverAttack;
     [SerializeField] MouseOver m_creatureMouseOverInjure;
+    // [SerializeField] SkillSlots m_creatureSkillSlots;
 
     [SerializeField] DialogScript m_dialogScript;
+    // win
     [SerializeField] List<Skill> m_skillList = new List<Skill>();
+    List<int> m_playerObtainedSkillID = new List<int>();
     [SerializeField] SkillSelection m_skillSelection;
     [SerializeField] SkillSlots m_playerSkillSlots;
-    // [SerializeField] SkillSlots m_creatureSkillSlots;
+    // lose
+    [SerializeField] LoseButton m_loseBtn;
+
 
     int m_level = 1;
     int m_creatureIndex = 0;
@@ -143,7 +148,7 @@ public class Controller : MonoBehaviour
     }
 
     void BattleUpdate(){
-        if(m_board.m_stepDone && !m_skillSelection.m_activated){
+        if(m_board.m_stepDone && !m_skillSelection.m_activated && !m_loseBtn.m_activated){
             int state = HPChecker();
             switch (state){
                 case 0 :
@@ -155,6 +160,10 @@ public class Controller : MonoBehaviour
                     Debug.Log("You win.");
                     break;
                 case 2:
+                    // LoadCreature();
+                    m_loseBtn.m_activated = true;
+                    m_player.m_HP = 20;
+                    m_player.InitUI();
                     Debug.Log("You lose.");
                     break;
             }
@@ -173,6 +182,7 @@ public class Controller : MonoBehaviour
                 m_player.m_maxHP += m_skillList[id].m_keyValue[m_skillList[id].m_lv];
                 m_player.InitUI();
                 m_playerSkillSlots.FillSkillSlot(m_skillList[id]);
+                m_playerObtainedSkillID.Add(id);
                 break;
         }
     }
