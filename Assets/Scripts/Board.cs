@@ -84,6 +84,10 @@ public class Board : MonoBehaviour
     // for special
     [SerializeField] public int m_specialSkill = 0;
     int m_lastSpecial = -1;
+    // for diagonal swap
+    [SerializeField] public int m_diagonalSwapLV = 0;
+    List<int> m_diagonalChance = new List<int>{0, 10, 20, 30};
+    bool m_lastSwapIsDiagonal = false;
 
     // Start is called before the first frame update
     void Start()
@@ -279,13 +283,18 @@ public class Board : MonoBehaviour
 
         (int i, int j) A = IndexToRC(selected[0]);
         (int i, int j) B = IndexToRC(selected[1]);
-        // we may have other directions
-        // List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)};
+
         List<(int i, int j)> direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // four direction swap is allowed here
+        if(m_diagonalSwapLV != 0){
+            direction = new List<(int i, int j)>{(1, 0), (-1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)};
+        }
         foreach((int i, int j) d in direction){
             if((A.i + d.i == B.i) && (A.j + d.j == B.j)){
                 m_aTile = selected[0];
                 m_bTile = selected[1];
+                if(d.i + d.j == 0 || d.i + d.j == -2 || d.i + d.j == 2){
+                    m_lastSwapIsDiagonal = true;
+                }
                 return true;
             }
         }
@@ -745,12 +754,22 @@ public class Board : MonoBehaviour
             if(!RemoveMatch(m_aTile, m_bTile)){
                 // no valid remove
                 AniTileSwap();
+                m_lastSwapIsDiagonal = false;
                 m_stepDone = true;
             }
             else{
                 // the matched tiles are set to be empty now
                 // fill in the empty tiles
-                m_playerScript.IncreStepCnt();
+                if(m_diagonalSwapLV != 0 && m_lastSwapIsDiagonal){
+                    m_lastSwapIsDiagonal = false;
+                    int dice = Random.Range(0, 100);
+                    if(dice > m_diagonalChance[m_diagonalSwapLV]){
+                        m_playerScript.IncreStepCnt();
+                    }
+                }
+                else{
+                    m_playerScript.IncreStepCnt();
+                }
                 m_isRemoving = true;    // trigger UAniRemove()
                 m_isReversing = false;
             }

@@ -152,12 +152,16 @@ PrefabInstance:
       objectReference: {fileID: 963194229}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_specialSkill
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_creatureScript
       value: 
       objectReference: {fileID: 963194232}
+    - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
+      propertyPath: m_diagonalSwapLV
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 59364265133774249, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_isSpecial
       value: 0
@@ -2697,6 +2701,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4399aaccf8d4aa4488c6e302dff13c07, type: 2}
   - {fileID: 11400000, guid: 6085ac3828716fc4894bac28c0527ba7, type: 2}
   - {fileID: 11400000, guid: ae54b72bc686d754f814d2414e54eb97, type: 2}
+  - {fileID: 11400000, guid: 8d61ed94c81bebd448b3b3052cf86685, type: 2}
   m_skillSelection: {fileID: 653075534}
   m_playerSkillSlots: {fileID: 1411897132}
 --- !u!224 &920920760 stripped
