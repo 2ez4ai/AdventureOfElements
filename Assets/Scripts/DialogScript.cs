@@ -17,9 +17,6 @@ public class DialogScript : MonoBehaviour
     [SerializeField] GameObject m_winBoard;
     [SerializeField] GameObject m_loseBoard;
 
-    void SelectSkill(int choice){
-    }
-
     public void TurnOn(bool win){
         m_tooltip.m_disabled = true;
         m_rayBlocker.enabled = true;

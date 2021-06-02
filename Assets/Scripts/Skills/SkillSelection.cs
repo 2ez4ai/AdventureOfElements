@@ -14,19 +14,21 @@ public class SkillSelection : MonoBehaviour
     [SerializeField] Tooltip m_tooltip;
     [SerializeField] Controller m_controller;
 
+    List<int> m_toggleID = new List<int>();
     List<string> m_toggleName = new List<string>();
     List<string> m_toggleLV = new List<string>();
     List<string> m_toggleEffect = new List<string>();
     List<string> m_toggleDescription = new List<string>();
 
     public bool m_activated = false;
-    public int m_selected = -1;
+    int m_selected = -1;
 
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         m_toggles = GetComponentsInChildren<Toggle>();
         foreach(Toggle t in m_toggles){
+            m_toggleID.Add(0);
             m_toggleName.Add("");
             m_toggleLV.Add("");
             m_toggleEffect.Add("");
@@ -62,21 +64,28 @@ public class SkillSelection : MonoBehaviour
         foreach(Toggle t in m_toggles){
             t.isOn = false;
         }
-        m_controller.SkillUpdate(m_selected);
+        m_controller.SkillUpdate(m_toggleID[m_selected]);
         m_selected = -1;
         m_dialog.TurnOff();
         m_activated = false;
     }
 
-    public void UpdateSelection(int index, Sprite icon, string name, string lv, string effect, string description){
+    public void SelectionItems(int index, Sprite icon, int id, string name, string lv, string effect, string description){
+        // update the skills provided for the player
         if(index >= m_toggles.Length){
             Debug.Log("Error!");
             return;
         }
         m_toggleSprites[index].sprite = icon;
+        m_toggleID[index] = id;
+
         m_toggleName[index] = name;
+
         m_toggleLV[index] = lv;
+
         m_toggleEffect[index] = effect;
+
         m_toggleDescription[index] = description;
+
     }
 }

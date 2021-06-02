@@ -509,7 +509,9 @@ public class Board : MonoBehaviour
         }
         if(finished){
             Shuffle();
-            m_playerScript.TakeDamage();
+            if(m_creatureScript.m_HP > 0){
+                m_playerScript.TakeDamage();
+            }
             m_stepDone = true;
             return;
         }

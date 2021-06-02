@@ -91,15 +91,16 @@ public class Controller : MonoBehaviour
 
     void GenerateLoadSkills(){
         int n = m_skillList.Count;
+        m_skillSelection.m_activated = true;
         for(int i = 0; i < 3; i++){
             int skillIndex = Random.Range(0, n);
+            Skill skill = m_skillList[skillIndex];
             string lv = "";
-            if(m_skillList[i].m_lv != 0){
-                lv = "Lv. " + m_skillList[i].m_lv;
+            if(skill.m_lv != 0){
+                lv = "Lv. " + skill.m_lv;
             }
-            m_skillSelection.UpdateSelection(i, m_skillList[i].m_sprite, m_skillList[i].m_name, lv, m_skillList[i].m_effect, m_skillList[i].m_description);
+            m_skillSelection.SelectionItems(i, skill.m_sprite, skill.m_ID, skill.m_name, lv, skill.m_effect, skill.m_description);
         }
-        m_skillSelection.m_activated = true;
     }
 
     int HPChecker(){
@@ -141,18 +142,18 @@ public class Controller : MonoBehaviour
         }
     }
 
-    public void SkillUpdate(int index){
-        switch(index){
+    public void SkillUpdate(int id){
+        switch(id){
             case 0:    // restore hp
             case 1:
-                int temp = m_player.m_HP + m_skillList[index].m_keyValue[m_skillList[index].m_lv];
+                int temp = m_player.m_HP + m_skillList[id].m_keyValue[m_skillList[id].m_lv];
                 m_player.m_HP = temp > m_player.m_maxHP ? m_player.m_maxHP : temp;
                 m_player.InitUI();
                 break;
             case 2:    // increase maximum HP
-                m_player.m_maxHP += m_skillList[index].m_keyValue[m_skillList[index].m_lv];
+                m_player.m_maxHP += m_skillList[id].m_keyValue[m_skillList[id].m_lv];
                 m_player.InitUI();
-                m_playerSkillSlots.FillSkillSlot(m_skillList[index]);
+                m_playerSkillSlots.FillSkillSlot(m_skillList[id]);
                 break;
         }
     }
