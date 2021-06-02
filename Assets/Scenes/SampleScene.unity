@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 963194229}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_specialSkill
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_creatureScript

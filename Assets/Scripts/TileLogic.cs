@@ -203,6 +203,8 @@ public class TileLogic : MonoBehaviour
 
     void USpecial(){
         if(m_isSpecial){
+            m_colorRender.enabled = true;
+            m_typeRender.enabled = true;
             m_colorRender.material = m_colorMat[3];
             //transform.Rotate(new Vector3(m_specialRotSpeed, 0, 0));
         }

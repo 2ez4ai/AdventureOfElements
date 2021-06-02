@@ -163,19 +163,25 @@ public class Board : MonoBehaviour
         }
     }
 
-    void SetTileEmpty(int index, bool state){
+    void SetTileEmpty(int index, bool state, bool nonSpecial=true){
+        if(index == -1){
+            return;
+        }
         if(m_tiles[index].empty && state){
             return;    // already be removed
         }
-        if(index == m_lastSpecial){
+        if(index == m_lastSpecial && state){
+            // instead set it empty to be removed, we set it as special
             m_tiles[m_lastSpecial].script.SetSpecial(true);
             m_lastSpecial = -1;
             return;
         }
         m_tiles[index].empty = state;
         m_tiles[index].SetEmptyState(state);
-        if(state){    // there is a remove
-            CheckSpecial(index);
+        if(state && nonSpecial){    // there is a remove
+            if(m_specialSkill != 0){
+                CheckSpecial(index);
+            }
             m_creatureScript.UpdateStepDamage(m_tiles[index].color, m_tiles[index].type);
         }
     }
@@ -394,9 +400,13 @@ public class Board : MonoBehaviour
 
         // col-wise
         temp = CheckColMatch(index, ur);
+        // special tile generation
         if(m_specialSkill != 0 && temp.Count > 2 && !check){
-            List<int> tempColList = temp;
+            List<int> tempColList = new List<int>();
             tempColList.Add(index);
+            foreach(int t in temp){
+                tempColList.Add(t);
+            }
             MarkSpecialTile(tempColList);
         }
         foreach (int t in temp){
@@ -419,18 +429,28 @@ public class Board : MonoBehaviour
         if(AMatch.Count > 0){
             IsMatch = true;
             foreach(int t in AMatch){
+                if(m_specialSkill != 0 && t == m_lastSpecial){
+                    continue;    // skip the special one
+                }
                 SetTileEmpty(t, true);
             }
         }
         if(BMatch.Count > 0){
             IsMatch = true;
             foreach(int t in BMatch){
+                if(m_specialSkill != 0 && t == m_lastSpecial){
+                    continue;    // skip the special one
+                }
                 SetTileEmpty(t, true);
             }
         }
 
         if(!IsMatch){
             return false;
+        }
+
+        if(m_specialSkill != 0){
+            SetTileEmpty(m_lastSpecial, true);    // skip the special one
         }
 
         return true;
@@ -455,12 +475,12 @@ public class Board : MonoBehaviour
                 int temp = RCToIndex(nr, nc);
                 if(!m_tiles[temp].empty){
                     // remove special tiles
-                    SetTileEmpty(temp, true);
+                    SetTileEmpty(temp, true, false);
                 }
             }
         }
-        SetTileEmpty(index, true);
         m_tiles[index].script.SetSpecial(false);
+        SetTileEmpty(index, true, false);
     }
 
     void SetDropState(){
@@ -566,11 +586,16 @@ public class Board : MonoBehaviour
     void RemoveMatchAfterDrop(){
         bool finished = true;
         for(int i = 0; i < m_numTiles; i++){
-            List<int> temp = MatchesAt(i);
-            foreach(int t in temp){
-                SetTileEmpty(t, true);
-                CheckSpecial(t);
-                finished = false;
+            if(!m_tiles[i].empty && !m_tiles[i].script.m_isSpecial){
+                List<int> temp = MatchesAt(i);
+                foreach(int t in temp){
+                    if(m_specialSkill != 0 && t == m_lastSpecial){
+                        continue;    // skip the special one
+                    }
+                    SetTileEmpty(t, true);
+                    finished = false;
+                }
+                SetTileEmpty(m_lastSpecial, true);
             }
         }
         if(finished){
@@ -614,6 +639,18 @@ public class Board : MonoBehaviour
                     res.Add((i, rightTile));
                 }
                 TilesSwap(i, rightTile, true);
+            }
+            //diagonal
+            if(m_diagonalSwapLV != 0){
+                int upRightTile = r + 1 < k_row && c + 1 < k_col ? RCToIndex(r + 1, c + 1) : m_numTiles;
+                if(upRightTile < m_numTiles){
+                    TilesSwap(i, upRightTile, true);
+                    int hasMatch = MatchesAt(i, true, true).Count + MatchesAt(upRightTile, false, true).Count;
+                    if(hasMatch > 0){
+                        res.Add((i, upRightTile));
+                    }
+                    TilesSwap(i, upRightTile, true);
+                }
             }
         }
         return res;
@@ -680,8 +717,6 @@ public class Board : MonoBehaviour
         if(m_lastSpecial != -1){
             // we need to generate a special tile at m_lastSpecial
             m_tiles[m_lastSpecial].script.SetSpecial(true);
-            // m_tiles[m_lastSpecial].SetEmptyState(false);
-            // SetTileEmpty(m_lastSpecial, false);
         }
         m_lastSpecial = -1;
     }
