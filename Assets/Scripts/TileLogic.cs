@@ -59,8 +59,8 @@ public class TileLogic : MonoBehaviour
     float m_removeTime = 0.4f;//0.4f;
 
     // special tile
-    [SerializeField]
     public bool m_isSpecial = false;
+    float m_specialRotSpeed = 4.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -82,7 +82,7 @@ public class TileLogic : MonoBehaviour
         USwing();
         USpecial();
         UAniRemove();
-        UAniTileGenerate();
+        //UAniTileGenerate();
     }
 
     public void SetColor(int index){
@@ -107,7 +107,6 @@ public class TileLogic : MonoBehaviour
     public void SetRemoveState(bool state){
         // if true, means it is removed
         // actually, no parameter is needed
-        // m_colorRender.enabled = !state;
         if(state){
             m_remove = true;
             m_removeDone = false;
@@ -192,11 +191,20 @@ public class TileLogic : MonoBehaviour
         }
     }
 
+    public void SetSpecial(bool state){
+        if(state){
+            m_isSpecial = true;
+        }
+        else{
+            m_isSpecial = false;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
     void USpecial(){
         if(m_isSpecial){
             m_colorRender.material = m_colorMat[3];
-            // rotation
-            // fluctuation
+            //transform.Rotate(new Vector3(m_specialRotSpeed, 0, 0));
         }
     }
 
@@ -235,11 +243,11 @@ public class TileLogic : MonoBehaviour
         }
     }
 
-    void UAniTileGenerate(){
-        if(m_newTile){
-            AniTileGenerate();
-        }
-    }
+    // void UAniTileGenerate(){
+    //     if(m_newTile){
+    //         AniTileGenerate();
+    //     }
+    // }
 
     void AniTileSwap(){
         // move tile a to the target

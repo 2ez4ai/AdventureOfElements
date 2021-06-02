@@ -157,7 +157,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.25
-  m_Text: Modifiers
+  m_Text: Removing more than 3 tiles in a column will generate a special tile. Removing
+    the special tile or any tile around the special tile will trigger it to explode,
+    which will remove 4/8/12 tiles nearby.
 --- !u!1 &1127219777250558
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,8 +433,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 350
-  m_MinHeight: 400
+  m_MinWidth: 450
+  m_MinHeight: 500
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
@@ -612,4 +614,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Modifiers
+  m_Text: This ancient alchemy furnace somehow still works.

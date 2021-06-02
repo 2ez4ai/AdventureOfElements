@@ -56,6 +56,14 @@ public class SkillController : MonoBehaviour
                 m_playerSkillSlots.FillSkillSlot(m_skillList[id]);
                 m_playerObtainedSkillID.Add(id);
                 break;
+            case 3:
+                Debug.Log("Haven't done yet!");
+                break;
+            case 4:    // special tile
+                m_player.LearnSpecial(m_skillList[id].m_lv);
+                m_playerSkillSlots.FillSkillSlot(m_skillList[id]);
+                m_playerObtainedSkillID.Add(id);
+                break;
         }
     }
 

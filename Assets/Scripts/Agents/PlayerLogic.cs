@@ -89,6 +89,11 @@ public class PlayerLogic : MonoBehaviour
     // battle things
     // ------------------------------------------------------------------------
 
+    // Skill
+    public void LearnSpecial(int level){
+        m_boardScript.m_specialSkill = level;
+    }
+
     // UI
     public void InitUI(){
         SetHPUI();

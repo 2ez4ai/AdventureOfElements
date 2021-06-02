@@ -82,8 +82,7 @@ public class Board : MonoBehaviour
 
     // skill things
     // for special
-    [SerializeField]
-    public int m_specialSkill = 0;
+    [SerializeField] public int m_specialSkill = 0;
     int m_lastSpecial = -1;
 
     // Start is called before the first frame update
@@ -164,6 +163,11 @@ public class Board : MonoBehaviour
         if(m_tiles[index].empty && state){
             return;    // already be removed
         }
+        if(index == m_lastSpecial){
+            m_tiles[m_lastSpecial].script.SetSpecial(true);
+            m_lastSpecial = -1;
+            return;
+        }
         m_tiles[index].empty = state;
         m_tiles[index].SetEmptyState(state);
         if(state){    // there is a remove
@@ -232,7 +236,7 @@ public class Board : MonoBehaviour
         while(unfinished){
             unfinished = false;
             for(int i = 0; i < m_numTiles; i++){
-                List<int> temp = MatchesAt(i);
+                List<int> temp = MatchesAt(i, true, true);
                 if(temp.Count > 1){
                     unfinished = true;
                     m_tiles[i].color = Random.Range(0, m_numColor);
@@ -332,7 +336,7 @@ public class Board : MonoBehaviour
         (int row, int col) = IndexToRC(index);
         int cnt = 0;
         List<int> tempSeq = new List<int>();
-        // to right
+        // to up
         for(int r = row + 1; r < k_row; r++){
             int newIndex = RCToIndex(r, col);
             if(TilesCmp(index, newIndex)){
@@ -349,7 +353,7 @@ public class Board : MonoBehaviour
             }
             return tempSeq;
         }
-        // to left
+        // to down
         for(int r = row - 1; r >= 0; r--){
             int newIndex = RCToIndex(r, col);
             if(TilesCmp(index, newIndex)){
@@ -367,7 +371,7 @@ public class Board : MonoBehaviour
         return tempSeq;
     }
 
-    List<int> MatchesAt(int index, bool ur=false){
+    List<int> MatchesAt(int index, bool ur=false, bool check=false){
         // if there is no match involves tiles[index], return a list of size 0
         // ur means only up and right search
         List<int> matchedTiles = new List<int>();
@@ -381,6 +385,11 @@ public class Board : MonoBehaviour
 
         // col-wise
         temp = CheckColMatch(index, ur);
+        if(m_specialSkill != 0 && temp.Count > 2 && !check){
+            List<int> tempColList = temp;
+            tempColList.Add(index);
+            MarkSpecialTile(tempColList);
+        }
         foreach (int t in temp){
             matchedTiles.Add(t);
         }
@@ -388,6 +397,7 @@ public class Board : MonoBehaviour
         if(matchedTiles.Count < 2){
             return new List<int>();
         }
+
         return matchedTiles;
     }
 
@@ -441,7 +451,7 @@ public class Board : MonoBehaviour
             }
         }
         SetTileEmpty(index, true);
-        m_tiles[index].script.m_isSpecial = false;
+        m_tiles[index].script.SetSpecial(false);
     }
 
     void SetDropState(){
@@ -580,7 +590,7 @@ public class Board : MonoBehaviour
             int upTile = r + 1 < k_row && c < k_col ? RCToIndex(r + 1, c) : m_numTiles;
             if(upTile < m_numTiles){
                 TilesSwap(i, upTile, true);
-                int hasMatch = MatchesAt(i, true).Count + MatchesAt(upTile).Count;
+                int hasMatch = MatchesAt(i, true, true).Count + MatchesAt(upTile, false, true).Count;
                 if(hasMatch > 0){
                     res.Add((i, upTile));
                 }
@@ -590,7 +600,7 @@ public class Board : MonoBehaviour
             int rightTile = r < k_row && c + 1 < k_col ? RCToIndex(r, c + 1) : m_numTiles;
             if(rightTile < m_numTiles){
                 TilesSwap(i, rightTile, true);
-                int hasMatch = MatchesAt(i, true).Count + MatchesAt(rightTile).Count;
+                int hasMatch = MatchesAt(i, true, true).Count + MatchesAt(rightTile, false, true).Count;
                 if(hasMatch > 0){
                     res.Add((i, rightTile));
                 }
@@ -639,13 +649,33 @@ public class Board : MonoBehaviour
             int nc = c + direction[i].c;
             if(RCInBoard(nr, nc)){
                 if(m_tiles[RCToIndex(nr, nc)].script.m_isSpecial){
-                    Debug.Log("Got one at " + RCToIndex(nr, nc));
                     RemoveSpecial(RCToIndex(nr, nc));
                 }
             }
         }
     }
 
+    void MarkSpecialTile(List<int> matchedTiles){
+        (int r, int c) = IndexToRC(matchedTiles[0]);
+        for(int i = 1; i < matchedTiles.Count; i++){
+            (int nr, int nc) = IndexToRC(matchedTiles[i]);
+            if(nr < r){    // find the tile with the lowest row index
+                r = nr;
+                c = nc;
+            }
+        }
+        m_lastSpecial = RCToIndex(r, c);
+    }
+
+    void GenerateSpecialTIle(){
+        if(m_lastSpecial != -1){
+            // we need to generate a special tile at m_lastSpecial
+            m_tiles[m_lastSpecial].script.SetSpecial(true);
+            // m_tiles[m_lastSpecial].SetEmptyState(false);
+            // SetTileEmpty(m_lastSpecial, false);
+        }
+        m_lastSpecial = -1;
+    }
     // ------------------------------------------------------------------------
     // animation triggers
     //      to turn on the trigger of related variables
