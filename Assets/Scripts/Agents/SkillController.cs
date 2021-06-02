@@ -38,7 +38,6 @@ public class SkillController : MonoBehaviour
                 }
                 effect += skill.m_effectPost;
             }
-
             m_skillSelection.SelectionItems(i, skill.m_sprite, skill.m_ID, skill.m_name, lv, effect, skill.m_description);
         }
     }

@@ -12,6 +12,8 @@ public class AniMoveVariable{
     public float moveSpeed = 8.0f;
     public float dropSpeed = 16.0f;
 
+    public bool targetSpecial = false;
+
     public GameObject dropTarget;
 }
 
@@ -54,7 +56,11 @@ public class TileLogic : MonoBehaviour
     bool m_remove = false;
     public bool m_removeDone = true;
     float m_removeTimer = 0.0f;
-    float m_removeTime = 0.4f;
+    float m_removeTime = 0.4f;//0.4f;
+
+    // special tile
+    [SerializeField]
+    public bool m_isSpecial = false;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +80,7 @@ public class TileLogic : MonoBehaviour
         USelected();
         UAniMove();
         USwing();
+        USpecial();
         UAniRemove();
         UAniTileGenerate();
     }
@@ -185,6 +192,14 @@ public class TileLogic : MonoBehaviour
         }
     }
 
+    void USpecial(){
+        if(m_isSpecial){
+            m_colorRender.material = m_colorMat[3];
+            // rotation
+            // fluctuation
+        }
+    }
+
     void UAniRemove(){
         if(m_remove){
             // this tile is going to be removed
@@ -231,9 +246,16 @@ public class TileLogic : MonoBehaviour
         float speed = m_moveAniV.moveSpeed;
         transform.position = Vector3.MoveTowards(transform.position, m_moveAniV.target, speed * Time.deltaTime);
         if(Vector3.Distance(transform.position, m_moveAniV.target) < 0.01f){
+            if(m_moveAniV.targetSpecial){
+                m_colorRender.material = m_colorMat[3];
+                m_isSpecial = true;
+            }
+            else{
+                m_isSpecial = false;
+            }
+            transform.position = m_position;    // when this is done, the material should be changed
             m_moveAniV.doing = false;
             m_moveAniV.trigger = false;
-            transform.position = m_position;    // when this is done, the material should be changed
         }
     }
 

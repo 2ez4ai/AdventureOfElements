@@ -116,6 +116,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: c99700ca882de944bb4f65221853cf74, type: 2}
   - {fileID: 2100000, guid: c096c0e75e9757740b21440b8b82ff69, type: 2}
   - {fileID: 2100000, guid: 26fcc6c4c0c478d419d87121fc374780, type: 2}
+  - {fileID: 2100000, guid: c75b4c4aaaa10844b854f76bd6c5c8a9, type: 2}
   m_typeMat:
   - {fileID: 2100000, guid: e0f8bcd6b4d27234da60c95abdc4b530, type: 2}
   - {fileID: 2100000, guid: 6f607611b0bbf04419fc08e7b2eb39f1, type: 2}
@@ -133,6 +134,7 @@ MonoBehaviour:
   m_drop: 0
   m_newTile: 0
   m_removeDone: 1
+  m_isSpecial: 0
 --- !u!1 &7486895919007668569
 GameObject:
   m_ObjectHideFlags: 0

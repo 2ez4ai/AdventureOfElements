@@ -73,12 +73,18 @@ public class Board : MonoBehaviour
     [SerializeField] MeshRenderer m_rayBlockerR;
     // for swap
     bool m_isSwapping = false;
-    bool m_isReversing = false;    // to reverse a swap if there is no match
+    [SerializeField] bool m_isReversing = false;    // to reverse a swap if there is no match
     // for remove
     bool m_isRemoving = false;
     // for drop
     bool m_isDropping = false;
     public bool m_stepDone = true;    // whether a swap is processed
+
+    // skill things
+    // for special
+    [SerializeField]
+    public int m_specialSkill = 0;
+    int m_lastSpecial = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -144,9 +150,14 @@ public class Board : MonoBehaviour
             return;
         }
         m_tiles[i].SetType(m_tiles[j].type);
-        m_tiles[i].SetColor(m_tiles[j].color);
         m_tiles[j].SetType(tempType);
-        m_tiles[j].SetColor(tempColor);
+
+        if(!m_tiles[i].script.m_isSpecial){
+            m_tiles[i].SetColor(m_tiles[j].color);
+        }
+        if(!m_tiles[j].script.m_isSpecial){
+            m_tiles[j].SetColor(tempColor);
+        }
     }
 
     void SetTileEmpty(int index, bool state){
@@ -156,6 +167,7 @@ public class Board : MonoBehaviour
         m_tiles[index].empty = state;
         m_tiles[index].SetEmptyState(state);
         if(state){    // there is a remove
+            CheckSpecial(index);
             m_creatureScript.UpdateStepDamage(m_tiles[index].color, m_tiles[index].type);
         }
     }
@@ -169,6 +181,13 @@ public class Board : MonoBehaviour
             m_rayBlocker.enabled = true;
             // m_rayBlockerR.enabled = true;
         }
+    }
+
+    bool RCInBoard(int r, int c){
+        if(r < 0 || c < 0 || r >= k_row || c >= k_col ){
+            return false;
+        }
+        return true;
     }
 
     // ------------------------------------------------------------------------
@@ -398,6 +417,33 @@ public class Board : MonoBehaviour
         return true;
     }
 
+    void RemoveSpecial(int index){
+        (int r, int c) = IndexToRC(index);
+        List<(int r, int c)> direction = new List<(int r, int c)>();
+        if(m_specialSkill == 1){
+            direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1)};
+        }
+        if(m_specialSkill == 2){
+            direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)};
+        }
+        if(m_specialSkill == 3){
+            direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1), (-2, 0), (2, 0), (0, 2), (0, -2)};
+        }
+        for(int i = 0; i < direction.Count; i++){
+            int nr = r + direction[i].r;
+            int nc = c + direction[i].c;
+            if(RCInBoard(nr, nc)){
+                int temp = RCToIndex(nr, nc);
+                if(!m_tiles[temp].empty){
+                    // remove special tiles
+                    SetTileEmpty(temp, true);
+                }
+            }
+        }
+        SetTileEmpty(index, true);
+        m_tiles[index].script.m_isSpecial = false;
+    }
+
     void SetDropState(){
         // initialization
         InitSwing();
@@ -504,6 +550,7 @@ public class Board : MonoBehaviour
             List<int> temp = MatchesAt(i);
             foreach(int t in temp){
                 SetTileEmpty(t, true);
+                CheckSpecial(t);
                 finished = false;
             }
         }
@@ -581,6 +628,25 @@ public class Board : MonoBehaviour
     }
 
     // ------------------------------------------------------------------------
+    // skill
+    // ------------------------------------------------------------------------
+    void CheckSpecial(int index){
+        // check whether there is a special tile around tile[index]
+        List<(int r, int c)> direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1)};
+        (int r, int c) = IndexToRC(index);
+        for(int i = 0; i < direction.Count; i++){
+            int nr = r + direction[i].r;
+            int nc = c + direction[i].c;
+            if(RCInBoard(nr, nc)){
+                if(m_tiles[RCToIndex(nr, nc)].script.m_isSpecial){
+                    Debug.Log("Got one at " + RCToIndex(nr, nc));
+                    RemoveSpecial(RCToIndex(nr, nc));
+                }
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
     // animation triggers
     //      to turn on the trigger of related variables
     // ------------------------------------------------------------------------
@@ -599,6 +665,9 @@ public class Board : MonoBehaviour
         m_tiles[m_aTile].script.m_moveAniV.target = bPos;
         m_tiles[m_bTile].script.m_moveAniV.trigger = true;
         m_tiles[m_bTile].script.m_moveAniV.target = aPos;
+        bool specail = m_tiles[m_aTile].script.m_isSpecial;
+        m_tiles[m_aTile].script.m_moveAniV.targetSpecial = m_tiles[m_bTile].script.m_isSpecial;
+        m_tiles[m_bTile].script.m_moveAniV.targetSpecial = specail;
     }
 
     void AniTileDrop(){
