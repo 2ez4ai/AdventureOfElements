@@ -12,7 +12,7 @@ public class SkillSelection : MonoBehaviour
     [SerializeField] int m_btnType = 0;    // 0: confirm; 1: lose game
     [SerializeField] DialogScript m_dialog;
     [SerializeField] Tooltip m_tooltip;
-    [SerializeField] Controller m_controller;
+    [SerializeField] SkillController m_skillController;
 
     List<int> m_toggleID = new List<int>();
     List<string> m_toggleName = new List<string>();
@@ -43,6 +43,7 @@ public class SkillSelection : MonoBehaviour
 
     void CheckSelection()
     {
+        m_selected = -1;
         for(int i = 0; i < m_toggles.Length; i++){
             if (m_toggles[i].isOn){
                 m_selected = i;
@@ -64,7 +65,7 @@ public class SkillSelection : MonoBehaviour
         foreach(Toggle t in m_toggles){
             t.isOn = false;
         }
-        m_controller.SkillUpdate(m_toggleID[m_selected]);
+        m_skillController.SkillUpdate(m_toggleID[m_selected]);
         m_selected = -1;
         m_dialog.TurnOff();
         m_activated = false;
@@ -78,13 +79,9 @@ public class SkillSelection : MonoBehaviour
         }
         m_toggleSprites[index].sprite = icon;
         m_toggleID[index] = id;
-
         m_toggleName[index] = name;
-
         m_toggleLV[index] = lv;
-
         m_toggleEffect[index] = effect;
-
         m_toggleDescription[index] = description;
 
     }

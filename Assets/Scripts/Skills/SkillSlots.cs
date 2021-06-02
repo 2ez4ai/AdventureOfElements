@@ -11,13 +11,13 @@ public class SkillSlots : MonoBehaviour
     List<SkillLV> m_skillLV = new List<SkillLV>();
     int m_index;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         for(int i = 0; i < m_numSlots; i++){
             m_skillSlots.Add(transform.Find("Slot " + i).gameObject);
             m_mouseOverSkillSlots.Add(m_skillSlots[i].GetComponent<MouseOver>());
             m_skillLV.Add(m_skillSlots[i].GetComponent<SkillLV>());
+            m_skillSlots[i].SetActive(false);
         }
         m_index = 0;
     }

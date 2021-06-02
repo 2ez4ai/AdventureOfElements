@@ -15,7 +15,7 @@ MonoBehaviour:
   m_sprite: {fileID: 21300000, guid: 503c1d91db3e72f4d8a02dcbcfa0aeca, type: 3}
   m_ID: 2
   m_name: Blessing Ornament
-  m_lv: 1
+  m_lv: 2
   m_effectPre: Increase maximum HP by
   m_effectPost: .
   m_description: A special ornament with blessing from ancient immortals.

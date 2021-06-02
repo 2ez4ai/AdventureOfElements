@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 222194059674436030}
   - component: {fileID: 114189310785913626}
   - component: {fileID: 4160959328154469802}
+  - component: {fileID: 3522111567521554837}
   m_Layer: 5
   m_Name: SkillSlot
   m_TagString: SkillSlot
@@ -90,6 +91,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_lvText: {fileID: 114498066085300422}
+--- !u!114 &3522111567521554837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130273576338606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48510ec116a1d44b88e691fdc10d536, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_tooltip: {fileID: 0}
+  m_name: 
+  m_level: 
+  m_effect: 
+  m_description: 
+  m_showTiles: -1
 --- !u!1 &1380943236048298
 GameObject:
   m_ObjectHideFlags: 0

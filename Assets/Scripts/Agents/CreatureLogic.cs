@@ -22,9 +22,9 @@ public class CreatureLogic : MonoBehaviour
     public void TakeDamage(){
         m_HP = m_HP - damage < 0? 0: m_HP-damage;
         m_textHP.text = ": " + m_HP + " / " + m_maxHP;
-        if(m_HP < 1){
-            Debug.Log("You win!");
-        }
+        // if(m_HP < 1){
+        //     Debug.Log("You win!");
+        // }
         damage = 0;
     }
 

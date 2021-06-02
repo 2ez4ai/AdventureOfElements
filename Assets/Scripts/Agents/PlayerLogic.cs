@@ -140,9 +140,9 @@ public class PlayerLogic : MonoBehaviour
             m_stepCnt = 0;
             m_HP = m_HP - damage < 0? 0: m_HP-damage;
             SetHPUI();
-            if(m_HP < 1){
-                Debug.Log("You Lose!");
-            }
+            // if(m_HP < 1){
+            //     Debug.Log("You Lose!");
+            // }
         }
     }
 
