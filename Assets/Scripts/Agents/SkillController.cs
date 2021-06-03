@@ -17,28 +17,10 @@ public class SkillController : MonoBehaviour
             int skillIndex = Random.Range(0, n);
             Skill skill = m_skillList[skillIndex];
             string lv = "";
-            string effect = skill.m_effectPre;
             if(skill.m_lv != 0){
                 lv = "Lv. " + skill.m_lv;
-                for(int l = 0; l < skill.m_keyValue.Count; l ++){
-                    string temp = " ";
-                    if(l != 0){
-                        temp = "/";
-                    }
-                    if(l + 1 == skill.m_lv){
-                        temp += "<b><i>" + skill.m_keyValue[l] + "</i></b>";
-                    }
-                    else{
-                        temp += "<i>" + skill.m_keyValue[l] + "</i>";
-                    }
-                    if(l == skill.m_keyValue.Count - 1){
-                        temp += " ";
-                    }
-                    effect += temp;
-                }
-                effect += skill.m_effectPost;
             }
-            m_skillSelection.SelectionItems(i, skill.m_sprite, skill.m_ID, skill.m_name, lv, effect, skill.m_description);
+            m_skillSelection.SelectionItems(i, skill.m_sprite, skill.m_ID, skill.m_name, lv, skill.m_effect, skill.m_description);
         }
     }
 
@@ -46,21 +28,29 @@ public class SkillController : MonoBehaviour
         switch(id){
             case 0:    // restore hp
             case 1:
-                int temp = m_player.m_HP + m_skillList[id].m_keyValue[m_skillList[id].m_lv];
+                int temp = m_player.m_HP + m_skillList[id].m_keyValue;
                 m_player.m_HP = temp > m_player.m_maxHP ? m_player.m_maxHP : temp;
                 m_player.InitUI();
                 break;
             case 2:    // increase maximum HP
-                m_player.m_maxHP += m_skillList[id].m_keyValue[m_skillList[id].m_lv - 1];
+            case 3:
+            case 4:
+                m_player.m_maxHP += m_skillList[id].m_keyValue;
                 m_player.InitUI();
                 m_playerSkillSlots.FillSkillSlot(m_skillList[id]);
                 m_playerObtainedSkillID.Add(id);
                 break;
-            case 3:
-                Debug.Log("Haven't done yet!");
-                break;
-            case 4:    // special tile
+            case 5:    // special tile
+            case 6:
+            case 7:
                 m_player.LearnSpecial(m_skillList[id].m_lv);
+                m_playerSkillSlots.FillSkillSlot(m_skillList[id]);
+                m_playerObtainedSkillID.Add(id);
+                break;
+            case 8:    // diagonally swap
+            case 9:
+            case 10:
+                m_player.LearnDiagonal(m_skillList[id].m_lv);
                 m_playerSkillSlots.FillSkillSlot(m_skillList[id]);
                 m_playerObtainedSkillID.Add(id);
                 break;

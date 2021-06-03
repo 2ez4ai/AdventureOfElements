@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
-  m_Name: 01Noodles
+  m_Name: 10Swap_3
   m_EditorClassIdentifier: 
-  m_sprite: {fileID: 21300000, guid: 67cb91f39de202c4eaf8de6a088ac258, type: 3}
-  m_ID: 1
-  m_name: Noodles
-  m_lv: 0
-  m_effect: Restore <b>60</b> HP.
-  m_description: "Noodles made from wheat dough has became a prominent food in China
-    since the Han dynasty (25\u2013220 CE)."
-  m_keyValue: 60
+  m_sprite: {fileID: 21300000, guid: 3415ba5059af47e47a674c854eb025e6, type: 3}
+  m_ID: 8
+  m_name: DiagonalSwap
+  m_lv: 3
+  m_effect: You are allowed to swap tiles digonally, and in this case the step has
+    10/20/<b>30</b> % chance to be not counted.
+  m_description: This ancient alchemy furnace somehow still works.
+  m_keyValue: 30
   m_prerequisite: -1
-  m_disposable: 1
+  m_disposable: 0
   m_belonging: 1

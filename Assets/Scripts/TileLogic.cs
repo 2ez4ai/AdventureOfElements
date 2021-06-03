@@ -43,7 +43,6 @@ public class TileLogic : MonoBehaviour
     // swing
     float m_swingBound = 0.1f;
     float m_swingStep = 0.5f;
-    bool m_swingActivation = false;
 
     // swap animation
     public AniMoveVariable m_moveAniV = new AniMoveVariable();    // the swap and drop would not be done simultaneously
@@ -60,7 +59,6 @@ public class TileLogic : MonoBehaviour
 
     // special tile
     public bool m_isSpecial = false;
-    float m_specialRotSpeed = 4.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -69,11 +67,6 @@ public class TileLogic : MonoBehaviour
         m_typeRender = m_typer.GetComponent<MeshRenderer>();
         m_position = transform.position;
     }
-
-    // Update is called once per frame
-    float timer = 0.0f;
-    float gap = 1.0f;
-    int i = 0;
 
     void Update()
     {

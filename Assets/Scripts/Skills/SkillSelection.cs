@@ -9,7 +9,6 @@ public class SkillSelection : MonoBehaviour
     [SerializeField] List<Image> m_toggleSprites = new List<Image>();
 
     [SerializeField] Button m_btn;
-    [SerializeField] int m_btnType = 0;    // 0: confirm; 1: lose game
     [SerializeField] DialogScript m_dialog;
     [SerializeField] Tooltip m_tooltip;
     [SerializeField] SkillController m_skillController;

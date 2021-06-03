@@ -24,8 +24,6 @@ public class Controller : MonoBehaviour
     // lose
     [SerializeField] LoseButton m_loseBtn;
 
-
-    int m_level = 1;
     int m_creatureIndex = 0;
 
     // Start is called before the first frame update

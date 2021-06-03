@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 963194229}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_specialSkill
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_creatureScript
@@ -160,7 +160,7 @@ PrefabInstance:
       objectReference: {fileID: 963194232}
     - target: {fileID: -6944188015700988037, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_diagonalSwapLV
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 59364265133774249, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_isSpecial
@@ -2099,7 +2099,6 @@ MonoBehaviour:
   - {fileID: 1015247608}
   - {fileID: 405769339}
   m_btn: {fileID: 66744740}
-  m_btnType: 0
   m_dialog: {fileID: 711857163}
   m_tooltip: {fileID: 2113039148}
   m_skillController: {fileID: 910186081}
@@ -2699,9 +2698,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0389725ab3c691c4e8fafd029a0754a4, type: 2}
   - {fileID: 11400000, guid: 69ca10e161ce280459ee60d32ab6d014, type: 2}
   - {fileID: 11400000, guid: 4399aaccf8d4aa4488c6e302dff13c07, type: 2}
-  - {fileID: 11400000, guid: 6085ac3828716fc4894bac28c0527ba7, type: 2}
+  - {fileID: 11400000, guid: 9837f767c7fee8d4ca57cd182fb87558, type: 2}
+  - {fileID: 11400000, guid: 0de6f1c941f79f741a439d8e6fe34f6c, type: 2}
   - {fileID: 11400000, guid: ae54b72bc686d754f814d2414e54eb97, type: 2}
-  - {fileID: 11400000, guid: 8d61ed94c81bebd448b3b3052cf86685, type: 2}
+  - {fileID: 11400000, guid: b7a107be4164c764199bd8d4c4f677a8, type: 2}
+  - {fileID: 11400000, guid: 070e8165d896b6e4d9d22cfb2ef84379, type: 2}
   m_skillSelection: {fileID: 653075534}
   m_playerSkillSlots: {fileID: 1411897132}
 --- !u!224 &920920760 stripped

@@ -9,6 +9,7 @@ public class DialogScript : MonoBehaviour
 
     // disable other interaction
     [SerializeField] Collider m_rayBlocker;
+    [SerializeField] MeshRenderer m_rayRenderer;
     [SerializeField] Tooltip m_tooltip;
     [SerializeField] MouseOver m_mouseOverWeakness;
     [SerializeField] MouseOver m_mouseOverAttack;
@@ -20,6 +21,7 @@ public class DialogScript : MonoBehaviour
     public void TurnOn(bool win){
         m_tooltip.m_disabled = true;
         m_rayBlocker.enabled = true;
+        // m_rayRenderer.enabled = true;
         m_mouseOverWeakness.enabled = false;
         m_mouseOverAttack.enabled = false;
         gameObject.SetActive(true);
@@ -37,6 +39,7 @@ public class DialogScript : MonoBehaviour
         m_loseBoard.SetActive(false);
         m_tooltip.m_disabled = false;
         m_rayBlocker.enabled = false;
+        // m_rayRenderer.enabled = false;
         m_mouseOverWeakness.enabled = true;
         m_mouseOverAttack.enabled = true;
     }

@@ -94,6 +94,10 @@ public class PlayerLogic : MonoBehaviour
         m_boardScript.m_specialSkill = level;
     }
 
+    public void LearnDiagonal(int level){
+        m_boardScript.m_diagonalSwapLV = level;
+    }
+
     // UI
     public void InitUI(){
         SetHPUI();

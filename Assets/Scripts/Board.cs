@@ -73,7 +73,7 @@ public class Board : MonoBehaviour
     [SerializeField] MeshRenderer m_rayBlockerR;
     // for swap
     bool m_isSwapping = false;
-    [SerializeField] bool m_isReversing = false;    // to reverse a swap if there is no match
+    bool m_isReversing = false;    // to reverse a swap if there is no match
     // for remove
     bool m_isRemoving = false;
     // for drop
@@ -191,7 +191,7 @@ public class Board : MonoBehaviour
             m_rayBlocker.enabled = false;
             // m_rayBlockerR.enabled = false;
         }
-        else{
+        else if(!m_stepDone){
             m_rayBlocker.enabled = true;
             // m_rayBlockerR.enabled = true;
         }

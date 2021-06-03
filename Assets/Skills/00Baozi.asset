@@ -16,9 +16,9 @@ MonoBehaviour:
   m_ID: 0
   m_name: Baozi
   m_lv: 0
-  m_effectPre: Restore 20 HP.
-  m_effectPost: 
+  m_effect: Restore <b>30</b> HP.
   m_description: A traditional Chinese food shaped as buns with various fillings.
-  m_keyValue: 14000000
+  m_keyValue: 30
+  m_prerequisite: -1
   m_disposable: 1
   m_belonging: 1
