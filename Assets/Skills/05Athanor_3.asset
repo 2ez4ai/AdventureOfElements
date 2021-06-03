@@ -10,17 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
-  m_Name: 05Athanor_1
+  m_Name: 05Athanor_3
   m_EditorClassIdentifier: 
   m_sprite: {fileID: 21300000, guid: acc5cfc6ed3bcd94eb0e7c034b7f36d9, type: 3}
   m_ID: 5
+  m_skillID: 3
   m_name: Athanor
-  m_lv: 1
+  m_lv: 3
   m_effect: Removing more than 3 tiles in a column will generate a special tile.
     Removing the special tile or any tile around it will trigger it to explode, which
-    will remove <b>4</b>/8/12 tiles nearby.
+    will remove 4/8/<b>12</b> tiles nearby.
   m_description: This ancient alchemy furnace somehow still works.
-  m_keyValue: 4
-  m_prerequisite: -1
+  m_keyValue: 8
+  m_prerequisite: 6
   m_disposable: 0
+  m_linear: 0
   m_belonging: 1
