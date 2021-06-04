@@ -20,7 +20,8 @@ MonoBehaviour:
   m_effect: Increase maximum HP by <b>15</b> * <b>skill level</b>.
   m_description: A special ornament with blessing from ancient immortals.
   m_keyValue: 15
-  m_prerequisite: -1
+  m_prerequisiteSkill: 
+  m_prerequisiteLV: 2
   m_disposable: 0
   m_linear: 1
   m_belonging: 1

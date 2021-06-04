@@ -7,7 +7,7 @@ public class Controller : MonoBehaviour
     // ------------------------------------------------------------------------
     // use to control levels, skills.
     // ------------------------------------------------------------------------
-
+    int m_level = 1;    // current map level
     [SerializeField] Board m_board;
     [SerializeField] PlayerLogic m_player;
     [SerializeField] CreatureLogic m_creature;
@@ -116,7 +116,8 @@ public class Controller : MonoBehaviour
                 case 0 :
                     break;
                 case 1 :
-                    m_skillController.GenerateLoadSkills();
+                    m_skillController.GenerateLoadSkills(m_level);
+                    m_level ++;
                     GenerateCreature();
                     LoadCreature();
                     Debug.Log("You win.");

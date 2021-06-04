@@ -17,7 +17,9 @@ public class Skill : ScriptableObject
 
     public int m_keyValue;
 
-    public int m_prerequisite;
+    public List<int> m_prerequisiteSkill;
+    public int m_prerequisiteLV;
+    public List<int> m_exclusivePool;    // for skill selection period
     public bool m_disposable;    // fixed
     public bool m_linear;    // the effect is m_keyValue * m_level
     public int m_belonging;    // 0: both player and creatures; 1: player only; 2: creatures only

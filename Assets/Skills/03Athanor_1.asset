@@ -22,7 +22,8 @@ MonoBehaviour:
     will remove <b>4</b>/8/12 tiles nearby.
   m_description: This ancient alchemy furnace somehow still works.
   m_keyValue: 4
-  m_prerequisite: -1
+  m_prerequisiteSkill: 
+  m_prerequisiteLV: 3
   m_disposable: 0
   m_linear: 0
   m_belonging: 1

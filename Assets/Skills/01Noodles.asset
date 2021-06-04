@@ -21,6 +21,9 @@ MonoBehaviour:
   m_description: "Noodles made from wheat dough has became a prominent food in China
     since the Han dynasty (25\u2013220 CE)."
   m_keyValue: 60
-  m_prerequisite: -1
+  m_prerequisiteSkill: 
+  m_prerequisiteLV: 3
+  m_exclusivePool: 00000000
   m_disposable: 1
+  m_linear: 0
   m_belonging: 1

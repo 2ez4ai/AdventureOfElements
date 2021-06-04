@@ -21,7 +21,8 @@ MonoBehaviour:
     <b>10</b>/20/30% chance to be not counted.
   m_description: This ancient alchemy furnace somehow still works.
   m_keyValue: 10
-  m_prerequisite: -1
+  m_prerequisiteSkill: 02000000
+  m_prerequisiteLV: 4
   m_disposable: 0
   m_linear: 0
   m_belonging: 1
