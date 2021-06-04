@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
-  m_Name: 99Suprise
+  m_Name: 10Gourd_1
   m_EditorClassIdentifier: 
-  m_sprite: {fileID: 21300000, guid: ae3278ffb13ccab4282619cb1e5e9dfe, type: 3}
-  m_ID: 3
-  m_skillID: 0
-  m_name: Chain Reaction
+  m_sprite: {fileID: 21300000, guid: 23b9f08f09488034981b00f2d10a34d0, type: 3}
+  m_ID: 10
+  m_skillID: 6
+  m_name: Escape Gourd
   m_lv: 1
-  m_effect: Removing more than 3 tiles in a column will generate a special tile.
-    Removing the special tile or any tile around it will trigger it to explode, which
-    will remove 4/8/<b>12</b> tiles nearby.
-  m_description: This ancient alchemy furnace somehow still works.
-  m_keyValue: 0
+  m_effect: The part of restoration exceeding your max HP will be perserved in this
+    gourd. The max preservation is <b>60</b>/90/120. When you are close to death,
+    the restoration will take <b>30</b>/40/50% effect.
+  m_description: It was said this marvelous gourd once belonged to one of the Chinese
+    Eight Immortals.
+  m_keyValue: 30
   m_prerequisiteSkill: 
   m_prerequisiteLV: 0
   m_exclusivePool: 

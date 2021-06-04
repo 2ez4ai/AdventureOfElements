@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
+  m_Name: 11Gourd_2
+  m_EditorClassIdentifier: 
+  m_sprite: {fileID: 21300000, guid: 23b9f08f09488034981b00f2d10a34d0, type: 3}
+  m_ID: 11
+  m_skillID: 6
+  m_name: Escape Gourd
+  m_lv: 2
+  m_effect: The part of restoration exceeding your max HP will be perserved in this
+    gourd. The max preservation is 60/<b>90</b>/120. When you are close to death,
+    the restoration will take 30/<b>40</b>/50% effect.
+  m_description: It was said this marvelous gourd once belonged to one of the Chinese
+    Eight Immortals.
+  m_keyValue: 40
+  m_prerequisiteSkill: 0a000000
+  m_prerequisiteLV: 0
+  m_exclusivePool: 
+  m_disposable: 0
+  m_linear: 0
+  m_belonging: 1

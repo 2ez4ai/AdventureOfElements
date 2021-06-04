@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class SkillSlots : MonoBehaviour
 {
+    [SerializeField] PlayerLogic m_player;
     [SerializeField] int m_numSlots = 12;
-    [SerializeField] int m_numSkill = 5;
+    [SerializeField] int m_numSkill = 7;
 
     List<GameObject> m_skillSlots = new List<GameObject>();
     List<int> m_skillOccupy = new List<int>();
     List<MouseOver> m_mouseOverSkillSlots = new List<MouseOver>();
     List<SkillLV> m_skillLV = new List<SkillLV>();
+
     int m_index;
 
     void Awake()
@@ -42,8 +44,16 @@ public class SkillSlots : MonoBehaviour
         m_mouseOverSkillSlots[temp].m_name = skill.m_name;
         m_mouseOverSkillSlots[temp].m_level = "Lv. " + skill.m_lv;
         m_mouseOverSkillSlots[temp].m_effect = skill.m_effect;
+        switch(skill.m_skillID){
+            case 6:
+                m_player.SetGourdMaxHP(skill.m_keyValue, skill.m_effect, m_mouseOverSkillSlots[temp]);
+                break;
+        }
         m_mouseOverSkillSlots[temp].m_description = skill.m_description;
-        m_skillLV[temp].SetLevel(skill.m_lv);
+        m_skillLV[temp].SetLevel(skill.m_lv, skill.m_linear);
+        if(skill.m_linear){
+            m_mouseOverSkillSlots[temp].m_level = "Lv. " + m_skillLV[temp].GetLevel();
+        }
         m_skillOccupy[skill.m_skillID] = temp;
     }
 }

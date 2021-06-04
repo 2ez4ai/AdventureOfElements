@@ -905,9 +905,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114725307624255294, guid: 6f76e0aca801239469cebb7422c3ff65, type: 3}
       propertyPath: m_Text
-      value: Removing more than 3 tiles in a column will generate a special tile.
-        Removing the special tile or any tile around the special tile will trigger
-        it to explode, which will remove 4/8/12 tiles nearby.
+      value: The part of restoration exceeding your max HP will be perserved in this
+        gourd. The max preservation is <b>60</b>/90/120. When you are close to death,
+        the restoration will take <b>30</b>/40/50%  effect.
       objectReference: {fileID: 0}
     - target: {fileID: 224128282601086286, guid: 6f76e0aca801239469cebb7422c3ff65, type: 3}
       propertyPath: m_Pivot.x
@@ -1588,7 +1588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2791,6 +2791,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_player: {fileID: 963194229}
+  m_playerSkillSlots: {fileID: 1411897132}
+  m_skillSelection: {fileID: 653075534}
   m_skillList:
   - {fileID: 11400000, guid: 0389725ab3c691c4e8fafd029a0754a4, type: 2}
   - {fileID: 11400000, guid: 69ca10e161ce280459ee60d32ab6d014, type: 2}
@@ -2801,9 +2803,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8d61ed94c81bebd448b3b3052cf86685, type: 2}
   - {fileID: 11400000, guid: a87315b12e9555048b75239417fce9db, type: 2}
   - {fileID: 11400000, guid: d4427f8d1cfb72546b086b795a9decb4, type: 2}
-  m_skillSelection: {fileID: 653075534}
-  m_playerSkillSlots: {fileID: 1411897132}
-  m_numSkill: 5
+  - {fileID: 11400000, guid: 9837f767c7fee8d4ca57cd182fb87558, type: 2}
+  - {fileID: 11400000, guid: 0de6f1c941f79f741a439d8e6fe34f6c, type: 2}
+  - {fileID: 11400000, guid: ecbf3b78b35e561498f76572ade5734d, type: 2}
+  - {fileID: 11400000, guid: 9e2932bd625ea1c40958058e3ddcc144, type: 2}
+  m_numSkill: 7
   m_learnedSkillLV: 
 --- !u!224 &920920760 stripped
 RectTransform:
@@ -3162,7 +3166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4213,8 +4217,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7107762196807407785, guid: 04ce3167cbf232e42a582c946d2c05a9, type: 3}
+      propertyPath: m_player
+      value: 
+      objectReference: {fileID: 963194229}
+    - target: {fileID: 7107762196807407785, guid: 04ce3167cbf232e42a582c946d2c05a9, type: 3}
       propertyPath: m_numSkill
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7658892764272209964, guid: 04ce3167cbf232e42a582c946d2c05a9, type: 3}
       propertyPath: m_tooltip
@@ -5138,7 +5146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5459,6 +5467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ec06fbe6e03064292c693cb018cbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_player: {fileID: 0}
   m_numSlots: 8
   m_numSkill: 3
 --- !u!1001 &1759832695485254339

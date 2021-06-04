@@ -15,15 +15,17 @@ MonoBehaviour:
   m_sprite: {fileID: 21300000, guid: acc5cfc6ed3bcd94eb0e7c034b7f36d9, type: 3}
   m_ID: 3
   m_skillID: 3
-  m_name: Athanor
+  m_name: Fireworks
   m_lv: 1
   m_effect: Removing more than 3 tiles in a column will generate a special tile.
     Removing the special tile or any tile around it will trigger it to explode, which
     will remove <b>4</b>/8/12 tiles nearby.
-  m_description: This ancient alchemy furnace somehow still works.
+  m_description: As a byproduct of gunpowder, fireworks have been widely used for
+    entertainment.
   m_keyValue: 4
   m_prerequisiteSkill: 
   m_prerequisiteLV: 3
+  m_exclusivePool: 
   m_disposable: 0
   m_linear: 0
   m_belonging: 1

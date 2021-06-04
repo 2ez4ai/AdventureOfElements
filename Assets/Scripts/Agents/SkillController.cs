@@ -89,34 +89,48 @@ public class SkillController : MonoBehaviour
 
     public void SkillUpdate(int id){
         bool learned = false;
+        Skill skill = m_skillList[id];
         switch(id){
             case 0:    // restore hp
             case 1:
-                int temp = m_player.m_HP + m_skillList[id].m_keyValue;
-                m_player.m_HP = temp > m_player.m_maxHP ? m_player.m_maxHP : temp;
-                m_player.InitUI();
+                m_player.Regen(skill.m_keyValue);
                 break;
             case 2:    // increase maximum HP
-                m_player.m_maxHP += m_skillList[id].m_keyValue;
+                m_player.m_maxHP += skill.m_keyValue;
                 m_player.InitUI();
                 learned = true;
                 break;
             case 3:    // special tile
             case 4:
             case 5:
-                m_player.LearnSpecial(m_skillList[id].m_lv);
+                m_player.LearnSpecial(skill.m_lv);
                 learned = true;
                 break;
             case 6:    // diagonally swap
             case 7:
             case 8:
-                m_player.LearnDiagonal(m_skillList[id].m_lv);
+                m_player.LearnDiagonal(skill.m_lv);
                 learned = true;
                 break;
+            case 9:    // extra regen
+                m_player.SetBonus(skill.m_keyValue);
+                learned = true;
+                break;
+            case 10:    // gourd
+            case 11:
+            case 12:
+                learned = true;
+                break;
+
         }
         if(learned){
-            m_playerSkillSlots.FillSkillSlot(m_skillList[id]);
-            m_learnedSkillLV[m_skillList[id].m_skillID] = m_skillList[id].m_lv;
+            m_playerSkillSlots.FillSkillSlot(skill);
+            if(skill.m_linear){
+                m_learnedSkillLV[skill.m_skillID] ++;
+            }
+            else{
+                m_learnedSkillLV[skill.m_skillID] = m_skillList[id].m_lv;
+            }
         }
     }
 

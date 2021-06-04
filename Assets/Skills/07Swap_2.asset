@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
   m_Name: 07Swap_2
   m_EditorClassIdentifier: 
-  m_sprite: {fileID: 21300000, guid: 3415ba5059af47e47a674c854eb025e6, type: 3}
+  m_sprite: {fileID: 21300000, guid: ae9aac5291b36a644bd2aecb46d42e1c, type: 3}
   m_ID: 7
   m_skillID: 4
   m_name: DiagonalSwap
   m_lv: 2
   m_effect: You are allowed to swap tiles digonally, and in this case the step has
     10/<b>20</b>/30% chance to be not counted.
-  m_description: This ancient alchemy furnace somehow still works.
+  m_description: This Taiji diagram contains the gist of the universe.
   m_keyValue: 20
   m_prerequisiteSkill: 06000000
   m_prerequisiteLV: 6
+  m_exclusivePool: 
   m_disposable: 0
   m_linear: 0
   m_belonging: 1

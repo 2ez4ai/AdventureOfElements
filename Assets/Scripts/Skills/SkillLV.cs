@@ -7,7 +7,19 @@ public class SkillLV : MonoBehaviour
 {
     [SerializeField] Text m_lvText;
 
-    public void SetLevel(int lv){
-        m_lvText.text = "" + lv;
+    int m_lv = 0;
+
+    public void SetLevel(int lv, bool linear = false){
+        if(linear){
+            m_lv ++;
+        }
+        else{
+            m_lv = lv;
+        }
+        m_lvText.text = "" + m_lv;
+    }
+
+    public int GetLevel(){
+        return m_lv;
     }
 }

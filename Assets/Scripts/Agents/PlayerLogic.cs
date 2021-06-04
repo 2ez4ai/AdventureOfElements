@@ -22,6 +22,7 @@ public class PlayerLogic : MonoBehaviour
     public int m_maxHP = 100;
     [SerializeField] Text m_UIHP;
     [SerializeField] MouseOver m_UIHPIcon;
+
     // creature damage & freq
     public int m_injureType = 0;    // changed by Controller
     public int m_injureMultiplier = 1;
@@ -32,6 +33,14 @@ public class PlayerLogic : MonoBehaviour
     [SerializeField] Text m_textFreq;
     [SerializeField] MouseOver m_mouseOverFreqIcon;
     [SerializeField] MouseOver m_mouseOverAvatar;
+
+    // skill
+    int m_bonusHP = 0;
+    MouseOver m_mouseOverGourd;
+    string m_gourdEffect;
+    int m_gourdHP = 0;
+    int m_gourdProb = 0;
+    int m_gourdMaxHP = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -96,6 +105,30 @@ public class PlayerLogic : MonoBehaviour
 
     public void LearnDiagonal(int level){
         m_boardScript.m_diagonalSwapLV = level;
+    }
+
+    public void Regen(int regenHP){
+        int temp = m_HP + regenHP + m_bonusHP;
+        m_HP = temp > m_maxHP ? m_maxHP : temp;
+        if(temp > m_maxHP && m_gourdMaxHP != -1){
+            int temp2 = temp - m_maxHP + m_gourdHP;
+            m_gourdHP = temp2 > m_gourdMaxHP ? m_gourdMaxHP : temp2;
+            string effect = m_gourdEffect + " Currently it saves <b>" + m_gourdHP + "</b> restoration.";
+            UpdateIconTooltip(m_mouseOverGourd, m_mouseOverGourd.m_name, m_mouseOverGourd.m_level, effect, m_mouseOverGourd.m_description);
+        }
+        SetHPUI();
+    }
+
+    public void SetBonus(int value){
+        m_bonusHP += value;
+    }
+
+    public void SetGourdMaxHP(int prob, string effect, MouseOver mouseOverGourd){
+        m_mouseOverGourd = mouseOverGourd;
+        m_gourdEffect = effect;
+        m_mouseOverGourd.m_effect = m_gourdEffect + " Currently it saves <b>" + m_gourdHP + "</b> restoration.";
+        m_gourdProb = prob;
+        m_gourdMaxHP = prob + (prob - 30) * 2;
     }
 
     // UI

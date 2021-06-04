@@ -10,16 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
-  m_Name: 99Blessing_2
+  m_Name: 09Furnace
   m_EditorClassIdentifier: 
-  m_sprite: {fileID: 21300000, guid: 503c1d91db3e72f4d8a02dcbcfa0aeca, type: 3}
-  m_ID: 3
-  m_skillID: 2
-  m_name: Blessing Ornament
-  m_lv: 2
-  m_effect: Increase maximum HP by 15/<b>30</b>/45.
-  m_description: A special ornament with blessing from ancient immortals.
-  m_keyValue: 30
-  m_prerequisite: 2
+  m_sprite: {fileID: 21300000, guid: e8c33bf466b0c134e8f290f65a3e421f, type: 3}
+  m_ID: 9
+  m_skillID: 5
+  m_name: Alchemy Furnace
+  m_lv: 1
+  m_effect: Your restoration will regen <b>10</b> * <b>skill level</b> more HP.
+  m_description: This ancient alchemy furnace somehow still works.
+  m_keyValue: 10
+  m_prerequisiteSkill: 
+  m_prerequisiteLV: 1
+  m_exclusivePool: 
   m_disposable: 0
+  m_linear: 1
   m_belonging: 1
