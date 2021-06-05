@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
   m_Name: 08Swap_3
   m_EditorClassIdentifier: 
-  m_sprite: {fileID: 21300000, guid: ae9aac5291b36a644bd2aecb46d42e1c, type: 3}
+  m_sprite: {fileID: 21300000, guid: 0334e135ac7ed3f40a6eae513af559a1, type: 3}
   m_ID: 8
   m_skillID: 4
   m_name: DiagonalSwap

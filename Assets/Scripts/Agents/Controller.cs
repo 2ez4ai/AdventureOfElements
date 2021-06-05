@@ -16,6 +16,7 @@ public class Controller : MonoBehaviour
     [SerializeField] MouseOver m_creatureMouseOverAvatar;
     [SerializeField] MouseOver m_creatureMouseOverAttack;
     [SerializeField] MouseOver m_creatureMouseOverInjure;
+    [SerializeField] SkillSlots m_creatureSkillSlots;
     // [SerializeField] SkillSlots m_creatureSkillSlots;
 
     [SerializeField] DialogScript m_dialogScript;
@@ -58,6 +59,7 @@ public class Controller : MonoBehaviour
         int attackFreq = m_creatureList[m_creatureIndex].m_attackFreq;
         Sprite injureTypeIcon = m_creatureList[m_creatureIndex].m_injureTypeIcon;
         int injureType = m_creatureList[m_creatureIndex].m_injureType;
+        List<Skill> creatureSkills = m_creatureList[m_creatureIndex].m_skills;
 
         // Avatar Info: UI only
         m_creatureMouseOverAvatar.ChangeIcon(creatureAvatar);
@@ -84,6 +86,14 @@ public class Controller : MonoBehaviour
         m_creatureMouseOverInjure.ChangeIcon(injureTypeIcon);
         m_creatureMouseOverInjure.m_name = name[injureType] + " Weakness";
         m_creatureMouseOverInjure.m_effect = "The creature will take extra damage from the remove of <i>" + name[injureType] + "</i> tiles.";
+
+        // Trigger Skill
+        m_creatureSkillSlots.CleanSlots();
+        m_skillController.CleanCreatureSkills();
+        foreach(Skill s in creatureSkills){
+            m_creatureSkillSlots.FillSkillSlot(s);
+            m_skillController.CreatureSkillTrigger(s);
+        }
 
         m_player.InitUI();
         m_creature.InitUI();

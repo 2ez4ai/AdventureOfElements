@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
-  m_Name: 99Stomp
+  m_Name: 99Stomp_3
   m_EditorClassIdentifier: 
   m_sprite: {fileID: 21300000, guid: 7b8f590b152dc9844bb65f0574fc0d06, type: 3}
   m_ID: 99
-  m_skillID: 99
+  m_skillID: 97
   m_name: Great Stomp
-  m_lv: 1
-  m_effect: The tiles of attack type will cause <b>1</b> more damage in a <b>3 *
-    3</b> area.
+  m_lv: 3
+  m_effect: The tiles of attack type will cause <b>3</b> more damage in a <b>5 *
+    5</b> area.
   m_description: Be careful of their destructive power.
-  m_keyValue: 3
+  m_keyValue: 5
   m_prerequisiteSkill: 
   m_prerequisiteLV: 0
   m_exclusivePool: 

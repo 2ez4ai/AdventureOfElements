@@ -93,7 +93,7 @@ public class SkillController : MonoBehaviour
         switch(id){
             case 0:    // restore hp
             case 1:
-                m_player.Regen(skill.m_keyValue);
+                m_player.LearnGourd(skill.m_keyValue);
                 break;
             case 2:    // increase maximum HP
                 m_player.m_maxHP += skill.m_keyValue;
@@ -136,5 +136,18 @@ public class SkillController : MonoBehaviour
 
     public bool SkillSelectionActivation(){
         return m_skillSelection.m_activated;
+    }
+
+    public void CreatureSkillTrigger(Skill skill){
+        int id = skill.m_skillID;
+        switch(id){
+            case 97:
+                m_player.LearnStomp(skill.m_lv);
+                break;
+        }
+    }
+
+    public void CleanCreatureSkills(){
+        m_player.LearnStomp(0);
     }
 }

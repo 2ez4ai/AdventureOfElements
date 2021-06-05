@@ -16,11 +16,12 @@ MonoBehaviour:
   m_name: Creature3
   m_lv: 3
   m_description: This is creature 3.
-  m_maxHP: 4
+  m_maxHP: 3
   m_attackType: 3
   m_attackTypeIcon: {fileID: 21300000, guid: 58f556d6aa4ba0c458a304509fad3980, type: 3}
   m_attackMultiplier: 1
   m_injureType: 2
   m_injureTypeIcon: {fileID: 21300000, guid: a67213e88b13b0343b321a3b0f82b799, type: 3}
-  m_attackFreq: 4
-  m_skills: 
+  m_attackFreq: 2
+  m_skills:
+  - {fileID: 11400000, guid: 6085ac3828716fc4894bac28c0527ba7, type: 2}

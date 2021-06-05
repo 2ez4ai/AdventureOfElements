@@ -1336,6 +1336,7 @@ MonoBehaviour:
   m_stepDone: 1
   m_specialSkill: 0
   m_diagonalSwapLV: 0
+  m_stompSkillLogic: {fileID: 4447379519349826531}
 --- !u!1 &5717915020855131796
 GameObject:
   m_ObjectHideFlags: 0

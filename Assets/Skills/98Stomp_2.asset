@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
-  m_Name: 07Swap_2
+  m_Name: 98Stomp_2
   m_EditorClassIdentifier: 
-  m_sprite: {fileID: 21300000, guid: 0334e135ac7ed3f40a6eae513af559a1, type: 3}
-  m_ID: 7
-  m_skillID: 4
-  m_name: DiagonalSwap
+  m_sprite: {fileID: 21300000, guid: 7b8f590b152dc9844bb65f0574fc0d06, type: 3}
+  m_ID: 98
+  m_skillID: 97
+  m_name: Great Stomp
   m_lv: 2
-  m_effect: Allows you to swap tiles digonally, and in this case the step has <b>20</b>%
-    chance to be not counted.
-  m_description: This Taiji diagram contains the gist of the universe.
-  m_keyValue: 20
-  m_prerequisiteSkill: 06000000
-  m_prerequisiteLV: 6
+  m_effect: The tiles of attack type will cause <b>2</b> more damage in a <b>4 *
+    4</b> area.
+  m_description: Be careful of their destructive power.
+  m_keyValue: 4
+  m_prerequisiteSkill: 
+  m_prerequisiteLV: 0
   m_exclusivePool: 
   m_disposable: 0
   m_linear: 0
-  m_belonging: 1
+  m_belonging: 2

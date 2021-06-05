@@ -59,6 +59,8 @@ public class TileLogic : MonoBehaviour
 
     // special tile
     public bool m_isSpecial = false;
+    // stomp damage
+    public int m_stompDamage = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -192,6 +194,10 @@ public class TileLogic : MonoBehaviour
             m_isSpecial = false;
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
+    }
+
+    public void SetStompDamage(int d){
+        m_stompDamage = d;
     }
 
     void USpecial(){

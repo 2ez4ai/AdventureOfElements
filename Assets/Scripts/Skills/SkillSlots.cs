@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkillSlots : MonoBehaviour
 {
     [SerializeField] PlayerLogic m_player;
+    [SerializeField] bool m_creature;
     [SerializeField] int m_numSlots = 12;
     [SerializeField] int m_numSkill = 7;
 
@@ -29,8 +30,29 @@ public class SkillSlots : MonoBehaviour
         m_index = 0;
     }
 
+    public void CleanSlots(){
+        for(int i = 0; i < m_numSlots; i++){
+            m_skillSlots[i].SetActive(false);
+        }
+        for(int i = 0; i < m_numSkill; i++){
+            m_skillOccupy[i] = -1;
+        }
+        m_index = 0;
+    }
+
     public void FillSkillSlot(Skill skill){
         int temp = m_index;
+        if(m_creature){
+            m_skillSlots[temp].SetActive(true);
+            m_mouseOverSkillSlots[temp].ChangeIcon(skill.m_sprite);
+            m_mouseOverSkillSlots[temp].m_name = skill.m_name;
+            m_mouseOverSkillSlots[temp].m_level = "Lv. " + skill.m_lv;
+            m_mouseOverSkillSlots[temp].m_effect = skill.m_effect;
+            m_mouseOverSkillSlots[temp].m_description = skill.m_description;
+            m_skillLV[temp].SetLevel(skill.m_lv, skill.m_linear);
+            return;
+        }
+
         if(m_skillOccupy[skill.m_skillID] != -1){
             // already occupy one slot
             temp = m_skillOccupy[skill.m_skillID];

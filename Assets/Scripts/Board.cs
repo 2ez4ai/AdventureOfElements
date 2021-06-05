@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Tile{
     public GameObject tile;
-    public TileLogic script;
+    public TileLogic logic;
     public int color;
     public int type;
     public bool empty;
@@ -22,23 +22,23 @@ public class Tile{
         if(c != -1){
             color = c;
         }
-        script.SetColor(color);
+        logic.SetColor(color);
     }
 
     public void SetType(int t = -1){
         if(t != -1){
             type = t;
         }
-        script.SetType(type);
+        logic.SetType(type);
     }
 
     public void SetEmptyState(bool state){
-        script.SetRemoveState(state);
+        logic.SetRemoveState(state);
     }
 
     public void UpdateLogic(){
-        color = script.GetColorIndex();
-        type = script.GetTypeIndex();
+        color = logic.GetColorIndex();
+        type = logic.GetTypeIndex();
     }
 }
 
@@ -88,6 +88,8 @@ public class Board : MonoBehaviour
     [SerializeField] public int m_diagonalSwapLV = 0;
     List<int> m_diagonalChance = new List<int>{0, 10, 20, 30};
     bool m_lastSwapIsDiagonal = false;
+    // for stomp
+    [SerializeField] SkillStomp m_stompSkillLogic;
 
     // Start is called before the first frame update
     void Start()
@@ -155,10 +157,10 @@ public class Board : MonoBehaviour
         m_tiles[i].SetType(m_tiles[j].type);
         m_tiles[j].SetType(tempType);
 
-        if(!m_tiles[i].script.m_isSpecial){
+        if(!m_tiles[i].logic.m_isSpecial){
             m_tiles[i].SetColor(m_tiles[j].color);
         }
-        if(!m_tiles[j].script.m_isSpecial){
+        if(!m_tiles[j].logic.m_isSpecial){
             m_tiles[j].SetColor(tempColor);
         }
     }
@@ -172,7 +174,7 @@ public class Board : MonoBehaviour
         }
         if(index == m_lastSpecial && state){
             // instead set it empty to be removed, we set it as special
-            m_tiles[m_lastSpecial].script.SetSpecial(true);
+            m_tiles[m_lastSpecial].logic.SetSpecial(true);
             m_lastSpecial = -1;
             return;
         }
@@ -231,7 +233,7 @@ public class Board : MonoBehaviour
         for(int i = 0; i < m_numTiles; i++){
             Tile temp = new Tile();
             temp.tile = m_tilesInit[i];
-            temp.script = m_tilesInit[i].GetComponent<TileLogic>();
+            temp.logic = m_tilesInit[i].GetComponent<TileLogic>();
             temp.color = Random.Range(0, m_numColor);    // logically
             temp.type = Random.Range(0, m_numType);    // logically
             temp.empty = false;
@@ -260,7 +262,7 @@ public class Board : MonoBehaviour
     void InitSwing(){
         // initialization
         foreach(Tile t in m_tiles){
-            t.script.SetSwing(false);
+            t.logic.SetSwing(false);
         }
     }
 
@@ -281,9 +283,9 @@ public class Board : MonoBehaviour
         // set m_aTile, m_bTile as the selected tiles
         List<int> selected = new List<int>();
         for(int i = 0; i < k_col * k_row; i++){
-            if(m_tiles[i].script.m_selected){
+            if(m_tiles[i].logic.m_selected){
                 selected.Add(i);
-                m_tiles[i].script.m_selected = false;
+                m_tiles[i].logic.m_selected = false;
             }
         }
 
@@ -479,7 +481,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        m_tiles[index].script.SetSpecial(false);
+        m_tiles[index].logic.SetSpecial(false);
         SetTileEmpty(index, true, false);
     }
 
@@ -586,7 +588,7 @@ public class Board : MonoBehaviour
     void RemoveMatchAfterDrop(){
         bool finished = true;
         for(int i = 0; i < m_numTiles; i++){
-            if(!m_tiles[i].empty && !m_tiles[i].script.m_isSpecial){
+            if(!m_tiles[i].empty && !m_tiles[i].logic.m_isSpecial){
                 List<int> temp = MatchesAt(i);
                 foreach(int t in temp){
                     if(m_specialSkill != 0 && t == m_lastSpecial){
@@ -694,7 +696,7 @@ public class Board : MonoBehaviour
             int nr = r + direction[i].r;
             int nc = c + direction[i].c;
             if(RCInBoard(nr, nc)){
-                if(m_tiles[RCToIndex(nr, nc)].script.m_isSpecial){
+                if(m_tiles[RCToIndex(nr, nc)].logic.m_isSpecial){
                     RemoveSpecial(RCToIndex(nr, nc));
                 }
             }
@@ -716,9 +718,36 @@ public class Board : MonoBehaviour
     void GenerateSpecialTIle(){
         if(m_lastSpecial != -1){
             // we need to generate a special tile at m_lastSpecial
-            m_tiles[m_lastSpecial].script.SetSpecial(true);
+            m_tiles[m_lastSpecial].logic.SetSpecial(true);
         }
         m_lastSpecial = -1;
+    }
+
+    public void GenerateStompArea(int level){
+        if(level == 0){
+            foreach(Tile t in m_tiles){
+               TileLogic tl = t.logic;
+                tl.SetStompDamage(0);
+            }
+            m_stompSkillLogic.Activate(0, 0, 0, 0);
+            return;
+        }
+        int LUIndex = -1;
+        (int r, int c) = IndexToRC(LUIndex);
+        while(r < level + 1 || r >= k_row || c < 0 || k_col - 1 - c < level + 2){
+            LUIndex = Random.Range(0, m_numTiles);
+            (r, c) = IndexToRC(LUIndex);
+        }
+        m_stompSkillLogic.Activate(r, c, level + 2, m_playerScript.m_injureType);
+        for(int i = level + 2; i > 0; i--){
+            for(int j = 0; j < level + 2; j++){
+                int nr = r - (level + 2 - i);
+                int nc = c + j + 1;
+                // Debug.Log("nr : " + nr + "; nc : " + nc);
+                m_tiles[RCToIndex(nr, nc)].logic.SetStompDamage(level);
+                // Debug.Log("Tile " + RCToIndex(nr, nc) + " would cause " + level + " extra damage.");
+            }
+        }
     }
     // ------------------------------------------------------------------------
     // animation triggers
@@ -735,13 +764,13 @@ public class Board : MonoBehaviour
         Vector3 bPos = m_tiles[m_bTile].tile.transform.position;
         aPos.x = 0.0f;
         bPos.x = 0.0f;
-        m_tiles[m_aTile].script.m_moveAniV.trigger = true;
-        m_tiles[m_aTile].script.m_moveAniV.target = bPos;
-        m_tiles[m_bTile].script.m_moveAniV.trigger = true;
-        m_tiles[m_bTile].script.m_moveAniV.target = aPos;
-        bool specail = m_tiles[m_aTile].script.m_isSpecial;
-        m_tiles[m_aTile].script.m_moveAniV.targetSpecial = m_tiles[m_bTile].script.m_isSpecial;
-        m_tiles[m_bTile].script.m_moveAniV.targetSpecial = specail;
+        m_tiles[m_aTile].logic.m_moveAniV.trigger = true;
+        m_tiles[m_aTile].logic.m_moveAniV.target = bPos;
+        m_tiles[m_bTile].logic.m_moveAniV.trigger = true;
+        m_tiles[m_bTile].logic.m_moveAniV.target = aPos;
+        bool specail = m_tiles[m_aTile].logic.m_isSpecial;
+        m_tiles[m_aTile].logic.m_moveAniV.targetSpecial = m_tiles[m_bTile].logic.m_isSpecial;
+        m_tiles[m_bTile].logic.m_moveAniV.targetSpecial = specail;
     }
 
     void AniTileDrop(){
@@ -751,9 +780,9 @@ public class Board : MonoBehaviour
             if(m_tiles[i].drop){
                 m_tiles[i].tile.transform.position = m_tiles[i].dropStartV;
                 // trigger
-                m_tiles[i].script.m_moveAniV.trigger = true;
-                m_tiles[i].script.m_moveAniV.target = m_tiles[i].dropDestV;
-                m_tiles[i].script.m_drop = true;
+                m_tiles[i].logic.m_moveAniV.trigger = true;
+                m_tiles[i].logic.m_moveAniV.target = m_tiles[i].dropDestV;
+                m_tiles[i].logic.m_drop = true;
             }
         }
     }
@@ -762,8 +791,8 @@ public class Board : MonoBehaviour
         if(Input.GetButtonDown("Jump") && m_stepDone){
             List<(int i, int j)> solutions = CheckMap(true);
             (int i, int j) sol = solutions[Random.Range(0, solutions.Count)];
-            m_tiles[sol.i].script.SetSwing(true);
-            m_tiles[sol.j].script.SetSwing(true);
+            m_tiles[sol.i].logic.SetSwing(true);
+            m_tiles[sol.j].logic.SetSwing(true);
         }
     }
 
@@ -777,7 +806,7 @@ public class Board : MonoBehaviour
 
     void UAniTileSwap(){
         // called every swap
-        if(m_isSwapping && !m_tiles[m_aTile].script.m_moveAniV.trigger){
+        if(m_isSwapping && !m_tiles[m_aTile].logic.m_moveAniV.trigger){
             // the swap is finished visually, but we still need to change the appearance...
             m_isSwapping = false;
             TilesSwap();    // when the animation is done, change logically
@@ -816,7 +845,7 @@ public class Board : MonoBehaviour
         if(m_isRemoving){
             bool removeAniDone = true;
             foreach(Tile t in m_tiles){
-                removeAniDone &= t.script.m_removeDone;
+                removeAniDone &= t.logic.m_removeDone;
             }
             if(removeAniDone){
                 SetDropState();
@@ -831,7 +860,7 @@ public class Board : MonoBehaviour
         if(m_isDropping){
             bool hasDrop = false;
             for(int i = 0; i < m_numTiles; i++){
-                if(m_tiles[i].script.m_drop){
+                if(m_tiles[i].logic.m_drop){
                     hasDrop = true;
                 }
             }

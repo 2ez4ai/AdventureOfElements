@@ -36,11 +36,14 @@ public class PlayerLogic : MonoBehaviour
 
     // skill
     int m_bonusHP = 0;
+    // gourd
     MouseOver m_mouseOverGourd;
     string m_gourdEffect;
     int m_gourdHP = 0;
     int m_gourdProb = 0;
     int m_gourdMaxHP = -1;
+    // stomp
+    int m_stompLevel = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -107,7 +110,7 @@ public class PlayerLogic : MonoBehaviour
         m_boardScript.m_diagonalSwapLV = level;
     }
 
-    public void Regen(int regenHP){
+    public void LearnGourd(int regenHP){
         int temp = m_HP + regenHP + m_bonusHP;
         m_HP = temp > m_maxHP ? m_maxHP : temp;
         if(temp > m_maxHP && m_gourdMaxHP != -1){
@@ -117,6 +120,16 @@ public class PlayerLogic : MonoBehaviour
             UpdateIconTooltip(m_mouseOverGourd, m_mouseOverGourd.m_name, m_mouseOverGourd.m_level, effect, m_mouseOverGourd.m_description);
         }
         SetHPUI();
+    }
+
+    public void LearnStomp(int level){
+        // this is a skill of creatures actually
+        m_stompLevel = level;
+        StompActivation();
+    }
+
+    void StompActivation(){
+        m_boardScript.GenerateStompArea(m_stompLevel);
     }
 
     public void SetBonus(int value){
@@ -180,6 +193,9 @@ public class PlayerLogic : MonoBehaviour
         SetAttackUI(damage);
         if(m_stepCnt == m_injureFreq){
             m_stepCnt = 0;
+            if(m_stompLevel != 0){
+                StompActivation();
+            }
             m_HP = m_HP - damage < 0? 0: m_HP-damage;
             SetHPUI();
             // if(m_HP < 1){
@@ -193,7 +209,7 @@ public class PlayerLogic : MonoBehaviour
         int damage = 0;
         foreach(Tile t in tiles){
             if(t.type == m_injureType || m_injureType == -1){
-                damage += 1;
+                damage = damage + 1 + t.logic.m_stompDamage;
             }
         }
         return damage * m_injureMultiplier;
