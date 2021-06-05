@@ -905,9 +905,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114725307624255294, guid: 6f76e0aca801239469cebb7422c3ff65, type: 3}
       propertyPath: m_Text
-      value: The part of restoration exceeding your max HP will be perserved in this
-        gourd. The max preservation is <b>60</b>/90/120. When you are close to death,
-        the restoration will take <b>30</b>/40/50%  effect.
+      value: Removing more than 3 tiles in a column will generate a special tile.
+        Removing the special tile or any tile around it will trigger it to explode,
+        which will remove <b>12</b> tiles nearby.
       objectReference: {fileID: 0}
     - target: {fileID: 224128282601086286, guid: 6f76e0aca801239469cebb7422c3ff65, type: 3}
       propertyPath: m_Pivot.x

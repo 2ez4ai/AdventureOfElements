@@ -10,21 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09146ed7f5237f14f9d23a44e5ec89c7, type: 3}
-  m_Name: 99Suprise
+  m_Name: 99Stomp
   m_EditorClassIdentifier: 
-  m_sprite: {fileID: 21300000, guid: ae3278ffb13ccab4282619cb1e5e9dfe, type: 3}
-  m_ID: 3
-  m_skillID: 0
-  m_name: Chain Reaction
+  m_sprite: {fileID: 21300000, guid: 7b8f590b152dc9844bb65f0574fc0d06, type: 3}
+  m_ID: 99
+  m_skillID: 99
+  m_name: Great Stomp
   m_lv: 1
-  m_effect: Removing more than 3 tiles in a column will generate a special tile.
-    Removing the special tile or any tile around it will trigger it to explode, which
-    will remove 4/8/<b>12</b> tiles nearby.
-  m_description: This ancient alchemy furnace somehow still works.
-  m_keyValue: 0
+  m_effect: The tiles of attack type will cause <b>1</b> more damage in a <b>3 *
+    3</b> area.
+  m_description: Be careful of their destructive power.
+  m_keyValue: 3
   m_prerequisiteSkill: 
   m_prerequisiteLV: 0
   m_exclusivePool: 
   m_disposable: 0
   m_linear: 0
-  m_belonging: 1
+  m_belonging: 2

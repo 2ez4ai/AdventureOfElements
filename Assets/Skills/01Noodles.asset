@@ -17,7 +17,7 @@ MonoBehaviour:
   m_skillID: 1
   m_name: Noodles
   m_lv: 0
-  m_effect: Restore <b>60</b> HP.
+  m_effect: Restores <b>60</b> HP.
   m_description: "Noodles made from wheat dough has became a prominent food in China
     since the Han dynasty (25\u2013220 CE)."
   m_keyValue: 60

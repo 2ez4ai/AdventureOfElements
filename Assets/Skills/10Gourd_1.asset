@@ -18,8 +18,8 @@ MonoBehaviour:
   m_name: Escape Gourd
   m_lv: 1
   m_effect: The part of restoration exceeding your max HP will be perserved in this
-    gourd. The max preservation is <b>60</b>/90/120. When you are close to death,
-    the restoration will take <b>30</b>/40/50% effect.
+    gourd. The max preservation is <b>30</b>. The gourd will be emptied to restore
+    <b>30</b>% the saved HP when you are about to die.
   m_description: It was said this marvelous gourd once belonged to one of the Chinese
     Eight Immortals.
   m_keyValue: 30

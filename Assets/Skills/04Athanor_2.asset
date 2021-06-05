@@ -19,9 +19,9 @@ MonoBehaviour:
   m_lv: 2
   m_effect: Removing more than 3 tiles in a column will generate a special tile.
     Removing the special tile or any tile around it will trigger it to explode, which
-    will remove 4/<b>8</b>/12 tiles nearby.
+    will remove <b>8</b> tiles nearby.
   m_description: As a byproduct of gunpowder, fireworks have been widely used for
-    entertainment.
+    entertainment nowadays.
   m_keyValue: 8
   m_prerequisiteSkill: 03000000
   m_prerequisiteLV: 4

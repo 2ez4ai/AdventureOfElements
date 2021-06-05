@@ -17,8 +17,8 @@ MonoBehaviour:
   m_skillID: 4
   m_name: DiagonalSwap
   m_lv: 3
-  m_effect: You are allowed to swap tiles digonally, and in this case the step has
-    10/20/<b>30</b>% chance to be not counted.
+  m_effect: Allows you to swap tiles digonally, and in this case the step has <b>30</b>%
+    chance to be not counted.
   m_description: This Taiji diagram contains the gist of the universe.
   m_keyValue: 30
   m_prerequisiteSkill: 0700000006000000

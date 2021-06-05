@@ -17,7 +17,7 @@ MonoBehaviour:
   m_skillID: 2
   m_name: Blessing Ornament
   m_lv: 1
-  m_effect: Increase your max HP by <b>15</b> * <b>skill level</b>.
+  m_effect: Increases your max HP by <b>15</b> * <b>skill level</b>.
   m_description: A special ornament with blessing from ancient immortals.
   m_keyValue: 15
   m_prerequisiteSkill: 

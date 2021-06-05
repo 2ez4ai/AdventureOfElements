@@ -17,7 +17,7 @@ MonoBehaviour:
   m_skillID: 0
   m_name: Baozi
   m_lv: 0
-  m_effect: Restore <b>30</b> HP.
+  m_effect: Restores <b>30</b> HP.
   m_description: A traditional Chinese food shaped as buns with various fillings.
   m_keyValue: 30
   m_prerequisiteSkill: 
