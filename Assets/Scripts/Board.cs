@@ -79,6 +79,11 @@ public class Board : MonoBehaviour
     // for drop
     bool m_isDropping = false;
     public bool m_stepDone = true;    // whether a swap is processed
+    // for shrink
+    public bool m_isShrinking = false;
+    float m_shrinkSpeed = 3f;
+    public bool m_isExpanding = false;
+    float m_expandSpeed = 3f;
 
     // skill things
     // for special
@@ -89,7 +94,7 @@ public class Board : MonoBehaviour
     List<int> m_diagonalChance = new List<int>{0, 10, 20, 30};
     bool m_lastSwapIsDiagonal = false;
     // for stomp
-    [SerializeField] SkillStomp m_stompSkillLogic;
+    [SerializeField]public SkillStomp m_stompSkillLogic;
 
     // Start is called before the first frame update
     void Start()
@@ -106,6 +111,8 @@ public class Board : MonoBehaviour
         UAniRemove();
         UAniTileDrop();
         UCheckMap();
+        UBoardExpand();
+        UBoardShrink();
     }
 
     // ------------------------------------------------------------------------
@@ -870,6 +877,30 @@ public class Board : MonoBehaviour
                 m_creatureScript.TakeDamage();
                 RemoveMatchAfterDrop();
             }
+        }
+    }
+
+    void UBoardShrink(){
+        if(m_isShrinking && transform.localScale.y > 2.01f){
+            if(m_isExpanding){
+                m_isExpanding = false;
+            }
+            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(0.1f, 2.0f, 2.0f), m_shrinkSpeed * Time.deltaTime);
+        }
+        else{
+            m_isShrinking = false;
+        }
+    }
+
+    void UBoardExpand(){
+        if(m_isExpanding && transform.localScale.y < 15.99f){
+            if(m_isShrinking){
+                m_isShrinking = false;
+            }
+            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(0.1f, 16.0f, 16.0f), m_expandSpeed * Time.deltaTime);
+        }
+        else{
+            m_isExpanding = false;
         }
     }
 }

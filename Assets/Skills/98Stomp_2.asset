@@ -17,8 +17,8 @@ MonoBehaviour:
   m_skillID: 97
   m_name: Great Stomp
   m_lv: 2
-  m_effect: The tiles of attack type will cause <b>2</b> more damage in a <b>4 *
-    4</b> area.
+  m_effect: The tiles of attack type will cause <b>2</b> more damage in the <b>4
+    * 4</b> area.
   m_description: Be careful of their destructive power.
   m_keyValue: 4
   m_prerequisiteSkill: 

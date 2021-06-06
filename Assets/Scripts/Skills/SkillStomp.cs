@@ -19,8 +19,8 @@ public class SkillStomp : MonoBehaviour
     void Start(){
         foreach(GameObject t in m_drawers){
             m_position.Add(t.transform.position);
+            t.SetActive(false);
         }
-        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -50,23 +50,24 @@ public class SkillStomp : MonoBehaviour
     }
 
     void SetMats(int m){
-        gameObject.SetActive(true);
+        Debug.Log("Activated!");
         foreach(GameObject t in m_drawers){
+            t.SetActive(true);
             TrailRenderer tr = t.GetComponent<TrailRenderer>();
             tr.enabled = true;
             tr.material = m_mats[m];
         }
     }
 
-    void DisableTrailer(){
+    public void DisableTrailer(bool state=false){
         foreach(GameObject t in m_drawers){
+            t.SetActive(state);
             TrailRenderer tr = t.GetComponent<TrailRenderer>();
-            tr.enabled = false;
+            tr.enabled = state;
         }
     }
 
     public void Activate(int r, int c, int size, int type){
-        gameObject.SetActive(false);
         if(size == 0){
             return;
         }

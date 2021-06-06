@@ -14,8 +14,7 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public string m_effect;
     public string m_description;
 
-    [SerializeField]
-    int m_showTiles = -1;
+    [SerializeField] int m_showTiles = -1;
     PlayerLogic m_player;
     CreatureLogic m_creature;
     GameObject[] m_tiles;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillController : MonoBehaviour
 {
+    [SerializeField] Controller m_controller;
     [SerializeField] PlayerLogic m_player;
     [SerializeField] SkillSlots m_playerSkillSlots;
     [SerializeField] SkillSelection m_skillSelection;
@@ -36,16 +37,13 @@ public class SkillController : MonoBehaviour
                 continue;
             }
             // lv requirements
-            // Debug.Log(skill.m_name + " " + skill.m_lv + " : requires Lv. " + skill.m_prerequisiteLV);
             if(skill.m_prerequisiteLV > level){
                 continue;
             }
             // skill requirements
             List<int> prerequisite = skill.m_prerequisiteSkill;
             bool satisfied = true;
-            // Debug.Log(skill.m_name + " Skill requirements: ");
             foreach(int ps in prerequisite){
-                // Debug.Log(m_skillList[ps].m_name + " Lv. " + m_skillList[ps].m_lv);
                 if(m_learnedSkillLV[m_skillList[ps].m_skillID] < m_skillList[ps].m_lv){
                     // havent learned yet
                     satisfied = false;
@@ -64,7 +62,6 @@ public class SkillController : MonoBehaviour
     public void GenerateLoadSkills(int level){
         m_skillSelection.m_activated = true;
         UpdateGenerateList(level);
-        // int n = m_skillList.Count;
         for(int i = 0; i < 3; i++){
             int skillIndex = Random.Range(0, m_generateList.Count);
             Skill skill = m_skillList[m_generateList[skillIndex]];
@@ -132,6 +129,7 @@ public class SkillController : MonoBehaviour
                 m_learnedSkillLV[skill.m_skillID] = m_skillList[id].m_lv;
             }
         }
+        m_controller.BoardExpand();
     }
 
     public bool SkillSelectionActivation(){

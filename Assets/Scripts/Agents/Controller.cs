@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
@@ -25,7 +26,11 @@ public class Controller : MonoBehaviour
     // lose
     [SerializeField] LoseButton m_loseBtn;
 
+    [SerializeField] Collider m_blocker;
+    [SerializeField] GameObject m_levelRemainder;
+
     int m_creatureIndex = 0;
+    bool m_loadReady = false;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +43,7 @@ public class Controller : MonoBehaviour
     void Update()
     {
         BattleUpdate();
+        ULoadCreature();
     }
 
     void GenerateCreature(){
@@ -128,18 +134,40 @@ public class Controller : MonoBehaviour
                 case 1 :
                     m_skillController.GenerateLoadSkills(m_level);
                     m_level ++;
+                    BoardShrink();
                     GenerateCreature();
-                    LoadCreature();
+                    m_creature.m_HP = 1;
                     Debug.Log("You win.");
                     break;
                 case 2:
-                    // LoadCreature();
                     m_loseBtn.m_activated = true;
                     m_player.m_HP = 20;
                     m_player.InitUI();
                     Debug.Log("You lose.");
                     break;
             }
+        }
+    }
+
+    void BoardShrink(){
+        m_board.m_stompSkillLogic.DisableTrailer();
+        m_board.m_isShrinking = true;
+        m_blocker.enabled = true;
+    }
+
+    public void BoardExpand(){
+        m_board.m_isExpanding = true;
+        m_levelRemainder.SetActive(true);
+        m_levelRemainder.GetComponent<Text>().text = "Level " + m_level;
+        m_loadReady = true;
+    }
+
+    void ULoadCreature(){
+        if(m_loadReady && !m_board.m_isExpanding){
+            LoadCreature();
+            m_loadReady = false;
+            m_levelRemainder.SetActive(false);
+            m_blocker.enabled = false;
         }
     }
 }
