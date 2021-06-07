@@ -50,7 +50,6 @@ public class SkillStomp : MonoBehaviour
     }
 
     void SetMats(int m){
-        Debug.Log("Activated!");
         foreach(GameObject t in m_drawers){
             t.SetActive(true);
             TrailRenderer tr = t.GetComponent<TrailRenderer>();

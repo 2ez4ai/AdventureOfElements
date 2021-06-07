@@ -48,7 +48,7 @@ public class Board : MonoBehaviour
     public int m_randomSeed = 0;
 
     // board settings
-    [SerializeField] const int k_row = 8;
+    [SerializeField] const int k_row = 11;
     [SerializeField] const int k_col = 8;
     [SerializeField] public int m_dirIndex = 1;
     List<(int r, int c)> m_direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // to where

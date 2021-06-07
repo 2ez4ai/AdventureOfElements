@@ -129,7 +129,7 @@ public class PlayerLogic : MonoBehaviour
     }
 
     void StompActivation(){
-        Debug.Log("Disabled!");
+        // Debug.Log("Disabled!");
         m_boardScript.m_stompSkillLogic.DisableTrailer();
         m_boardScript.GenerateStompArea(m_stompLevel);
     }

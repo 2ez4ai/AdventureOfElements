@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2856e33e3fc2c9744836cfe76105dc28, type: 3}
   m_Name: Creature1
   m_EditorClassIdentifier: 
-  m_avatar: {fileID: 21300000, guid: 0c3c1be41c1927f43b64374af6750c8d, type: 3}
-  m_name: Creature1
-  m_lv: 1
-  m_description: This is creature 1.
-  m_maxHP: 3
-  m_attackType: 0
-  m_attackTypeIcon: {fileID: 21300000, guid: 424e5a774246da14c8f4b39935396131, type: 3}
+  m_avatar: {fileID: 21300000, guid: 441d3b737fcc9014d85038c7552f817e, type: 3}
+  m_name: Cock
+  m_lv: 2
+  m_description: This is a cock.
+  m_maxHP: 40
+  m_attackType: 4
+  m_attackTypeIcon: {fileID: 21300000, guid: c9f55b2a518d3cd4381a4ea592f52d13, type: 3}
   m_attackMultiplier: 1
-  m_injureType: 2
-  m_injureTypeIcon: {fileID: 21300000, guid: a67213e88b13b0343b321a3b0f82b799, type: 3}
-  m_attackFreq: 2
+  m_injureType: 3
+  m_injureTypeIcon: {fileID: 21300000, guid: 58f556d6aa4ba0c458a304509fad3980, type: 3}
+  m_attackFreq: 3
   m_skills: []

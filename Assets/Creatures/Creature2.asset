@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2856e33e3fc2c9744836cfe76105dc28, type: 3}
   m_Name: Creature2
   m_EditorClassIdentifier: 
-  m_avatar: {fileID: 21300000, guid: d7c3b7c09018d5747aef2e2d86a47fc3, type: 3}
-  m_name: Creature2
-  m_lv: 2
-  m_description: This is creature2.
-  m_maxHP: 3
-  m_attackType: 4
-  m_attackTypeIcon: {fileID: 21300000, guid: c9f55b2a518d3cd4381a4ea592f52d13, type: 3}
+  m_avatar: {fileID: 21300000, guid: 74505d60cdf04644287254098ac64255, type: 3}
+  m_name: Bat
+  m_lv: 3
+  m_description: This is a bat.
+  m_maxHP: 50
+  m_attackType: 0
+  m_attackTypeIcon: {fileID: 21300000, guid: 424e5a774246da14c8f4b39935396131, type: 3}
   m_attackMultiplier: 1
-  m_injureType: 1
-  m_injureTypeIcon: {fileID: 21300000, guid: f0d99afae7e337a48bd52e4898912d3a, type: 3}
-  m_attackFreq: 2
-  m_skills:
-  - {fileID: 11400000, guid: 065e031373447094f9495d8c6b2b073d, type: 2}
+  m_injureType: 2
+  m_injureTypeIcon: {fileID: 21300000, guid: a67213e88b13b0343b321a3b0f82b799, type: 3}
+  m_attackFreq: 3
+  m_skills: []

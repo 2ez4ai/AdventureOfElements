@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2856e33e3fc2c9744836cfe76105dc28, type: 3}
-  m_Name: Creature
+  m_Name: Creature5
   m_EditorClassIdentifier: 
-  m_avatar: {fileID: 21300000, guid: 642c6bdfa9c7d6848bd10c84f8de627e, type: 3}
-  m_name: Baboon
-  m_lv: 1
-  m_description: This is a baboon.
-  m_maxHP: 30
-  m_attackType: 0
+  m_avatar: {fileID: 21300000, guid: ebef57ddcc65e8b44ae1e38e912931e6, type: 3}
+  m_name: Lion
+  m_lv: 6
+  m_description: This is a lion.
+  m_maxHP: 140
+  m_attackType: 3
   m_attackTypeIcon: {fileID: 21300000, guid: 58f556d6aa4ba0c458a304509fad3980, type: 3}
-  m_attackMultiplier: 1
+  m_attackMultiplier: 2
   m_injureType: 0
   m_injureTypeIcon: {fileID: 21300000, guid: 424e5a774246da14c8f4b39935396131, type: 3}
-  m_attackFreq: 3
-  m_skills: []
+  m_attackFreq: 2
+  m_skills:
+  - {fileID: 11400000, guid: 26dea343454f1e647bc31b128a762655, type: 2}
