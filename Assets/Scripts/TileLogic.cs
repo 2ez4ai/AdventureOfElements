@@ -24,6 +24,7 @@ public class TileLogic : MonoBehaviour
     [SerializeField] List<Material> m_colorMat = new List<Material>();
     [SerializeField] List<Material> m_typeMat = new List<Material>();
     [SerializeField] List<Material> m_effectMat = new List<Material>();    // effect
+    [SerializeField] bool m_onBoard;
 
     MeshRenderer m_colorRender;
     MeshRenderer m_typeRender;
