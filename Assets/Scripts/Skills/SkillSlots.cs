@@ -63,18 +63,19 @@ public class SkillSlots : MonoBehaviour
         // tooltip ui things
         m_skillSlots[temp].SetActive(true);
         m_mouseOverSkillSlots[temp].ChangeIcon(skill.m_sprite);
-        m_mouseOverSkillSlots[temp].m_name = skill.m_name;
-        m_mouseOverSkillSlots[temp].m_level = "Lv. " + skill.m_lv;
-        m_mouseOverSkillSlots[temp].m_effect = skill.m_effect;
+        m_mouseOverSkillSlots[temp].m_name = LocalizationManager.m_instance.GetLocalisedString(skill.m_name);
+        m_mouseOverSkillSlots[temp].m_level = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + skill.m_lv;
+        m_mouseOverSkillSlots[temp].m_effect = LocalizationManager.m_instance.GetLocalisedString(skill.m_name+"Effect");
+
         switch(skill.m_skillID){
             case 6:
-                m_player.SetGourdMaxHP(skill.m_keyValue, skill.m_effect, m_mouseOverSkillSlots[temp]);
+                m_player.SetGourdMaxHP(skill.m_keyValue, LocalizationManager.m_instance.GetLocalisedString(skill.m_name+"Effect"), m_mouseOverSkillSlots[temp]);
                 break;
         }
-        m_mouseOverSkillSlots[temp].m_description = skill.m_description;
+        m_mouseOverSkillSlots[temp].m_description = LocalizationManager.m_instance.GetLocalisedString(skill.m_name+"Description");
         m_skillLV[temp].SetLevel(skill.m_lv, skill.m_linear);
         if(skill.m_linear){
-            m_mouseOverSkillSlots[temp].m_level = "Lv. " + m_skillLV[temp].GetLevel();
+            m_mouseOverSkillSlots[temp].m_level = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + m_skillLV[temp].GetLevel();
         }
         m_skillOccupy[skill.m_skillID] = temp;
     }

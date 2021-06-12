@@ -22,6 +22,7 @@ public class LocalizationManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        DontDestroyOnLoad(this);
         SetupLocalizationFiles();
         SetupLocalizationXMLSingleton();
         SetupLocalization(m_language);

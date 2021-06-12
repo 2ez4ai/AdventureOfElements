@@ -15,7 +15,7 @@ MonoBehaviour:
   m_sprite: {fileID: 21300000, guid: 7b8f590b152dc9844bb65f0574fc0d06, type: 3}
   m_ID: 99
   m_skillID: 97
-  m_name: Great Stomp
+  m_name: GreatStomp3
   m_lv: 3
   m_effect: The tiles of attack type will cause <b>3</b> more damage in the <b>5
     * 5</b> area.

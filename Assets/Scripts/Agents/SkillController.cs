@@ -73,14 +73,17 @@ public class SkillController : MonoBehaviour
             foreach(int t in skill.m_exclusivePool){
                 m_exclusiveList[t] = true;
             }
+            string skillName = LocalizationManager.m_instance.GetLocalisedString(skill.m_name);
             string lv = "";
             if(skill.m_lv != 0){
-                lv = "Lv. " + skill.m_lv;
+                lv = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + skill.m_lv;
             }
             if(m_learnedSkillLV[skill.m_skillID] != 0){
-                lv = "Lv. " + m_learnedSkillLV[skill.m_skillID] + " + 1";    // upgrade
+                lv = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + m_learnedSkillLV[skill.m_skillID] + " + 1";    // upgrade
             }
-            m_skillSelection.SelectionItems(i, skill.m_sprite, skill.m_ID, skill.m_name, lv, skill.m_effect, skill.m_description);
+            string skillEffect = LocalizationManager.m_instance.GetLocalisedString(skill.m_name+"Effect");
+            string skillDescription = LocalizationManager.m_instance.GetLocalisedString(skill.m_name+"Description");
+            m_skillSelection.SelectionItems(i, skill.m_sprite, skill.m_ID, skillName, lv, skillEffect, skillDescription);
         }
     }
 

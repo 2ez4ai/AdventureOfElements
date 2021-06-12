@@ -15,7 +15,7 @@ MonoBehaviour:
   m_sprite: {fileID: 21300000, guid: 0334e135ac7ed3f40a6eae513af559a1, type: 3}
   m_ID: 7
   m_skillID: 4
-  m_name: DiagonalSwap
+  m_name: DiagonalSwap2
   m_lv: 2
   m_effect: Allows you to swap tiles digonally, and in this case the step has <b>20</b>%
     chance to be not counted.

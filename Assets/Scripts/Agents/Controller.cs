@@ -158,7 +158,7 @@ public class Controller : MonoBehaviour
     public void BoardExpand(){
         m_board.m_isExpanding = true;
         m_levelRemainder.SetActive(true);
-        m_levelRemainder.GetComponent<Text>().text = "Level " + m_level;
+        m_levelRemainder.GetComponent<Text>().text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
         m_loadReady = true;
     }
 

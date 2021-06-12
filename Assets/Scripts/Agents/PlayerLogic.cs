@@ -45,12 +45,19 @@ public class PlayerLogic : MonoBehaviour
     // stomp
     int m_stompLevel = 0;
 
+    Language m_language;
+
     // Start is called before the first frame update
     void Start()
     {
         m_numColor = m_boardScript.m_numColor;
         m_numType = m_boardScript.m_numType;
-        UpdateIconTooltip(m_mouseOverAvatar, "You? Me? Whatever.", "Lv. 99", "Thanks for your play. Hope you enjoy this.", "Produced by Jingye Wang.");
+        m_language = LocalizationManager.m_instance.GetLanguage();
+        string playerName = LocalizationManager.m_instance.GetLocalisedString("PlayerName");
+        string LV = LocalizationManager.m_instance.GetLocalisedString("LV") + " 99";
+        string playerDescription = LocalizationManager.m_instance.GetLocalisedString("PlayerDescription");
+        string playerRemark = LocalizationManager.m_instance.GetLocalisedString("PlayerRemark");
+        UpdateIconTooltip(m_mouseOverAvatar, playerName, LV, playerDescription, playerRemark);
         InitUI();
     }
 
@@ -58,6 +65,22 @@ public class PlayerLogic : MonoBehaviour
     void Update()
     {
         ClickMouse();
+        CheckLanguage();
+    }
+
+    void CheckLanguage(){
+        Language tempLanguage = LocalizationManager.m_instance.GetLanguage();
+        if(tempLanguage == m_language){
+            return;
+        }
+        else{
+            m_language = tempLanguage;
+            string playerName = LocalizationManager.m_instance.GetLocalisedString("PlayerName");
+            string LV = LocalizationManager.m_instance.GetLocalisedString("LV") + " 99";
+            string playerDescription = LocalizationManager.m_instance.GetLocalisedString("PlayerDescription");
+            string playerRemark = LocalizationManager.m_instance.GetLocalisedString("PlayerRemark");
+            UpdateIconTooltip(m_mouseOverAvatar, playerName, LV, playerDescription, playerRemark);
+        }
     }
 
     void ClickMouse(){
@@ -116,7 +139,7 @@ public class PlayerLogic : MonoBehaviour
         if(temp > m_maxHP && m_gourdMaxHP != -1){
             int temp2 = temp - m_maxHP + m_gourdHP;
             m_gourdHP = temp2 > m_gourdMaxHP ? m_gourdMaxHP : temp2;
-            string effect = m_gourdEffect + " Currently it saves <b>" + m_gourdHP + "</b> restoration.";
+            string effect = m_gourdEffect + " " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart1") + " <b>" + m_gourdHP + "</b> " + LocalizationManager.m_instance.GetLocalisedString(LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart2"));
             UpdateIconTooltip(m_mouseOverGourd, m_mouseOverGourd.m_name, m_mouseOverGourd.m_level, effect, m_mouseOverGourd.m_description);
         }
         SetHPUI();
@@ -138,12 +161,12 @@ public class PlayerLogic : MonoBehaviour
         m_bonusHP += value;
     }
 
-    public void SetGourdMaxHP(int prob, string effect, MouseOver mouseOverGourd){
+    public void SetGourdMaxHP(int proportion, string effect, MouseOver mouseOverGourd){
         m_mouseOverGourd = mouseOverGourd;
         m_gourdEffect = effect;
-        m_mouseOverGourd.m_effect = m_gourdEffect + " Currently it saves <b>" + m_gourdHP + "</b> restoration.";
-        m_gourdProb = prob;
-        m_gourdMaxHP = prob + (prob - 30) * 2;
+        m_mouseOverGourd.m_effect = m_gourdEffect + " " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart1") + " <b>" + m_gourdHP + "</b> " + LocalizationManager.m_instance.GetLocalisedString(LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart2"));
+        m_gourdProb = proportion;
+        m_gourdMaxHP = proportion + (proportion - 30) * 2;
     }
 
     // UI
@@ -165,23 +188,24 @@ public class PlayerLogic : MonoBehaviour
     void SetAttackUI(int damage){
         m_textAttack.text = "x " + m_injureMultiplier + " (" + damage + ")";
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
-        string effect = "Given the current number of <i>" + name[m_injureType] + "</i> tiles on the board, the next attack would cause " + damage + " or so damage.";
-        UpdateIconTooltip(m_mouseOverSwordIcon, "Attack Type", "", effect);
+        string atkName = LocalizationManager.m_instance.GetLocalisedString(name[m_injureType]);
+        string effect = LocalizationManager.m_instance.GetLocalisedString("AtkTypePart1") + "<i>" + atkName + "</i>" + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart2") + damage + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart3");
+        UpdateIconTooltip(m_mouseOverSwordIcon, LocalizationManager.m_instance.GetLocalisedString("AtkType"), "", effect);
     }
 
     void SetStepCntUI(){
         int step = m_injureFreq - m_stepCnt > 0? m_injureFreq - m_stepCnt: m_injureFreq;
         string stepInfo = step + "";
         m_textFreq.text = ": " + stepInfo;
-        string effect = "The next attack will be lauched in " + stepInfo + " steps.";
-        UpdateIconTooltip(m_mouseOverFreqIcon, "Attack Cooldown", "", effect);
+        string effect = LocalizationManager.m_instance.GetLocalisedString("AtkCooldownPart1") + stepInfo + LocalizationManager.m_instance.GetLocalisedString("AtkCooldownPart2");
+        UpdateIconTooltip(m_mouseOverFreqIcon, LocalizationManager.m_instance.GetLocalisedString("AttackCooldown"), "", effect);
     }
 
     void SetHPUI(){
         string hpInfo = m_HP + " / " + m_maxHP;
         m_UIHP.text = ": " + hpInfo;
-        string effect = "Your current HP is " + hpInfo + ". You will lose the game when it is 0.";
-        UpdateIconTooltip(m_UIHPIcon, "HP", "", effect);
+        string effect = LocalizationManager.m_instance.GetLocalisedString("HPPart1") + hpInfo + LocalizationManager.m_instance.GetLocalisedString("HPPart2");
+        UpdateIconTooltip(m_UIHPIcon, LocalizationManager.m_instance.GetLocalisedString("HP"), "", effect);
     }
 
     public void IncreStepCnt(){
