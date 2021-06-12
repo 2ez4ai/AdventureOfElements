@@ -12,45 +12,48 @@ public enum Language
 
 public class LocalizationManager : MonoBehaviour
 {
-    public static LocalizationManager m_Instance = null;
+    public static LocalizationManager m_instance = null;
 
-    [SerializeField]
-    Language m_Language = Language.English;
+    [SerializeField] Language m_language = Language.Chinese;
 
-    Dictionary<string, TextAsset> m_LocalizationFiles = new Dictionary<string, TextAsset>();
-    Dictionary<string, string> m_LocalizationText = new Dictionary<string, string>();
+    Dictionary<string, TextAsset> m_localizationFiles = new Dictionary<string, TextAsset>();
+    Dictionary<string, string> m_localizationText = new Dictionary<string, string>();
 
     // Use this for initialization
     void Awake()
     {
         SetupLocalizationFiles();
         SetupLocalizationXMLSingleton();
-        SetupLocalization();
+        SetupLocalization(m_language);
     }
 
     void SetupLocalizationXMLSingleton()
     {
-        if (m_Instance == null)
+        if (m_instance == null)
         {
-            m_Instance = this;
+            m_instance = this;
         }
-        else if (m_Instance != this)
+        else if (m_instance != this)
         {
             Destroy(gameObject);
         }
         //DontDestroyOnLoad(gameObject);
     }
 
+    public Language GetLanguage(){
+        return m_language;
+    }
+
     public void SetupLocalizationFiles()
     {
-        // Search for each Language defined in the Language Enum
+        // Search for each Language files defined in the Language Enum
         foreach (Language language in Language.GetValues(typeof(Language)))
         {
             string textAssetPath = "Localization/" + language.ToString();
             TextAsset textAsset = (TextAsset)Resources.Load(textAssetPath);
             if (textAsset)
             {
-                m_LocalizationFiles[textAsset.name] = textAsset;
+                m_localizationFiles[textAsset.name] = textAsset;
                 Debug.Log("Text Asset: " + textAsset.name);
             }
             else
@@ -60,20 +63,22 @@ public class LocalizationManager : MonoBehaviour
         }
     }
 
-    public void SetupLocalization()
+    public void SetupLocalization(Language l)
     {
+        m_language = l;
+
         TextAsset textAsset;
         // Search for the specified language file
-        if (m_LocalizationFiles.ContainsKey(m_Language.ToString()))
+        if (m_localizationFiles.ContainsKey(m_language.ToString()))
         {
-            Debug.Log("Selected language: " + m_Language);
-            textAsset = m_LocalizationFiles[m_Language.ToString()];
+            Debug.Log("Selected language: " + m_language);
+            textAsset = m_localizationFiles[m_language.ToString()];
         }
         // If we can't find the specific language default to English
         else
         {
-            Debug.LogError("Couldn't find localization file for: " + m_Language);
-            textAsset = m_LocalizationFiles[Language.English.ToString()];
+            Debug.LogError("Couldn't find localization file for: " + m_language);
+            textAsset = m_localizationFiles[Language.English.ToString()];
         }
 
         // Load XML document
@@ -86,14 +91,15 @@ public class LocalizationManager : MonoBehaviour
         // Iterate over each Entry element and store them in the Dictionary
         foreach (XmlNode entry in entryList)
         {
-            if (!m_LocalizationText.ContainsKey(entry.FirstChild.InnerText))
+            if (!m_localizationText.ContainsKey(entry.FirstChild.InnerText))
             {
                 Debug.Log("Added Key: " + entry.FirstChild.InnerText + " with value: " + entry.LastChild.InnerText);
-                m_LocalizationText.Add(entry.FirstChild.InnerText, entry.LastChild.InnerText);
+                m_localizationText.Add(entry.FirstChild.InnerText, entry.LastChild.InnerText);
             }
             else
             {
-                Debug.LogError("Duplicate Localization key detected: " + entry.FirstChild.InnerText);
+                m_localizationText[entry.FirstChild.InnerText] = entry.LastChild.InnerText;
+                // Debug.LogError("Duplicate Localization key detected: " + entry.FirstChild.InnerText);
             }
         }
     }
@@ -101,7 +107,7 @@ public class LocalizationManager : MonoBehaviour
     public string GetLocalisedString(string key)
     {
         string localisedString = "";
-        if (!m_LocalizationText.TryGetValue(key, out localisedString))
+        if (!m_localizationText.TryGetValue(key, out localisedString))
         {
             localisedString = "LOC KEY: " + key;
         }

@@ -2,43 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UIStateType
+public enum MenuPageType
 {
     MainMenu,
-    Options,
-    VideoOptions,
-    AudioOptions,
-    Game
+    Language
+    // Game
 }
 
 [System.Serializable]
-public class UIState
+public class MenuPage    // menu pages
 {
-    public UIStateType m_UIStateType;
-    public GameObject m_GameObject;
+    public MenuPageType m_menuPageType;
+    public GameObject m_gameObject;    // a parental object
 }
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager m_Instance = null;
+    public static UIManager m_instance = null;
 
     // Fill in Editor
-    [SerializeField]
-    List<UIState> m_UIStates = new List<UIState>();
+    [SerializeField] List<MenuPage> m_menuPages = new List<MenuPage>();
 
     // Fast Lookups
-    Dictionary<UIStateType, GameObject> m_UIStateDictionary = new Dictionary<UIStateType, GameObject>();
+    Dictionary<MenuPageType, GameObject> m_menuPageDictionary = new Dictionary<MenuPageType, GameObject>();
 
-    [SerializeField]
-    UIStateType m_CurrentUIStateType = UIStateType.MainMenu;
+    [SerializeField] MenuPageType m_currentMenuPage = MenuPageType.MainMenu;
 
-    [SerializeField]
-    AudioClip m_UINextSound;
+    [SerializeField] AudioClip m_uiNextSound;
 
-    [SerializeField]
-    AudioClip m_UIConfirmSound;
+    [SerializeField] AudioClip m_uiConfirmSound;
 
-    AudioSource m_AudioSource;
+    AudioSource m_audioSource;
 
     // Use this for initialization
     void Awake()
@@ -48,11 +42,11 @@ public class UIManager : MonoBehaviour
 
     void SetupUIManagerSingleton()
     {
-        if (m_Instance == null)
+        if (m_instance == null)
         {
-            m_Instance = this;
+            m_instance = this;
         }
-        else if (m_Instance != this)
+        else if (m_instance != this)
         {
             Destroy(gameObject);
         }
@@ -62,37 +56,38 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach(UIState state in m_UIStates)
+        foreach(MenuPage p in m_menuPages)
         {
-            m_UIStateDictionary[state.m_UIStateType] = state.m_GameObject;
+            m_menuPageDictionary[p.m_menuPageType] = p.m_gameObject;
         }
 
-        m_AudioSource = GetComponent<AudioSource>();
+        // m_audioSource = GetComponent<AudioSource>();
     }
 
-    public void SetUIState(UIStateType newUIStateType)
+    public void SetMenuState(MenuPageType newMenuPageType)
     {
-        m_UIStateDictionary[m_CurrentUIStateType].SetActive(false);
-        m_UIStateDictionary[newUIStateType].SetActive(true);
+        // switch menu page
+        m_menuPageDictionary[m_currentMenuPage].SetActive(false);
+        m_menuPageDictionary[newMenuPageType].SetActive(true);
 
-        m_CurrentUIStateType = newUIStateType;
+        m_currentMenuPage = newMenuPageType;
     }
 
     public void PlayNextSound()
     {
-        PlaySound(m_UINextSound);
+        PlaySound(m_uiNextSound);
     }
 
     public void PlayConfirmSound()
     {
-        PlaySound(m_UIConfirmSound);
+        PlaySound(m_uiConfirmSound);
     }
 
     void PlaySound(AudioClip sound)
     {
-        if(m_AudioSource && sound)
+        if(m_audioSource && sound)
         {
-            m_AudioSource.PlayOneShot(sound);
+            m_audioSource.PlayOneShot(sound);
         }
     }
 }
