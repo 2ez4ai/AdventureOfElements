@@ -117,12 +117,10 @@ public class Menu : MonoBehaviour
 
     public void OnOptionClicked(){
         // Havent implemented yet.
-        Debug.Log("Settings.");
         UIManager.m_instance.SetMenuState(MenuPageType.Language);
     }
 
     public void OnBackToMainMenuClicked(){
-        Debug.Log("BackToMainMenu.");
         UIManager.m_instance.SetMenuState(MenuPageType.MainMenu);
     }
 

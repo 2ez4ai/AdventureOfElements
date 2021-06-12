@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Creature
   m_EditorClassIdentifier: 
   m_avatar: {fileID: 21300000, guid: 642c6bdfa9c7d6848bd10c84f8de627e, type: 3}
-  m_name: Baboon
+  m_name: Creature0
   m_lv: 1
   m_description: This is a baboon.
   m_maxHP: 30
-  m_attackType: 0
+  m_attackType: 3
   m_attackTypeIcon: {fileID: 21300000, guid: 58f556d6aa4ba0c458a304509fad3980, type: 3}
   m_attackMultiplier: 1
   m_injureType: 0

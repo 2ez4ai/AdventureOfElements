@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Creature1
   m_EditorClassIdentifier: 
   m_avatar: {fileID: 21300000, guid: 441d3b737fcc9014d85038c7552f817e, type: 3}
-  m_name: Cock
+  m_name: Creature1
   m_lv: 2
   m_description: This is a cock.
   m_maxHP: 40

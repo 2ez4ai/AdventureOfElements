@@ -10,7 +10,7 @@ public class SkillController : MonoBehaviour
     [SerializeField] SkillSelection m_skillSelection;
     [SerializeField] List<Skill> m_skillList = new List<Skill>();
 
-    [SerializeField] int m_numSkill = 5;
+    [SerializeField] int m_numSkill = 2;
     [SerializeField] List<int> m_learnedSkillLV = new List<int>();
 
     int m_randomSeed;

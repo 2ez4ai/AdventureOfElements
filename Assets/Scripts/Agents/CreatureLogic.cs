@@ -44,7 +44,7 @@ public class CreatureLogic : MonoBehaviour
     void SetHPUI(){
         string hpInfo = m_HP + " / " + m_maxHP;
         m_textHP.text = ": " + hpInfo;
-        string effect = "The creature has " + hpInfo + " HP left. You will win the battle when it is 0.";
-        UpdateIconTooltip(m_mouseOverHP, "HP", "", effect);
+        string effect = LocalizationManager.m_instance.GetLocalisedString("CreatureHPPart1") + hpInfo + LocalizationManager.m_instance.GetLocalisedString("CreatureHPPart2");
+        UpdateIconTooltip(m_mouseOverHP, LocalizationManager.m_instance.GetLocalisedString("HP"), "", effect);
     }
 }

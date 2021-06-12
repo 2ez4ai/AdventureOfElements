@@ -188,8 +188,7 @@ public class PlayerLogic : MonoBehaviour
     void SetAttackUI(int damage){
         m_textAttack.text = "x " + m_injureMultiplier + " (" + damage + ")";
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
-        string atkName = LocalizationManager.m_instance.GetLocalisedString(name[m_injureType]);
-        string effect = LocalizationManager.m_instance.GetLocalisedString("AtkTypePart1") + "<i>" + atkName + "</i>" + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart2") + damage + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart3");
+        string effect = LocalizationManager.m_instance.GetLocalisedString("AtkTypePart1") + "<i>" + LocalizationManager.m_instance.GetLocalisedString(name[m_injureType]) + "</i>" + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart2") + damage + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart3");
         UpdateIconTooltip(m_mouseOverSwordIcon, LocalizationManager.m_instance.GetLocalisedString("AtkType"), "", effect);
     }
 

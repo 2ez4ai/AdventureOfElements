@@ -17,6 +17,7 @@ public class Controller : MonoBehaviour
     [SerializeField] MouseOver m_creatureMouseOverAvatar;
     [SerializeField] MouseOver m_creatureMouseOverAttack;
     [SerializeField] MouseOver m_creatureMouseOverInjure;
+    [SerializeField] MouseOver m_creatureMouseOverInjureIcon;
     [SerializeField] SkillSlots m_creatureSkillSlots;
     // [SerializeField] SkillSlots m_creatureSkillSlots;
 
@@ -57,7 +58,7 @@ public class Controller : MonoBehaviour
         Sprite creatureAvatar = m_creatureList[m_creatureIndex].m_avatar;
         string creatureName = m_creatureList[m_creatureIndex].name;
         int creatureLv = m_creatureList[m_creatureIndex].m_lv;
-        string creatureDescription = m_creatureList[m_creatureIndex].m_description;
+        // string creatureDescription = m_creatureList[m_creatureIndex].m_description;
         int maxHP = m_creatureList[m_creatureIndex].m_maxHP;
         int attackType = m_creatureList[m_creatureIndex].m_attackType;
         Sprite attackTypeIcon = m_creatureList[m_creatureIndex].m_attackTypeIcon;
@@ -69,9 +70,9 @@ public class Controller : MonoBehaviour
 
         // Avatar Info: UI only
         m_creatureMouseOverAvatar.ChangeIcon(creatureAvatar);
-        m_creatureMouseOverAvatar.m_name = creatureName;
-        m_creatureMouseOverAvatar.m_level = "Lv. " + creatureLv;
-        m_creatureMouseOverAvatar.m_effect = creatureDescription;
+        m_creatureMouseOverAvatar.m_name = LocalizationManager.m_instance.GetLocalisedString(creatureName);
+        m_creatureMouseOverAvatar.m_level = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + creatureLv;
+        m_creatureMouseOverAvatar.m_effect = LocalizationManager.m_instance.GetLocalisedString(creatureName+"Description");
 
         // HP Info: logic only
         m_creature.m_HP = maxHP;
@@ -84,14 +85,16 @@ public class Controller : MonoBehaviour
         m_player.m_stepCnt = 0;
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
         m_creatureMouseOverAttack.ChangeIcon(attackTypeIcon);
-        m_creatureMouseOverAttack.m_name = name[attackType] + " Attack";
-        m_creatureMouseOverAttack.m_effect = "The damage caused by the creature depends on the number of <i>" + name[attackType] + "</i> tiles on the board.";
+        m_creatureMouseOverAttack.m_name = LocalizationManager.m_instance.GetLocalisedString(name[attackType]) + LocalizationManager.m_instance.GetLocalisedString("Attack");
+        m_creatureMouseOverAttack.m_effect = LocalizationManager.m_instance.GetLocalisedString("AtkDescriptionPart1") + "<i>" + LocalizationManager.m_instance.GetLocalisedString(name[attackType]) + "</i>" + LocalizationManager.m_instance.GetLocalisedString("AtkDescriptionPart2");
 
         // Injure Info: both UI and logic
         m_creature.m_injureType = injureType;
+        m_creatureMouseOverInjureIcon.m_name = LocalizationManager.m_instance.GetLocalisedString("Weakness1");
+        m_creatureMouseOverInjureIcon.m_effect = LocalizationManager.m_instance.GetLocalisedString("InjureDescription");
         m_creatureMouseOverInjure.ChangeIcon(injureTypeIcon);
-        m_creatureMouseOverInjure.m_name = name[injureType] + " Weakness";
-        m_creatureMouseOverInjure.m_effect = "The creature will take extra damage from the remove of <i>" + name[injureType] + "</i> tiles.";
+        m_creatureMouseOverInjure.m_name = LocalizationManager.m_instance.GetLocalisedString(name[injureType]) + LocalizationManager.m_instance.GetLocalisedString("Weakness");
+        m_creatureMouseOverInjure.m_effect = LocalizationManager.m_instance.GetLocalisedString("InjureDescriptionPart1") + "<i>" + LocalizationManager.m_instance.GetLocalisedString(name[injureType]) + "</i>" + LocalizationManager.m_instance.GetLocalisedString("InjureDescriptionPart2");
 
         // Trigger Skill
         m_creatureSkillSlots.CleanSlots();

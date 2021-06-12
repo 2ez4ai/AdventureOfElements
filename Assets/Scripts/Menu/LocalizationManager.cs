@@ -94,7 +94,7 @@ public class LocalizationManager : MonoBehaviour
         {
             if (!m_localizationText.ContainsKey(entry.FirstChild.InnerText))
             {
-                Debug.Log("Added Key: " + entry.FirstChild.InnerText + " with value: " + entry.LastChild.InnerText);
+                // Debug.Log("Added Key: " + entry.FirstChild.InnerText + " with value: " + entry.LastChild.InnerText);
                 m_localizationText.Add(entry.FirstChild.InnerText, entry.LastChild.InnerText);
             }
             else
