@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Creature7
   m_EditorClassIdentifier: 
   m_avatar: {fileID: 21300000, guid: 5f8efbb1faada9340b488ca02bb671b2, type: 3}
-  m_name: Whale
+  m_name: Creature7
   m_lv: 8
   m_description: This is a whale.
-  m_maxHP: 200
+  m_maxHP: 4
   m_attackType: 2
   m_attackTypeIcon: {fileID: 21300000, guid: a67213e88b13b0343b321a3b0f82b799, type: 3}
   m_attackMultiplier: 2

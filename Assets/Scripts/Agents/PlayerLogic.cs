@@ -139,7 +139,7 @@ public class PlayerLogic : MonoBehaviour
         if(temp > m_maxHP && m_gourdMaxHP != -1){
             int temp2 = temp - m_maxHP + m_gourdHP;
             m_gourdHP = temp2 > m_gourdMaxHP ? m_gourdMaxHP : temp2;
-            string effect = m_gourdEffect + " " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart1") + " <b>" + m_gourdHP + "</b> " + LocalizationManager.m_instance.GetLocalisedString(LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart2"));
+            string effect = m_gourdEffect + " " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart1") + " <b>" + m_gourdHP + "</b> " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart2");
             UpdateIconTooltip(m_mouseOverGourd, m_mouseOverGourd.m_name, m_mouseOverGourd.m_level, effect, m_mouseOverGourd.m_description);
         }
         SetHPUI();
@@ -164,7 +164,7 @@ public class PlayerLogic : MonoBehaviour
     public void SetGourdMaxHP(int proportion, string effect, MouseOver mouseOverGourd){
         m_mouseOverGourd = mouseOverGourd;
         m_gourdEffect = effect;
-        m_mouseOverGourd.m_effect = m_gourdEffect + " " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart1") + " <b>" + m_gourdHP + "</b> " + LocalizationManager.m_instance.GetLocalisedString(LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart2"));
+        m_mouseOverGourd.m_effect = m_gourdEffect + " " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart1") + " <b>" + m_gourdHP + "</b> " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart2");
         m_gourdProb = proportion;
         m_gourdMaxHP = proportion + (proportion - 30) * 2;
     }

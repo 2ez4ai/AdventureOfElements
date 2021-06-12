@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Creature5
   m_EditorClassIdentifier: 
   m_avatar: {fileID: 21300000, guid: ebef57ddcc65e8b44ae1e38e912931e6, type: 3}
-  m_name: Lion
+  m_name: Creature5
   m_lv: 6
   m_description: This is a lion.
-  m_maxHP: 140
+  m_maxHP: 4
   m_attackType: 3
   m_attackTypeIcon: {fileID: 21300000, guid: 58f556d6aa4ba0c458a304509fad3980, type: 3}
   m_attackMultiplier: 2

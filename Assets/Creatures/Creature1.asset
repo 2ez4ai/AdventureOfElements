@@ -16,7 +16,7 @@ MonoBehaviour:
   m_name: Creature1
   m_lv: 2
   m_description: This is a cock.
-  m_maxHP: 40
+  m_maxHP: 4
   m_attackType: 4
   m_attackTypeIcon: {fileID: 21300000, guid: c9f55b2a518d3cd4381a4ea592f52d13, type: 3}
   m_attackMultiplier: 1

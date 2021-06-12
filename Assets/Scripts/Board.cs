@@ -241,6 +241,7 @@ public class Board : MonoBehaviour
             Tile temp = new Tile();
             temp.tile = m_tilesInit[i];
             temp.logic = m_tilesInit[i].GetComponent<TileLogic>();
+            temp.logic.m_isSpecial = false;
             temp.color = Random.Range(0, m_numColor);    // logically
             temp.type = Random.Range(0, m_numType);    // logically
             temp.empty = false;

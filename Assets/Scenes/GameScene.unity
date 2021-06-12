@@ -2867,8 +2867,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0de6f1c941f79f741a439d8e6fe34f6c, type: 2}
   - {fileID: 11400000, guid: ecbf3b78b35e561498f76572ade5734d, type: 2}
   - {fileID: 11400000, guid: 9e2932bd625ea1c40958058e3ddcc144, type: 2}
-  m_numSkill: 5
-  m_learnedSkillLV: 
+  m_numSkill: 7
 --- !u!224 &920920760 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224530899739054090, guid: 8a4944bdb2721384d9261d9064af7bce, type: 3}

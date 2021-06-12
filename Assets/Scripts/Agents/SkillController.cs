@@ -10,8 +10,8 @@ public class SkillController : MonoBehaviour
     [SerializeField] SkillSelection m_skillSelection;
     [SerializeField] List<Skill> m_skillList = new List<Skill>();
 
-    [SerializeField] int m_numSkill = 2;
-    [SerializeField] List<int> m_learnedSkillLV = new List<int>();
+    [SerializeField] int m_numSkill;
+    List<int> m_learnedSkillLV = new List<int>();
 
     int m_randomSeed;
     List<int> m_generateList;
@@ -30,19 +30,23 @@ public class SkillController : MonoBehaviour
         for(int s = 0; s < m_skillList.Count; s++){
             m_exclusiveList.Add(false);
         }
+        // Debug.Log("Start checking " + m_skillList.Count + " skills requirement.");
         for(int s = 0; s < m_skillList.Count; s++){
             Skill skill = m_skillList[s];
             // already learned
             if(m_learnedSkillLV[skill.m_skillID] != 0 && m_learnedSkillLV[skill.m_skillID] >= skill.m_lv && !skill.m_linear){
+                // Debug.Log("Skill" + skill.m_name + " is already learned.");
                 continue;
             }
             // lv requirements
             if(skill.m_prerequisiteLV > level){
+                // Debug.Log("Skill" + skill.m_name + " should appear in higher levels.");
                 continue;
             }
             // skill requirements
             List<int> prerequisite = skill.m_prerequisiteSkill;
             bool satisfied = true;
+            // Debug.Log("Start checking prerequisites of " + "Skill" + skill.m_name);
             foreach(int ps in prerequisite){
                 if(m_learnedSkillLV[m_skillList[ps].m_skillID] < m_skillList[ps].m_lv){
                     // havent learned yet
@@ -51,12 +55,13 @@ public class SkillController : MonoBehaviour
                 }
             }
             if(satisfied){
+                // Debug.Log("Add skill " + skill.m_name);
                 m_generateList.Add(s);
             }
         }
-        // foreach(int s in m_generateList){
-        //     Debug.Log("Skill pool: " + m_skillList[s].m_name + " Lv. " + m_skillList[s].m_lv);
-        // }
+        foreach(int s in m_generateList){
+            Debug.Log("Skill pool: " + m_skillList[s].m_name + " Lv. " + m_skillList[s].m_lv);
+        }
     }
 
     public void GenerateLoadSkills(int level){
@@ -67,9 +72,9 @@ public class SkillController : MonoBehaviour
             Skill skill = m_skillList[m_generateList[skillIndex]];
             if(m_exclusiveList[m_generateList[skillIndex]]){
                 i--;
-                break;
+                continue;
             }
-            // m_exclusiveList[skillIndex] = true;
+            m_exclusiveList[m_generateList[skillIndex]] = true;
             foreach(int t in skill.m_exclusivePool){
                 m_exclusiveList[t] = true;
             }
