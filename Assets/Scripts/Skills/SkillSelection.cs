@@ -22,6 +22,11 @@ public class SkillSelection : MonoBehaviour
     public bool m_activated = false;
     int m_selected = -1;
 
+    int m_controllerY;
+    const float k_maxControllerCooldown = 0.5f;
+    const float k_maxControllerActivation = 3.0f;
+    float m_controllerCooldownTimer;
+    float m_controllerActivationTimer;
 
     void Awake()
     {
@@ -34,10 +39,46 @@ public class SkillSelection : MonoBehaviour
             m_toggleDescription.Add("");
         }
         m_btn.onClick.AddListener(SelectionDone);
+        m_controllerCooldownTimer = k_maxControllerCooldown;
+        m_controllerActivationTimer = 0.0f;
     }
 
     void Update(){
         CheckSelection();
+        ControllerSelection();
+    }
+
+    void ControllerSelection(){
+        if(m_controllerCooldownTimer < 0.0f){
+            bool makeSelection = false;
+            float horizontalInput = Input.GetAxis("Horizontal");
+            int oldIndex = m_selected;
+            if(horizontalInput > 0.1f){
+                m_selected = m_selected + 1 >= m_toggles.Length? m_toggles.Length - 1 : m_selected + 1;
+                makeSelection = true;
+            }
+            if(horizontalInput < -0.1f){
+                m_selected = m_selected - 1 >= 0 ? m_selected - 1 : 0;
+                makeSelection = true;
+            }
+            if(makeSelection){
+                if(oldIndex != -1){
+                    m_toggles[oldIndex].isOn = false;
+                }
+                m_toggles[m_selected].isOn = true;
+                m_controllerCooldownTimer = k_maxControllerCooldown;
+                m_controllerActivationTimer = k_maxControllerActivation;
+            }
+        }
+        else{
+            m_controllerCooldownTimer -= Time.deltaTime;
+        }
+
+        if(m_selected != -1 && Input.GetButtonDown("Fire1") && m_controllerActivationTimer > 0.0f){
+            SelectionDone();
+        }
+
+        m_controllerActivationTimer -= Time.deltaTime;
     }
 
     void CheckSelection()
@@ -82,6 +123,5 @@ public class SkillSelection : MonoBehaviour
         m_toggleLV[index] = lv;
         m_toggleEffect[index] = effect;
         m_toggleDescription[index] = description;
-
     }
 }

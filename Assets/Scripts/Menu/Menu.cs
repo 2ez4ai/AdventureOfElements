@@ -126,7 +126,6 @@ public class Menu : MonoBehaviour
 
     public void OnQuitClicked(){
         // play confirm sound
-        Debug.Log("Quit.");
         Application.Quit();
     }
 

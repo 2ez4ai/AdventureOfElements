@@ -34,6 +34,17 @@ public class PlayerLogic : MonoBehaviour
     [SerializeField] MouseOver m_mouseOverFreqIcon;
     [SerializeField] MouseOver m_mouseOverAvatar;
 
+    const int k_row = 8;
+    const int k_col = 8;
+    List<Tile> m_tilesForController = new List<Tile>();
+    int m_controllerX;
+    int m_controllerY;
+    const float k_maxControllerCooldown = 0.5f;
+    const float k_maxControllerActivation = 3.0f;
+    float m_controllerCooldownTimer;
+    float m_controllerActivationTimer;
+    public bool controllable;
+
     // skill
     int m_bonusHP = 0;
     // gourd
@@ -52,6 +63,12 @@ public class PlayerLogic : MonoBehaviour
     {
         m_numColor = m_boardScript.m_numColor;
         m_numType = m_boardScript.m_numType;
+        m_tilesForController = m_boardScript.TilesToPlayer();
+        m_controllerX = 0;
+        m_controllerY = 0;
+        m_controllerCooldownTimer = k_maxControllerCooldown;
+        m_controllerActivationTimer = 0.0f;
+        controllable = true;
         m_language = LocalizationManager.m_instance.GetLanguage();
         string playerName = LocalizationManager.m_instance.GetLocalisedString("PlayerName");
         string LV = LocalizationManager.m_instance.GetLocalisedString("LV") + " 99";
@@ -65,6 +82,7 @@ public class PlayerLogic : MonoBehaviour
     void Update()
     {
         ClickMouse();
+        Controller();    // for controller
         CheckLanguage();
     }
 
@@ -95,6 +113,71 @@ public class PlayerLogic : MonoBehaviour
                 }
             }
         }
+    }
+
+    void Controller(){
+        if(controllable && m_controllerCooldownTimer < 0.0f){
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+            bool changed = false;
+            int oldIndex = m_boardScript.RCToIndex(m_controllerX, m_controllerY);
+            // every time we only allow one direction move
+            if(horizontalInput > 0.2f){
+                if(m_boardScript.RCInBoard(m_controllerX, m_controllerY+1)){
+                    m_controllerY += 1;
+                    changed = true;
+                }
+            }
+            else if(horizontalInput < -0.2f){
+                if(m_boardScript.RCInBoard(m_controllerX, m_controllerY-1)){
+                    m_controllerY -= 1;
+                    changed = true;
+                }
+            }
+            else if(verticalInput > 0.2f){
+                if(m_boardScript.RCInBoard(m_controllerX+1, m_controllerY)){
+                    m_controllerX += 1;
+                    changed = true;
+                }
+            }
+            else if(verticalInput < -0.2f){
+                if(m_boardScript.RCInBoard(m_controllerX-1, m_controllerY)){
+                    m_controllerX -= 1;
+                    changed = true;
+                }
+            }
+
+            if(changed){
+                ControllerOnTile(oldIndex, false);
+                ControllerOnTile(m_boardScript.RCToIndex(m_controllerX, m_controllerY), true);
+                m_controllerCooldownTimer = k_maxControllerCooldown;
+                m_controllerActivationTimer = k_maxControllerActivation;    // there is an operation
+            }
+        }
+        else{
+            m_controllerCooldownTimer -= Time.deltaTime;
+        }
+
+        if(Input.GetButtonDown("Fire1") && m_controllerActivationTimer > 0.0f){
+            TilesSelection(m_tilesForController[m_boardScript.RCToIndex(m_controllerX, m_controllerY)].tile);
+        }
+
+        m_controllerActivationTimer -= Time.deltaTime;
+    }
+
+    void ControllerOnTile(int index, bool activate){
+        Vector3 temp = m_tilesForController[index].tile.transform.position;
+        if(activate){
+            if(!m_tilesForController[index].logic.m_selected){
+                temp.x = 0.85f;
+            }
+        }
+        else{
+            if(!m_tilesForController[index].logic.m_selected){
+                temp.x = 0.0f;
+            }
+        }
+        m_tilesForController[index].tile.transform.position = temp;
     }
 
     void TilesSelection(GameObject tile){

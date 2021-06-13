@@ -138,6 +138,7 @@ public class SkillController : MonoBehaviour
             }
         }
         m_controller.BoardExpand();
+        m_player.controllable = true;
     }
 
     public bool SkillSelectionActivation(){

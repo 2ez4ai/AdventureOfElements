@@ -14,7 +14,6 @@ public class Tile{
     public int emptyTilesCnt = 0;    // drop from where
     public bool drop = false;
     public bool dropUsed = false;
-    // public bool borderDrop = false;    // the tiles is removed at the border
     public Vector3 dropStartV;
     public Vector3 dropDestV;
 
@@ -50,7 +49,7 @@ public class Board : MonoBehaviour
     // board settings
     const int k_row = 8;
     const int k_col = 8;
-    [SerializeField] public int m_dirIndex = 1;
+    [SerializeField] public int m_dirIndex = 1;    // other direction can be buggy
     List<(int r, int c)> m_direction = new List<(int r, int c)>{(1, 0), (-1, 0), (0, -1), (0, 1)};    // to where
     float m_rDist;    // the distance between two row
     float m_cDist;
@@ -125,7 +124,7 @@ public class Board : MonoBehaviour
         return (row, col);
     }
 
-    int RCToIndex(int row, int col){
+    public int RCToIndex(int row, int col){
         return row * k_col + col;
     }
 
@@ -206,7 +205,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    bool RCInBoard(int r, int c){
+    public bool RCInBoard(int r, int c){
         if(r < 0 || c < 0 || r >= k_row || c >= k_col ){
             return false;
         }

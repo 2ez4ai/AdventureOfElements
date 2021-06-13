@@ -21,6 +21,9 @@ public class IngameMenu : MonoBehaviour
     {
         // if controller.start is pressed
         // CallOutMenu();
+        if(Input.GetButtonDown("Cancel")){
+            MenuController();
+        }
     }
 
     public void MenuController(){
