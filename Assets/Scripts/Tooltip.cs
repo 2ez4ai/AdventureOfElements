@@ -30,8 +30,6 @@ public class Tooltip : MonoBehaviour
     }
 
     public void CloseInfo(){
-        if(!m_disabled){
-            gameObject.SetActive(false);
-        }
+        gameObject.SetActive(false);
     }
 }
