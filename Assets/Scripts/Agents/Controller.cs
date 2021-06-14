@@ -204,5 +204,6 @@ public class Controller : MonoBehaviour
     public void SaveData(){
         PlayerPrefs.SetInt("Level", m_level);
         PlayerPrefs.SetInt("CreatureIndex", m_creatureIndex);
+        PlayerPrefs.SetInt("RandomSeed", m_board.randomSeed);
     }
 }

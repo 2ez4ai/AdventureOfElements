@@ -43,8 +43,7 @@ public class Tile{
 
 public class Board : MonoBehaviour
 {
-    [SerializeField]
-    public int m_randomSeed = 0;
+    [SerializeField] public int randomSeed = 0;
 
     // board settings
     const int k_row = 8;
@@ -221,14 +220,19 @@ public class Board : MonoBehaviour
 
     void InitSeed(){
         // init random seed
-        if(m_randomSeed == 0){
-            // generate a new randomseed
-            m_randomSeed = Random.Range(10000000, 99999999);
+        // if(randomSeed == 0){
+        //     // generate a new randomseed
+        //     randomSeed = Random.Range(10000000, 99999999);
+        // }
+        randomSeed = Random.Range(10000000, 99999999);
+        if(LocalizationManager.m_instance.loadChecker){
+            randomSeed = PlayerPrefs.GetInt("RandomSeed");
         }
-        Random.InitState(m_randomSeed);
+        Random.InitState(randomSeed);
     }
 
     public void Initialization(){
+        InitSeed();
         InitTiles();
         InitCheck();    // make sure there is no matching at the begining
         InitDraw();

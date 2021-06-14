@@ -150,7 +150,6 @@ public class SkillController : MonoBehaviour
             case 12:
                 learned = true;
                 break;
-
         }
         if(learned){
             m_playerSkillSlots.FillSkillSlot(skill);

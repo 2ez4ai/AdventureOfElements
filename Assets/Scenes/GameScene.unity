@@ -2981,7 +2981,7 @@ MonoBehaviour:
   m_skillController: {fileID: 910186081}
   m_loseBtn: {fileID: 308502286}
   m_blocker: {fileID: 652778278}
-  m_levelRemainder: {fileID: 677298848}
+  m_levelReminder: {fileID: 677298848}
 --- !u!4 &910186080
 Transform:
   m_ObjectHideFlags: 0
