@@ -107,12 +107,14 @@ public class Menu : MonoBehaviour
 
     public void OnStartClicked(){
         // UIManager.m_Instance.PlayConfirmSound();
+        LocalizationManager.m_instance.loadChecker = false;
         SceneManager.LoadScene("GameScene");
     }
 
     public void OnLoadClicked(){
         // Havent implemented yet.
-        Debug.Log("Load nothing.");
+        LocalizationManager.m_instance.loadChecker = true;
+        SceneManager.LoadScene("GameScene");
     }
 
     public void OnOptionClicked(){

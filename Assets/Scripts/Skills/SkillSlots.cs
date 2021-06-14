@@ -10,7 +10,8 @@ public class SkillSlots : MonoBehaviour
     [SerializeField] int m_numSkill = 7;
 
     List<GameObject> m_skillSlots = new List<GameObject>();
-    List<int> m_skillOccupy = new List<int>();
+
+    List<int> m_skillOccupyWhichSlot = new List<int>();    // indicates which slot the skill has occupied
     List<MouseOver> m_mouseOverSkillSlots = new List<MouseOver>();
     List<SkillLV> m_skillLV = new List<SkillLV>();
 
@@ -25,7 +26,12 @@ public class SkillSlots : MonoBehaviour
             m_skillSlots[i].SetActive(false);
         }
         for(int i = 0; i < m_numSkill; i++){
-            m_skillOccupy.Add(-1);
+            m_skillOccupyWhichSlot.Add(-1);
+        }
+        if(LocalizationManager.m_instance.loadChecker){
+            for(int i = 0; i < m_numSkill; i++){
+                m_skillOccupyWhichSlot.Add(i);
+            }
         }
         m_index = 0;
     }
@@ -35,7 +41,7 @@ public class SkillSlots : MonoBehaviour
             m_skillSlots[i].SetActive(false);
         }
         for(int i = 0; i < m_numSkill; i++){
-            m_skillOccupy[i] = -1;
+            m_skillOccupyWhichSlot[i] = -1;
         }
         m_index = 0;
     }
@@ -53,9 +59,9 @@ public class SkillSlots : MonoBehaviour
             return;
         }
 
-        if(m_skillOccupy[skill.m_skillID] != -1){
-            // already occupy one slot
-            temp = m_skillOccupy[skill.m_skillID];
+        if(m_skillOccupyWhichSlot[skill.m_skillID] != -1){
+            // already occupied one slot
+            temp = m_skillOccupyWhichSlot[skill.m_skillID];
         }
         else{
             m_index ++;
@@ -77,6 +83,6 @@ public class SkillSlots : MonoBehaviour
         if(skill.m_linear){
             m_mouseOverSkillSlots[temp].m_level = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + m_skillLV[temp].GetLevel();
         }
-        m_skillOccupy[skill.m_skillID] = temp;
+        m_skillOccupyWhichSlot[skill.m_skillID] = temp;
     }
 }

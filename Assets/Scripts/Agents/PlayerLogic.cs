@@ -53,6 +53,10 @@ public class PlayerLogic : MonoBehaviour
     int m_gourdHP = 0;
     int m_gourdProb = 0;
     int m_gourdMaxHP = -1;
+    // special
+    int m_specialLevel = -1;
+    // diagonal
+    int m_diagonalLevel = -1;
     // stomp
     int m_stompLevel = 0;
 
@@ -75,6 +79,11 @@ public class PlayerLogic : MonoBehaviour
         string playerDescription = LocalizationManager.m_instance.GetLocalisedString("PlayerDescription");
         string playerRemark = LocalizationManager.m_instance.GetLocalisedString("PlayerRemark");
         UpdateIconTooltip(m_mouseOverAvatar, playerName, LV, playerDescription, playerRemark);
+        if(LocalizationManager.m_instance.loadChecker){
+            Debug.Log("Load player.");
+            m_HP = 20;
+            m_maxHP = 200;
+        }
         InitUI();
     }
 
@@ -209,14 +218,16 @@ public class PlayerLogic : MonoBehaviour
 
     // Skill
     public void LearnSpecial(int level){
+        m_specialLevel = level;
         m_boardScript.m_specialSkill = level;
     }
 
     public void LearnDiagonal(int level){
+        m_diagonalLevel = level;
         m_boardScript.m_diagonalSwapLV = level;
     }
 
-    public void LearnGourd(int regenHP){
+    public void RegenHP(int regenHP){
         int temp = m_HP + regenHP + m_bonusHP;
         m_HP = temp > m_maxHP ? m_maxHP : temp;
         if(temp > m_maxHP && m_gourdMaxHP != -1){
@@ -235,7 +246,6 @@ public class PlayerLogic : MonoBehaviour
     }
 
     void StompActivation(){
-        // Debug.Log("Disabled!");
         m_boardScript.m_stompSkillLogic.DisableTrailer();
         m_boardScript.GenerateStompArea(m_stompLevel);
     }
@@ -321,5 +331,39 @@ public class PlayerLogic : MonoBehaviour
             }
         }
         return damage * m_injureMultiplier;
+    }
+
+    public void SaveData(){
+        // save HP
+        PlayerPrefs.SetInt("HP", m_HP);
+        // save maxHP
+        PlayerPrefs.SetInt("MaxHP", m_maxHP);
+        // skill bonus
+        PlayerPrefs.SetInt("BonusHP", m_bonusHP);
+        // skill gourd
+        PlayerPrefs.SetInt("AcquiredGourd", m_gourdMaxHP);
+        PlayerPrefs.SetInt("GourdHP", m_gourdHP);
+        PlayerPrefs.SetInt("GourdProb", m_gourdProb);
+        // skill special
+        PlayerPrefs.SetInt("SkillSpecialLevel", m_specialLevel);
+        // skill diagonal
+        PlayerPrefs.SetInt("SkillDiagonalLevel", m_diagonalLevel);
+        // skill stomp
+        PlayerPrefs.SetInt("SkillStompLevel", m_stompLevel);
+    }
+
+    public void LoadData(){
+        m_HP = PlayerPrefs.GetInt("HP");
+        m_maxHP = PlayerPrefs.GetInt("MaxHP");
+        m_bonusHP = PlayerPrefs.GetInt("BonusHP");
+        // load gourd
+        m_gourdMaxHP = PlayerPrefs.GetInt("AcquiredGourd");
+        if(m_gourdMaxHP != -1){
+            m_gourdHP = PlayerPrefs.GetInt("GourdHP");
+            m_gourdProb = PlayerPrefs.GetInt("GourdProb");
+        }
+        LearnSpecial(PlayerPrefs.GetInt("SkillSpecialLevel"));
+        LearnDiagonal(PlayerPrefs.GetInt("SkillDiagonalLevel"));
+        LearnStomp(PlayerPrefs.GetInt("SkillStompLevel"));
     }
 }

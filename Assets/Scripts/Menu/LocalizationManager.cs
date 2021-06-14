@@ -19,6 +19,8 @@ public class LocalizationManager : MonoBehaviour
     Dictionary<string, TextAsset> m_localizationFiles = new Dictionary<string, TextAsset>();
     Dictionary<string, string> m_localizationText = new Dictionary<string, string>();
 
+    public bool loadChecker = false;
+
     // Use this for initialization
     void Awake()
     {

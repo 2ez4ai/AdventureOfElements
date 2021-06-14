@@ -110,6 +110,9 @@ public class Board : MonoBehaviour
         UAniRemove();
         UAniTileDrop();
         UCheckMap();
+    }
+
+    void FixedUpdate(){
         UBoardExpand();
         UBoardShrink();
     }

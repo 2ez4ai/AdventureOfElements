@@ -8,22 +8,31 @@ public class SkillController : MonoBehaviour
     [SerializeField] PlayerLogic m_player;
     [SerializeField] SkillSlots m_playerSkillSlots;
     [SerializeField] SkillSelection m_skillSelection;
-    [SerializeField] List<Skill> m_skillList = new List<Skill>();
+    [SerializeField] List<Skill> m_skillList = new List<Skill>();    // all the skills with considering skill levels
 
-    [SerializeField] int m_numSkill;
-    List<int> m_learnedSkillLV = new List<int>();
+    [SerializeField] int m_numSkill;    // total number of skills without considering skill levels
+    List<int> m_learnedSkillLV = new List<int>();    // m_learnedSkillLV.Count = m_numSkill
 
     int m_randomSeed;
     List<int> m_generateList;
     List<bool> m_exclusiveList;
 
     void Awake() {
-        for(int i = 0; i < m_numSkill; i++){
-            m_learnedSkillLV.Add(0);
+        if(LocalizationManager.m_instance.loadChecker){
+            Debug.Log("Load Skill!");
+            for(int i = 0; i < m_numSkill; i++){
+                m_learnedSkillLV.Add(1);
+            }
+        }
+        else{
+            for(int i = 0; i < m_numSkill; i++){
+                m_learnedSkillLV.Add(0);
+            }
         }
     }
 
     void UpdateGenerateList(int level){
+        // Get a pool of all the skills of which the requirements are satisfied
         // Debug.Log("Lv. " + level);
         m_generateList = new List<int>();
         m_exclusiveList = new List<bool>();
@@ -65,6 +74,7 @@ public class SkillController : MonoBehaviour
     }
 
     public void GenerateLoadSkills(int level){
+        // Get three skills from the skill pool
         m_skillSelection.m_activated = true;
         UpdateGenerateList(level);
         for(int i = 0; i < 3; i++){
@@ -93,12 +103,14 @@ public class SkillController : MonoBehaviour
     }
 
     public void SkillUpdate(int id){
+        // Called in SkillSelection.cs when the confirm button is clicked
+        // id: considers skill level
         bool learned = false;
         Skill skill = m_skillList[id];
         switch(id){
             case 0:    // restore hp
             case 1:
-                m_player.LearnGourd(skill.m_keyValue);
+                m_player.RegenHP(skill.m_keyValue);
                 break;
             case 2:    // increase maximum HP
                 m_player.m_maxHP += skill.m_keyValue;
@@ -156,5 +168,9 @@ public class SkillController : MonoBehaviour
 
     public void CleanCreatureSkills(){
         m_player.LearnStomp(0);
+    }
+
+    public void SaveData(){
+
     }
 }

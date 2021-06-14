@@ -908,6 +908,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5717915020805316194, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717915020805316194, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717915020805316194, guid: 4437210fdb4b8c14e99a9f0f0a0ef163, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2995,9 +3003,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 69ca10e161ce280459ee60d32ab6d014, type: 2}
   - {fileID: 11400000, guid: 4399aaccf8d4aa4488c6e302dff13c07, type: 2}
   - {fileID: 11400000, guid: ae54b72bc686d754f814d2414e54eb97, type: 2}
+  - {fileID: 11400000, guid: b7a107be4164c764199bd8d4c4f677a8, type: 2}
+  - {fileID: 11400000, guid: 070e8165d896b6e4d9d22cfb2ef84379, type: 2}
   - {fileID: 11400000, guid: 8d61ed94c81bebd448b3b3052cf86685, type: 2}
+  - {fileID: 11400000, guid: a87315b12e9555048b75239417fce9db, type: 2}
+  - {fileID: 11400000, guid: d4427f8d1cfb72546b086b795a9decb4, type: 2}
   - {fileID: 11400000, guid: 9837f767c7fee8d4ca57cd182fb87558, type: 2}
   - {fileID: 11400000, guid: 0de6f1c941f79f741a439d8e6fe34f6c, type: 2}
+  - {fileID: 11400000, guid: ecbf3b78b35e561498f76572ade5734d, type: 2}
+  - {fileID: 11400000, guid: 9e2932bd625ea1c40958058e3ddcc144, type: 2}
   m_numSkill: 7
 --- !u!224 &920920760 stripped
 RectTransform:
@@ -3118,6 +3132,7 @@ MonoBehaviour:
   m_textFreq: {fileID: 453675932}
   m_mouseOverFreqIcon: {fileID: 707656881}
   m_mouseOverAvatar: {fileID: 973771127}
+  controllable: 0
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0

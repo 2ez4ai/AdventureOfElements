@@ -8,7 +8,6 @@ public class Controller : MonoBehaviour
     // ------------------------------------------------------------------------
     // use to control levels, skills.
     // ------------------------------------------------------------------------
-    int m_level = 1;    // current map level
     [SerializeField] Board m_board;
     [SerializeField] PlayerLogic m_player;
     [SerializeField] CreatureLogic m_creature;
@@ -19,46 +18,71 @@ public class Controller : MonoBehaviour
     [SerializeField] MouseOver m_creatureMouseOverInjure;
     [SerializeField] MouseOver m_creatureMouseOverInjureIcon;
     [SerializeField] SkillSlots m_creatureSkillSlots;
-    // [SerializeField] SkillSlots m_creatureSkillSlots;
 
     [SerializeField] DialogScript m_dialogScript;
-    // win
+    // if win
     [SerializeField] SkillController m_skillController;
-    // lose
+    // if lose
     [SerializeField] LoseButton m_loseBtn;
 
     [SerializeField] Collider m_blocker;
-    [SerializeField] GameObject m_levelRemainder;
 
+    int m_level = 1;    // current map level
+    [SerializeField] GameObject m_levelRemainder;
     int m_creatureIndex = 0;
     bool m_loadReady = false;
+
+    float m_firstLoadingDuration = 1.3f;
+    bool m_loadingFinish = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        GenerateCreature();
+        if(LocalizationManager.m_instance.loadChecker){
+            // m_level = PlayerPrefs.GetInt("Level");
+            // m_creatureIndex = PlayerPrefs.GetInt("CreatureIndex");
+            m_level = 2;
+            m_creatureIndex = 1;
+            GenerateCreatureIndex(m_creatureIndex);
+        }
+        else{
+            GenerateCreatureIndex();
+        }
+        m_levelRemainder.SetActive(true);
+        m_levelRemainder.GetComponent<Text>().text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
+        m_blocker.enabled = true;
         LoadCreature();
     }
 
     // Update is called once per frame
     void Update()
     {
-        BattleUpdate();
+        m_firstLoadingDuration -= Time.deltaTime;
+        if(!m_loadingFinish && m_firstLoadingDuration < 0){
+            m_loadingFinish = true;
+            m_levelRemainder.SetActive(false);
+            m_blocker.enabled = false;
+        }
         ULoadCreature();
+        BattleUpdate();
     }
 
-    void GenerateCreature(){
+    void GenerateCreatureIndex(int load=-1){
         m_board.Initialization();
         // m_player.m_HP = 150;
-        m_creatureIndex = Random.Range(0, m_creatureList.Count);
+        if(load == -1){
+            m_creatureIndex = Random.Range(0, m_creatureList.Count);    // the generation should be based on the current level
+        }
+        else{
+            m_creatureIndex = load;
+        }
     }
 
     void LoadCreature(){
-        // retrieve data, set those wont be changed info
+        // retrieve data, set info that wont be changed
         Sprite creatureAvatar = m_creatureList[m_creatureIndex].m_avatar;
         string creatureName = m_creatureList[m_creatureIndex].name;
         int creatureLv = m_creatureList[m_creatureIndex].m_lv;
-        // string creatureDescription = m_creatureList[m_creatureIndex].m_description;
         int maxHP = m_creatureList[m_creatureIndex].m_maxHP;
         int attackType = m_creatureList[m_creatureIndex].m_attackType;
         Sprite attackTypeIcon = m_creatureList[m_creatureIndex].m_attackTypeIcon;
@@ -138,7 +162,7 @@ public class Controller : MonoBehaviour
                     m_skillController.GenerateLoadSkills(m_level);
                     m_level ++;
                     BoardShrink();
-                    GenerateCreature();
+                    GenerateCreatureIndex();
                     m_creature.m_HP = 1;
                     m_player.controllable = false;
                     Debug.Log("You win.");
@@ -165,14 +189,20 @@ public class Controller : MonoBehaviour
         m_levelRemainder.SetActive(true);
         m_levelRemainder.GetComponent<Text>().text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
         m_loadReady = true;
+        m_blocker.enabled = true;
     }
 
     void ULoadCreature(){
         if(m_loadReady && !m_board.m_isExpanding){
-            LoadCreature();
             m_loadReady = false;
             m_levelRemainder.SetActive(false);
             m_blocker.enabled = false;
+            LoadCreature();
         }
+    }
+
+    public void SaveData(){
+        PlayerPrefs.SetInt("Level", m_level);
+        PlayerPrefs.SetInt("CreatureIndex", m_creatureIndex);
     }
 }

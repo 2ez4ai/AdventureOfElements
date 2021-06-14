@@ -10,9 +10,7 @@ public class IK : MonoBehaviour
     NavMeshAgent m_navMeshAgent;
 
     [SerializeField] Transform m_leftHandTarget;
-
     [SerializeField] Transform m_leftFootTransform;
-
     [SerializeField] Transform m_rightFootTransform;
 
     [SerializeField] Transform m_navStart;
