@@ -57,7 +57,7 @@ public class LocalizationManager : MonoBehaviour
             if (textAsset)
             {
                 m_localizationFiles[textAsset.name] = textAsset;
-                Debug.Log("Text Asset: " + textAsset.name);
+                // Debug.Log("Text Asset: " + textAsset.name);
             }
             else
             {
@@ -74,7 +74,7 @@ public class LocalizationManager : MonoBehaviour
         // Search for the specified language file
         if (m_localizationFiles.ContainsKey(m_language.ToString()))
         {
-            Debug.Log("Selected language: " + m_language);
+            // Debug.Log("Selected language: " + m_language);
             textAsset = m_localizationFiles[m_language.ToString()];
         }
         // If we can't find the specific language default to English

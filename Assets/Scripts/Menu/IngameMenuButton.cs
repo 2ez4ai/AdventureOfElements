@@ -63,7 +63,11 @@ public class IngameMenuButton : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    void UpdateSelection(){
+    public void UpdateSelection(int mouseParam = -1){
+        // mouseParam: 0 -> back; 1 ->quit
+        if(mouseParam != -1){
+            m_currentIndex = mouseParam;
+        }
         if(m_currentIndex == 0){
             m_backBtn.Select();
         }

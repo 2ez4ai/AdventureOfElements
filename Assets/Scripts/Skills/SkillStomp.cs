@@ -14,7 +14,6 @@ public class SkillStomp : MonoBehaviour
     [SerializeField] float m_debugS;
 
     float timer = 0;
-    int m_im = 0;
 
     void Start(){
         foreach(GameObject t in m_drawers){

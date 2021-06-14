@@ -39,10 +39,8 @@ public class Controller : MonoBehaviour
     void Start()
     {
         if(LocalizationManager.m_instance.loadChecker){
-            // m_level = PlayerPrefs.GetInt("Level");
-            // m_creatureIndex = PlayerPrefs.GetInt("CreatureIndex");
-            m_level = 2;
-            m_creatureIndex = 1;
+            m_level = PlayerPrefs.GetInt("Level");
+            m_creatureIndex = PlayerPrefs.GetInt("CreatureIndex");
             GenerateCreatureIndex(m_creatureIndex);
         }
         else{

@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
     SkillController m_skillController;
 
     void Awake(){
-        if(m_instance == null){
+        if (m_instance == null)
+        {
             m_instance = this;
         }
-        else{
+        else
+        {
             Destroy(gameObject);
         }
     }
@@ -29,14 +31,16 @@ public class GameManager : MonoBehaviour
     }
 
     public void SaveData(){
+        m_playerLogic.SaveData();
         m_controller.SaveData();
         m_skillController.SaveData();
-        m_playerLogic.SaveData();
+        PlayerPrefs.SetInt("Loadable", 1);
+        PlayerPrefs.Save();
     }
 
-    public void LoadData(){
-        // m_controller.LoadData();    // no explict function; done by checking Localisation.m_loadChecker
-        // m_skillController.LoadData();
-        m_playerLogic.LoadData();
-    }
+    // public void LoadData(){
+    //     // m_controller.LoadData();    // no explict function; done by checking Localisation.m_loadChecker
+    //     // m_skillController.LoadData();
+    //     m_playerLogic.LoadData();
+    // }
 }

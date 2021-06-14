@@ -7,13 +7,13 @@ public class SkillSlots : MonoBehaviour
     [SerializeField] PlayerLogic m_player;
     [SerializeField] bool m_creature;
     [SerializeField] int m_numSlots = 12;
-    [SerializeField] int m_numSkill = 7;
+    [SerializeField] int m_numSkill = 7;    // number of skills without considering levels
 
     List<GameObject> m_skillSlots = new List<GameObject>();
 
-    List<int> m_skillOccupyWhichSlot = new List<int>();    // indicates which slot the skill has occupied
-    List<MouseOver> m_mouseOverSkillSlots = new List<MouseOver>();
-    List<SkillLV> m_skillLV = new List<SkillLV>();
+    List<int> m_skillOccupyWhichSlot = new List<int>();    // indicates which slot the skill has occupied according to the skill ID
+    List<MouseOver> m_mouseOverSkillSlots = new List<MouseOver>();    // available slots
+    List<SkillLV> m_skillLVText = new List<SkillLV>();    // indicates the level of skills
 
     int m_index;
 
@@ -22,16 +22,11 @@ public class SkillSlots : MonoBehaviour
         for(int i = 0; i < m_numSlots; i++){
             m_skillSlots.Add(transform.Find("Slot " + i).gameObject);
             m_mouseOverSkillSlots.Add(m_skillSlots[i].GetComponent<MouseOver>());
-            m_skillLV.Add(m_skillSlots[i].GetComponent<SkillLV>());
+            m_skillLVText.Add(m_skillSlots[i].GetComponent<SkillLV>());
             m_skillSlots[i].SetActive(false);
         }
         for(int i = 0; i < m_numSkill; i++){
             m_skillOccupyWhichSlot.Add(-1);
-        }
-        if(LocalizationManager.m_instance.loadChecker){
-            for(int i = 0; i < m_numSkill; i++){
-                m_skillOccupyWhichSlot.Add(i);
-            }
         }
         m_index = 0;
     }
@@ -55,7 +50,7 @@ public class SkillSlots : MonoBehaviour
             m_mouseOverSkillSlots[temp].m_level = "Lv. " + skill.m_lv;
             m_mouseOverSkillSlots[temp].m_effect = skill.m_effect;
             m_mouseOverSkillSlots[temp].m_description = skill.m_description;
-            m_skillLV[temp].SetLevel(skill.m_lv, skill.m_linear);
+            m_skillLVText[temp].SetLevel(skill.m_lv, skill.m_linear);
             return;
         }
 
@@ -79,9 +74,9 @@ public class SkillSlots : MonoBehaviour
                 break;
         }
         m_mouseOverSkillSlots[temp].m_description = LocalizationManager.m_instance.GetLocalisedString(skill.m_name+"Description");
-        m_skillLV[temp].SetLevel(skill.m_lv, skill.m_linear);
+        m_skillLVText[temp].SetLevel(skill.m_lv, skill.m_linear);
         if(skill.m_linear){
-            m_mouseOverSkillSlots[temp].m_level = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + m_skillLV[temp].GetLevel();
+            m_mouseOverSkillSlots[temp].m_level = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + m_skillLVText[temp].GetLevel();
         }
         m_skillOccupyWhichSlot[skill.m_skillID] = temp;
     }

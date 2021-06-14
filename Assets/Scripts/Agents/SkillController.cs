@@ -8,7 +8,10 @@ public class SkillController : MonoBehaviour
     [SerializeField] PlayerLogic m_player;
     [SerializeField] SkillSlots m_playerSkillSlots;
     [SerializeField] SkillSelection m_skillSelection;
+
     [SerializeField] List<Skill> m_skillList = new List<Skill>();    // all the skills with considering skill levels
+    List<int> m_learnedIDQueue = new List<int>();
+    int m_queueIndex = 0;
 
     [SerializeField] int m_numSkill;    // total number of skills without considering skill levels
     List<int> m_learnedSkillLV = new List<int>();    // m_learnedSkillLV.Count = m_numSkill
@@ -17,17 +20,26 @@ public class SkillController : MonoBehaviour
     List<int> m_generateList;
     List<bool> m_exclusiveList;
 
-    void Awake() {
-        if(LocalizationManager.m_instance.loadChecker){
-            Debug.Log("Load Skill!");
-            for(int i = 0; i < m_numSkill; i++){
-                m_learnedSkillLV.Add(1);
-            }
+    void Start() {
+        for(int i = 0; i < m_skillList.Count; i++){
+            m_learnedIDQueue.Add(-1);
         }
-        else{
-            for(int i = 0; i < m_numSkill; i++){
-                m_learnedSkillLV.Add(0);
+
+        for(int i = 0; i < m_numSkill; i++){
+            m_learnedSkillLV.Add(0);
+        }
+
+        if(LocalizationManager.m_instance.loadChecker){
+            for(int i = 0; i < m_skillList.Count; i++){
+                int temp = PlayerPrefs.GetInt("LearnedSkillQueue" + i);
+                m_learnedIDQueue[i] = temp;
+                if(temp == -1){
+                    break;
+                }
+                // Debug.Log("Learned " + m_skillList[temp].m_name);
+                SkillUpdate(temp, true);
             }
+            m_player.LoadData();
         }
     }
 
@@ -102,7 +114,7 @@ public class SkillController : MonoBehaviour
         }
     }
 
-    public void SkillUpdate(int id){
+    public void SkillUpdate(int id, bool load = false){
         // Called in SkillSelection.cs when the confirm button is clicked
         // id: considers skill level
         bool learned = false;
@@ -148,9 +160,20 @@ public class SkillController : MonoBehaviour
             else{
                 m_learnedSkillLV[skill.m_skillID] = m_skillList[id].m_lv;
             }
+            m_learnedIDQueue[m_queueIndex] = id;
+            m_queueIndex ++;
+            // foreach(int i in m_learnedIDQueue){
+            //     if(i == -1){
+            //         break;
+            //     }
+            //     Debug.Log("Learned " + m_skillList[i].m_name);
+            // }
         }
         m_controller.BoardExpand();
         m_player.controllable = true;
+        if(!load){
+            GameManager.Instance.SaveData();
+        }
     }
 
     public bool SkillSelectionActivation(){
@@ -171,6 +194,9 @@ public class SkillController : MonoBehaviour
     }
 
     public void SaveData(){
-
+        for(int i = 0; i < m_skillList.Count; i++){
+            // Debug.Log("the " + i + "th skill is " + m_learnedIDQueue[i]);
+            PlayerPrefs.SetInt("LearnedSkillQueue"+i, m_learnedIDQueue[i]);
+        }
     }
 }

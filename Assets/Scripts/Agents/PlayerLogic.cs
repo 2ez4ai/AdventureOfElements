@@ -79,11 +79,6 @@ public class PlayerLogic : MonoBehaviour
         string playerDescription = LocalizationManager.m_instance.GetLocalisedString("PlayerDescription");
         string playerRemark = LocalizationManager.m_instance.GetLocalisedString("PlayerRemark");
         UpdateIconTooltip(m_mouseOverAvatar, playerName, LV, playerDescription, playerRemark);
-        if(LocalizationManager.m_instance.loadChecker){
-            Debug.Log("Load player.");
-            m_HP = 20;
-            m_maxHP = 200;
-        }
         InitUI();
     }
 
@@ -336,34 +331,14 @@ public class PlayerLogic : MonoBehaviour
     public void SaveData(){
         // save HP
         PlayerPrefs.SetInt("HP", m_HP);
-        // save maxHP
-        PlayerPrefs.SetInt("MaxHP", m_maxHP);
-        // skill bonus
-        PlayerPrefs.SetInt("BonusHP", m_bonusHP);
         // skill gourd
-        PlayerPrefs.SetInt("AcquiredGourd", m_gourdMaxHP);
         PlayerPrefs.SetInt("GourdHP", m_gourdHP);
-        PlayerPrefs.SetInt("GourdProb", m_gourdProb);
-        // skill special
-        PlayerPrefs.SetInt("SkillSpecialLevel", m_specialLevel);
-        // skill diagonal
-        PlayerPrefs.SetInt("SkillDiagonalLevel", m_diagonalLevel);
-        // skill stomp
-        PlayerPrefs.SetInt("SkillStompLevel", m_stompLevel);
     }
 
     public void LoadData(){
         m_HP = PlayerPrefs.GetInt("HP");
-        m_maxHP = PlayerPrefs.GetInt("MaxHP");
-        m_bonusHP = PlayerPrefs.GetInt("BonusHP");
         // load gourd
-        m_gourdMaxHP = PlayerPrefs.GetInt("AcquiredGourd");
-        if(m_gourdMaxHP != -1){
-            m_gourdHP = PlayerPrefs.GetInt("GourdHP");
-            m_gourdProb = PlayerPrefs.GetInt("GourdProb");
-        }
-        LearnSpecial(PlayerPrefs.GetInt("SkillSpecialLevel"));
-        LearnDiagonal(PlayerPrefs.GetInt("SkillDiagonalLevel"));
-        LearnStomp(PlayerPrefs.GetInt("SkillStompLevel"));
+        m_gourdHP = PlayerPrefs.GetInt("GourdHP");
+        RegenHP(0);
     }
 }
