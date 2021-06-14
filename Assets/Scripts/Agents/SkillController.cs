@@ -169,9 +169,9 @@ public class SkillController : MonoBehaviour
             //     Debug.Log("Learned " + m_skillList[i].m_name);
             // }
         }
-        m_controller.BoardExpand();
         m_player.controllable = true;
         if(!load){
+            m_controller.BoardExpand();
             GameManager.Instance.SaveData();
         }
     }
