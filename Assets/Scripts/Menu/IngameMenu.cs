@@ -27,6 +27,7 @@ public class IngameMenu : MonoBehaviour
     }
 
     public void MenuController(){
+        SoundManager.m_instance.PlayBackSound();
         if(m_opened){
             CloseMenu();
         }

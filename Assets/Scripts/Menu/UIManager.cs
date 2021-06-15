@@ -28,12 +28,6 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] MenuPageType m_currentMenuPage = MenuPageType.MainMenu;
 
-    [SerializeField] AudioClip m_uiNextSound;
-
-    [SerializeField] AudioClip m_uiConfirmSound;
-
-    AudioSource m_audioSource;
-
     // Use this for initialization
     void Awake()
     {
@@ -60,8 +54,6 @@ public class UIManager : MonoBehaviour
         {
             m_menuPageDictionary[p.m_menuPageType] = p.m_gameObject;
         }
-
-        // m_audioSource = GetComponent<AudioSource>();
     }
 
     public void SetMenuState(MenuPageType newMenuPageType)
@@ -71,23 +63,5 @@ public class UIManager : MonoBehaviour
         m_menuPageDictionary[newMenuPageType].SetActive(true);
 
         m_currentMenuPage = newMenuPageType;
-    }
-
-    public void PlayNextSound()
-    {
-        PlaySound(m_uiNextSound);
-    }
-
-    public void PlayConfirmSound()
-    {
-        PlaySound(m_uiConfirmSound);
-    }
-
-    void PlaySound(AudioClip sound)
-    {
-        if(m_audioSource && sound)
-        {
-            m_audioSource.PlayOneShot(sound);
-        }
     }
 }

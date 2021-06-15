@@ -13,8 +13,6 @@ public class SkillStomp : MonoBehaviour
     [SerializeField] int m_debugC;
     [SerializeField] float m_debugS;
 
-    float timer = 0;
-
     void Start(){
         foreach(GameObject t in m_drawers){
             m_position.Add(t.transform.position);

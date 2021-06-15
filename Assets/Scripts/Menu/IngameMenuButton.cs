@@ -57,15 +57,18 @@ public class IngameMenuButton : MonoBehaviour
 
     public void OnBackClicked(){
         m_menu.CloseMenu();
+        SoundManager.m_instance.PlayBackSound();
     }
 
     public void OnQuitClicked(){
         SceneManager.LoadScene("MainMenu");
+        SoundManager.m_instance.PlayQuitSound();
     }
 
     public void UpdateSelection(int mouseParam = -1){
         // mouseParam: 0 -> back; 1 ->quit
         if(mouseParam != -1){
+            SoundManager.m_instance.PlaySelectSound();
             m_currentIndex = mouseParam;
         }
         if(m_currentIndex == 0){
@@ -87,6 +90,7 @@ public class IngameMenuButton : MonoBehaviour
             }
 
             if(makeSelection){
+                SoundManager.m_instance.PlaySelectSound();
                 m_selectionCooldown = k_maxSelectionCooldown;
             }
         }

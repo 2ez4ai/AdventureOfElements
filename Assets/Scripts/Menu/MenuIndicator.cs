@@ -22,6 +22,7 @@ public class MenuIndicator : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         m_menu.UpdateSelection(m_index);
+        // SoundManager.m_instance.PlaySelectSound();
     }
 
     public void OnPointerExit(PointerEventData pointerEventData)

@@ -22,6 +22,7 @@ public class PlayerLogic : MonoBehaviour
     public int m_maxHP = 100;
     [SerializeField] Text m_UIHP;
     [SerializeField] MouseOver m_UIHPIcon;
+    [SerializeField] AvatarController m_avatarController;
 
     // creature damage & freq
     public int m_injureType = 0;    // changed by Controller
@@ -257,6 +258,18 @@ public class PlayerLogic : MonoBehaviour
         m_gourdMaxHP = proportion + (proportion - 30) * 2;
     }
 
+    bool RescuedByGourd(int temp){
+        // about to die
+        temp += m_gourdHP * m_gourdProb / 100;
+        if(temp > 0){
+            m_HP = temp;
+            m_gourdHP = 0;
+            return true;
+        }
+        m_gourdHP = 0;
+        return false;
+    }
+
     // UI
     public void InitUI(){
         SetHPUI();
@@ -264,6 +277,7 @@ public class PlayerLogic : MonoBehaviour
         List<Tile> tiles = m_boardScript.TilesToPlayer();
         int damage = CntDamage(tiles);
         SetAttackUI(damage);
+        m_avatarController.DamageToDie(0);
     }
 
     void UpdateIconTooltip(MouseOver script, string name, string level, string effect, string description = ""){
@@ -293,6 +307,7 @@ public class PlayerLogic : MonoBehaviour
         m_UIHP.text = ": " + hpInfo;
         string effect = LocalizationManager.m_instance.GetLocalisedString("HPPart1") + hpInfo + LocalizationManager.m_instance.GetLocalisedString("HPPart2");
         UpdateIconTooltip(m_UIHPIcon, LocalizationManager.m_instance.GetLocalisedString("HP"), "", effect);
+        m_avatarController.UpdateHealthStatus(1.0f * m_HP / m_maxHP);
     }
 
     public void IncreStepCnt(){
@@ -309,11 +324,15 @@ public class PlayerLogic : MonoBehaviour
             if(m_stompLevel != 0){
                 StompActivation();
             }
+            int temp = m_HP - damage;
             m_HP = m_HP - damage < 0? 0: m_HP-damage;
+            if(m_HP == 0){
+                if(!RescuedByGourd(temp)){
+                    // die
+                    m_avatarController.DamageToDie(damage);
+                }
+            }
             SetHPUI();
-            // if(m_HP < 1){
-            //     Debug.Log("You Lose!");
-            // }
         }
     }
 

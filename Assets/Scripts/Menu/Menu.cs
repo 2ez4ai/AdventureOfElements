@@ -74,6 +74,7 @@ public class Menu : MonoBehaviour
 
     public void UpdateSelection(int mouseSelection=-1){
         if(mouseSelection != -1){
+            SoundManager.m_instance.PlaySelectSound();
             m_menuIndicators[m_selectionIndex].SelectedState(false);
             m_selectionIndex = mouseSelection;
             m_menuIndicators[m_selectionIndex].SelectedState(true);
@@ -94,6 +95,7 @@ public class Menu : MonoBehaviour
 
             if (selectionChanged)
             {
+                SoundManager.m_instance.PlaySelectSound();
                 m_selectionIndex = Mathf.Clamp(m_selectionIndex, 0, m_menuIndicators.Count - 1);
                 m_menuBtn[m_selectionIndex].Select();
                 m_menuIndicators[oldSelectionIndex].SelectedState(false);
@@ -110,29 +112,30 @@ public class Menu : MonoBehaviour
     }
 
     public void OnStartClicked(){
-        // UIManager.m_Instance.PlayConfirmSound();
         LocalizationManager.m_instance.loadChecker = false;
         SceneManager.LoadScene("GameScene");
+        SoundManager.m_instance.PlayConfirmSound();
     }
 
     public void OnLoadClicked(){
-        // Havent implemented yet.
         LocalizationManager.m_instance.loadChecker = true;
         SceneManager.LoadScene("GameScene");
+        SoundManager.m_instance.PlayConfirmSound();
     }
 
     public void OnOptionClicked(){
-        // Havent implemented yet.
         UIManager.m_instance.SetMenuState(MenuPageType.Language);
+        SoundManager.m_instance.PlayConfirmSound();
     }
 
     public void OnBackToMainMenuClicked(){
         UIManager.m_instance.SetMenuState(MenuPageType.MainMenu);
+        SoundManager.m_instance.PlayBackSound();
     }
 
     public void OnQuitClicked(){
-        // play confirm sound
         Application.Quit();
+        SoundManager.m_instance.PlayQuitSound();
     }
 
     void CheckLanguage(){
@@ -148,12 +151,12 @@ public class Menu : MonoBehaviour
 
     public void OnSetEnglishClicked(){
         LocalizationManager.m_instance.SetupLocalization(Language.English);
-        // UpdateText();
+        SoundManager.m_instance.PlayConfirmSound();
     }
 
     public void OnSetChineseClicked(){
         LocalizationManager.m_instance.SetupLocalization(Language.Chinese);
-        // UpdateText();
+        SoundManager.m_instance.PlayConfirmSound();
     }
 
     void UpdateText(){
