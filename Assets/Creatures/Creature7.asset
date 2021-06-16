@@ -19,9 +19,9 @@ MonoBehaviour:
   m_maxHP: 100
   m_attackType: 2
   m_attackTypeIcon: {fileID: 21300000, guid: a67213e88b13b0343b321a3b0f82b799, type: 3}
-  m_attackMultiplier: 20
+  m_attackMultiplier: 1
   m_injureType: 4
   m_injureTypeIcon: {fileID: 21300000, guid: c9f55b2a518d3cd4381a4ea592f52d13, type: 3}
-  m_attackFreq: 1
+  m_attackFreq: 2
   m_skills:
   - {fileID: 11400000, guid: 6085ac3828716fc4894bac28c0527ba7, type: 2}

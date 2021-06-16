@@ -225,14 +225,16 @@ public class TileLogic : MonoBehaviour
             transform.localScale = Vector3.one * size;
         }
         // flying particle; not desired so far... may can be used as an attack
-        // if(m_removeTimer > 0.0f && m_removeTimer < 0.6f * m_removeTime){
-        //     m_particle.SetActive(true);
-        //     m_particle.GetComponent<TrailRenderer>().material.SetColor("_EmissionColor", m_effectMat[m_typeIndex].GetColor("_EmissionColor") * 2.0f);
-        //     Vector3 targetPosition = m_position;
-        //     targetPosition.x = 2.0f;
-        //     targetPosition.y += 2.0f;
-        //     m_particle.transform.position = Vector3.Lerp(m_position, targetPosition, 1.0f - m_removeTimer / (0.6f * m_removeTime));
-        // }
+        if(m_removeTimer > 0.0f && m_removeTimer < 0.6f * m_removeTime){
+            m_particle.SetActive(true);
+            // m_particle.GetComponent<TrailRenderer>().material.SetColor("_EmissionColor", m_effectMat[m_typeIndex].GetColor("_EmissionColor") * 2.0f);
+            m_particle.GetComponent<TrailRenderer>().material = m_effectMat[m_typeIndex];
+            Vector3 targetPosition = m_position;
+            targetPosition.x = 10.15f;
+            targetPosition.y = 2.7f;
+            targetPosition.z = 5.75f;
+            m_particle.transform.position = Vector3.Lerp(m_position, targetPosition, 1.0f - m_removeTimer / (0.6f * m_removeTime));
+        }
 
         // reset
         if(!m_removeDone && m_removeTimer < 0){
@@ -244,12 +246,6 @@ public class TileLogic : MonoBehaviour
             m_removeDone = true;    // start drop
         }
     }
-
-    // void UAniTileGenerate(){
-    //     if(m_newTile){
-    //         AniTileGenerate();
-    //     }
-    // }
 
     void AniTileSwap(){
         // move tile a to the target

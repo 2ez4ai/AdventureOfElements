@@ -181,7 +181,7 @@ public class Board : MonoBehaviour
             return;    // already be removed
         }
         if(index == m_lastSpecial && state){
-            // instead set it empty to be removed, we set it as special
+            // instead setting it empty to be removed, we set it as special
             m_tiles[m_lastSpecial].logic.SetSpecial(true);
             m_lastSpecial = -1;
             return;
@@ -189,6 +189,7 @@ public class Board : MonoBehaviour
         m_tiles[index].empty = state;
         m_tiles[index].SetEmptyState(state);
         if(state && nonSpecial){    // there is a remove
+            SoundManager.m_instance.PlayTileRemoveSound();
             if(m_specialSkill != 0){
                 CheckSpecial(index);
             }

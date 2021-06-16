@@ -17,9 +17,13 @@ public class SoundManager : MonoBehaviour
 
     // Tile
     [SerializeField] AudioClip m_tileClickSound;
+    [SerializeField] AudioClip m_tileMoveSound;
+    [SerializeField] AudioClip m_tileRemoveSound;
     [SerializeField] List<AudioClip> m_attackSound;
-    [SerializeField] List<AudioClip> m_attackLargeSound;
     [SerializeField] AudioClip m_weakHitSound;
+
+    // Skill
+    [SerializeField] List<AudioClip> m_skillSound;
 
     AudioSource m_audioSource;
 
@@ -89,5 +93,25 @@ public class SoundManager : MonoBehaviour
 
     public void PlayTileClickSound(){
         PlaySound(m_tileClickSound);
+    }
+
+    public void PlayTileMoveSound(){
+        PlaySound(m_tileMoveSound);
+    }
+
+    public void PlayTileRemoveSound(){
+        PlaySound(m_tileRemoveSound);
+    }
+
+    public void PlayAttackSound(int type){
+        PlaySound(m_attackSound[type]);
+    }
+
+    public void PlayWeakPointSound(){
+        PlaySound(m_weakHitSound);
+    }
+
+    public void PlaySkillSound(int skillID){
+        PlaySound(m_skillSound[skillID]);
     }
 }

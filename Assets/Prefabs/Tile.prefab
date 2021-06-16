@@ -129,12 +129,14 @@ MonoBehaviour:
   - {fileID: 2100000, guid: a8056604d8d9d8a40913b7b1acbb1524, type: 2}
   - {fileID: 2100000, guid: 0bd173c0257f4f745915db9b78985476, type: 2}
   - {fileID: 2100000, guid: e3085160ef03fda4e9aeda6832b3c406, type: 2}
+  m_onBoard: 0
   m_selected: 0
   m_hang: 0
   m_drop: 0
   m_newTile: 0
   m_removeDone: 1
   m_isSpecial: 0
+  m_stompDamage: 0
 --- !u!1 &7486895919007668569
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7486895919007668569}
   m_LocalRotation: {x: 0.0007315424, y: 0.00024359273, z: 0.000039541697, w: 0.99999976}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 5908798002924898811}

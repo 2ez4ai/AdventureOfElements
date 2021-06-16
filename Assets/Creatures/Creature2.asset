@@ -22,5 +22,5 @@ MonoBehaviour:
   m_attackMultiplier: 1
   m_injureType: 2
   m_injureTypeIcon: {fileID: 21300000, guid: a67213e88b13b0343b321a3b0f82b799, type: 3}
-  m_attackFreq: 3
+  m_attackFreq: 2
   m_skills: []

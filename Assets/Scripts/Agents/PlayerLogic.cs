@@ -200,6 +200,7 @@ public class PlayerLogic : MonoBehaviour
 
         if(m_numSelected == 2){
             if(m_boardScript.IsValidSwap()){
+                SoundManager.m_instance.PlayTileMoveSound();
                 m_boardScript.AniTileSwap();    // play animation for the swap
                 m_numSelected = 0;
             }
@@ -264,6 +265,7 @@ public class PlayerLogic : MonoBehaviour
         // about to die
         temp += m_gourdHP * m_gourdProb / 100;
         if(temp > 0){
+            SoundManager.m_instance.PlaySkillSound(6);
             m_HP = temp;
             m_gourdHP = 0;
             return true;
@@ -323,9 +325,11 @@ public class PlayerLogic : MonoBehaviour
         SetAttackUI(damage);
         if(m_stepCnt == m_injureFreq){
             m_stepCnt = 0;
-            if(m_stompLevel != 0){
-                StompActivation();
-            }
+            // if(m_stompLevel != 0){
+            //     StompActivation();
+            // }
+            SoundManager.m_instance.PlayAttackSound(m_injureType);
+            m_avatarController.GetInjured();
             int temp = m_HP - damage;
             m_HP = m_HP - damage < 0? 0: m_HP-damage;
             if(m_HP == 0){

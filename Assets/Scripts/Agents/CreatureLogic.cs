@@ -13,23 +13,26 @@ public class CreatureLogic : MonoBehaviour
     [SerializeField] Text m_textHP;
     [SerializeField] MouseOver m_mouseOverHP;
 
-    int damage = 0;
+    int m_damage = 0;
+    int m_damagetType = 0;
 
     public void InitUI(){
         SetHPUI();
     }
 
     public void TakeDamage(){
-        m_HP = m_HP - damage < 0? 0: m_HP-damage;
+        m_HP = m_HP - m_damage < 0? 0: m_HP-m_damage;
         m_textHP.text = ": " + m_HP + " / " + m_maxHP;
-        damage = 0;
+        m_damage = 0;
     }
 
     public bool UpdateStepDamage(int c, int t){
         // update the damage the creature will take in this step
-        damage += 1;
+        m_damage += 1;
+        m_damagetType = t;
         if(t == m_injureType || m_injureType == -1){
-            damage += 1;
+            m_damage += 1;
+            SoundManager.m_instance.PlayWeakPointSound();
             return true;
         }
         return false;

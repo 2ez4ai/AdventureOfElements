@@ -13,6 +13,10 @@ public class AvatarController : MonoBehaviour
     Vector3 m_originalPos;
     Quaternion m_originalRot;
     bool m_died;
+    const float k_injureDurationTime = 0.5f;
+    float m_injureTime = 0.0f;
+    bool m_injured = false;
+    bool m_colorChanged = false;
 
     void Start() {
         m_originalPos = transform.position;
@@ -20,8 +24,27 @@ public class AvatarController : MonoBehaviour
         m_animator = gameObject.GetComponent<Animator>();
     }
 
+    void FixedUpdate(){
+        if(m_injured){
+            m_injured = false;
+            m_colorChanged = true;
+            m_cam.backgroundColor = Color.red;
+            m_injureTime = k_injureDurationTime;
+        }
+
+        m_injureTime -= Time.deltaTime;
+
+        if(m_injureTime < 0 && m_colorChanged){
+            m_cam.backgroundColor = Color.white;
+        }
+    }
+
     public void UpdateHealthStatus(float ratio){
         m_animator.SetFloat("Blend", ratio);
+    }
+
+    public void GetInjured(){
+        m_injured = true;
     }
 
     public void DamageToDie(int damage){
