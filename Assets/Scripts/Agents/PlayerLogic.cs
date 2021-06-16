@@ -153,6 +153,7 @@ public class PlayerLogic : MonoBehaviour
             }
 
             if(changed){
+                SoundManager.m_instance.PlaySelectSound();    // change selection
                 ControllerOnTile(oldIndex, false);
                 ControllerOnTile(m_boardScript.RCToIndex(m_controllerX, m_controllerY), true);
                 m_controllerCooldownTimer = k_maxControllerCooldown;
@@ -186,6 +187,7 @@ public class PlayerLogic : MonoBehaviour
     }
 
     void TilesSelection(GameObject tile){
+        SoundManager.m_instance.PlayTileClickSound();
         TileLogic script = tile.GetComponent<TileLogic>();
         if(!script.m_selected){
             m_numSelected += 1;

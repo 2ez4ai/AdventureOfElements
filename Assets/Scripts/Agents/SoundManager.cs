@@ -6,13 +6,20 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager m_instance = null;
 
+    [SerializeField] List<AudioClip> m_bgm;
+    int m_bgmIndex;
+
+    // UI
     [SerializeField] AudioClip m_selectSound;
     [SerializeField] AudioClip m_confirmSound;
     [SerializeField] AudioClip m_backSound;
     [SerializeField] AudioClip m_quitSound;
 
-    [SerializeField] List<AudioClip> m_bgm;
-    int m_bgmIndex;
+    // Tile
+    [SerializeField] AudioClip m_tileClickSound;
+    [SerializeField] List<AudioClip> m_attackSound;
+    [SerializeField] List<AudioClip> m_attackLargeSound;
+    [SerializeField] AudioClip m_weakHitSound;
 
     AudioSource m_audioSource;
 
@@ -80,4 +87,7 @@ public class SoundManager : MonoBehaviour
         PlaySound(m_quitSound);
     }
 
+    public void PlayTileClickSound(){
+        PlaySound(m_tileClickSound);
+    }
 }

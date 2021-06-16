@@ -1849,16 +1849,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f000cc46d0f8b6d47bcd8edbcf9306db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_selectSound: {fileID: 8300000, guid: 865088d857c81bc429426a29615236fc, type: 3}
-  m_confirmSound: {fileID: 8300000, guid: 3a970f2370fe9f24abe94753264e862f, type: 3}
-  m_backSound: {fileID: 8300000, guid: f34d1a62b0b50bf47be7254ada3181c6, type: 3}
-  m_quitSound: {fileID: 8300000, guid: 3a970f2370fe9f24abe94753264e862f, type: 3}
   m_bgm:
   - {fileID: 8300000, guid: 949a28221a3540c43ac72c084ce71461, type: 3}
   - {fileID: 8300000, guid: e2758f7e0d5321c45a63cef4969f1fd2, type: 3}
   - {fileID: 8300000, guid: f47883b84c295074cb58b1338ff305b3, type: 3}
   - {fileID: 8300000, guid: ef1fa4b34147eba4f9decd7c02049838, type: 3}
   - {fileID: 8300000, guid: a17f9c2d814954042a4cfc4dac40b759, type: 3}
+  m_selectSound: {fileID: 8300000, guid: 865088d857c81bc429426a29615236fc, type: 3}
+  m_confirmSound: {fileID: 8300000, guid: 3a970f2370fe9f24abe94753264e862f, type: 3}
+  m_backSound: {fileID: 8300000, guid: f34d1a62b0b50bf47be7254ada3181c6, type: 3}
+  m_quitSound: {fileID: 8300000, guid: 3a970f2370fe9f24abe94753264e862f, type: 3}
+  m_tileClickSound: {fileID: 8300000, guid: cdcdc94f17644524d8047e64efd3c3af, type: 3}
+  m_attackSound:
+  - {fileID: 8300000, guid: 2a55b42e6a9b9ae4aa581a04b8eaf6a6, type: 3}
+  - {fileID: 8300000, guid: d55ea8774d9ae0b4fa8586e4a09da862, type: 3}
+  - {fileID: 8300000, guid: 07d557bd22cb3514e88b98119ece65ae, type: 3}
+  - {fileID: 8300000, guid: 8a9b61c0a4236df42aca4178228327c0, type: 3}
+  - {fileID: 8300000, guid: 652a04c15cb4b27449b2da55875fac83, type: 3}
+  m_attackLargeSound:
+  - {fileID: 8300000, guid: bd5c881062fce9245b90eb6ced2da811, type: 3}
+  - {fileID: 8300000, guid: 0393555409f1df34cbb19e3754e74fb9, type: 3}
+  - {fileID: 8300000, guid: d722a1f64944e54488b28dd9d825bb16, type: 3}
+  - {fileID: 8300000, guid: e5388d67ed8ddd24eb19079e19ae01a4, type: 3}
+  - {fileID: 8300000, guid: 0393555409f1df34cbb19e3754e74fb9, type: 3}
 --- !u!1 &894847828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5194065944089648858, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}
