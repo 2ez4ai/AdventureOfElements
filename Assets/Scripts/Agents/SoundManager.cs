@@ -14,6 +14,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip m_confirmSound;
     [SerializeField] AudioClip m_backSound;
     [SerializeField] AudioClip m_quitSound;
+    [SerializeField] AudioClip m_win;
+    [SerializeField] AudioClip m_lose;
 
     // Tile
     [SerializeField] AudioClip m_tileClickSound;
@@ -23,7 +25,11 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip m_weakHitSound;
 
     // Skill
-    [SerializeField] List<AudioClip> m_skillSound;
+    [SerializeField] AudioClip m_regenHP;
+    [SerializeField] AudioClip m_learnSkill;
+    [SerializeField] AudioClip m_explode;
+    [SerializeField] AudioClip m_generateExplode;
+    [SerializeField] AudioClip m_gourd;
 
     AudioSource m_audioSource;
 
@@ -111,7 +117,31 @@ public class SoundManager : MonoBehaviour
         PlaySound(m_weakHitSound);
     }
 
-    public void PlaySkillSound(int skillID){
-        PlaySound(m_skillSound[skillID]);
+    public void PlayRegenHPSound(){
+        PlaySound(m_regenHP);
+    }
+
+    public void PlayLearnSkillSound(){
+        PlaySound(m_learnSkill);
+    }
+
+    public void PlayExplodeSound(){
+        PlaySound(m_explode);
+    }
+
+    public void PlayGenerateExplodeSound(){
+        PlaySound(m_generateExplode);
+    }
+
+    public void PlaySkillGourdSound(){
+        PlaySound(m_gourd);
+    }
+
+    public void PlayWinSound(){
+        PlaySound(m_win);
+    }
+
+    public void PlayLoseSound(){
+        PlaySound(m_lose);
     }
 }

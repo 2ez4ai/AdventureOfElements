@@ -80,9 +80,9 @@ public class SkillController : MonoBehaviour
                 m_generateList.Add(s);
             }
         }
-        foreach(int s in m_generateList){
-            Debug.Log("Skill pool: " + m_skillList[s].m_name + " Lv. " + m_skillList[s].m_lv);
-        }
+        // foreach(int s in m_generateList){
+        //     Debug.Log("Skill pool: " + m_skillList[s].m_name + " Lv. " + m_skillList[s].m_lv);
+        // }
     }
 
     public void GenerateLoadSkills(int level){
@@ -123,6 +123,7 @@ public class SkillController : MonoBehaviour
             case 0:    // restore hp
             case 1:
                 m_player.RegenHP(skill.m_keyValue);
+                SoundManager.m_instance.PlayRegenHPSound();
                 break;
             case 2:    // increase maximum HP
                 m_player.m_maxHP += skill.m_keyValue;
@@ -152,6 +153,7 @@ public class SkillController : MonoBehaviour
                 break;
         }
         if(learned){
+            SoundManager.m_instance.PlayLearnSkillSound();
             m_playerSkillSlots.FillSkillSlot(skill);
             if(skill.m_linear){
                 m_learnedSkillLV[skill.m_skillID] ++;

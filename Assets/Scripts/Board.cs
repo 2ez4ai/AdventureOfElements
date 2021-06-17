@@ -500,6 +500,7 @@ public class Board : MonoBehaviour
             }
         }
         m_tiles[index].logic.SetSpecial(false);
+        SoundManager.m_instance.PlayExplodeSound();
         SetTileEmpty(index, true, false);
     }
 
@@ -746,6 +747,7 @@ public class Board : MonoBehaviour
         if(m_lastSpecial != -1){
             // we need to generate a special tile at m_lastSpecial
             m_tiles[m_lastSpecial].logic.SetSpecial(true);
+            SoundManager.m_instance.PlayGenerateExplodeSound();
         }
         m_lastSpecial = -1;
     }

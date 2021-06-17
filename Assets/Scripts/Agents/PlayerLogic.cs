@@ -267,7 +267,7 @@ public class PlayerLogic : MonoBehaviour
         // about to die
         temp += m_gourdHP * m_gourdProb / 100;
         if(temp > 0){
-            SoundManager.m_instance.PlaySkillSound(6);
+            SoundManager.m_instance.PlaySkillGourdSound();
             m_HP = temp;
             m_gourdHP = 0;
             return true;

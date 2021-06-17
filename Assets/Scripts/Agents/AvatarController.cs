@@ -65,7 +65,6 @@ public class AvatarController : MonoBehaviour
     }
 
     public void DamageToDie(int damage){
-        Debug.Log("Damage :" + damage);
         if(damage > 0){
             m_cam.backgroundColor = Color.red;
             m_dying = true;

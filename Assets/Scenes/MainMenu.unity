@@ -1895,6 +1895,8 @@ MonoBehaviour:
   m_confirmSound: {fileID: 8300000, guid: 3a970f2370fe9f24abe94753264e862f, type: 3}
   m_backSound: {fileID: 8300000, guid: f34d1a62b0b50bf47be7254ada3181c6, type: 3}
   m_quitSound: {fileID: 8300000, guid: 3a970f2370fe9f24abe94753264e862f, type: 3}
+  m_win: {fileID: 8300000, guid: 2698797d504ea3e4d8fc072a3520c0f6, type: 3}
+  m_lose: {fileID: 8300000, guid: 349c94cb1be260241b85176036479d83, type: 3}
   m_tileClickSound: {fileID: 8300000, guid: 55e3625d3e0c82846a2620fdad528386, type: 3}
   m_tileMoveSound: {fileID: 8300000, guid: 8a9b61c0a4236df42aca4178228327c0, type: 3}
   m_tileRemoveSound: {fileID: 8300000, guid: e7f0a124089cec446b26037231f94e70, type: 3}
@@ -1905,14 +1907,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e5388d67ed8ddd24eb19079e19ae01a4, type: 3}
   - {fileID: 8300000, guid: 5d946436c894fe249a3a032048033225, type: 3}
   m_weakHitSound: {fileID: 8300000, guid: 6c82ae4b1e8b73945903b3ef4d9773f9, type: 3}
-  m_skillSound:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 8300000, guid: 84080aa5e69ab6646a8fe2d3bb13464e, type: 3}
+  m_regenHP: {fileID: 8300000, guid: 84080aa5e69ab6646a8fe2d3bb13464e, type: 3}
+  m_learnSkill: {fileID: 8300000, guid: 590598eab70fe8c4cb89ca96d12f1fd9, type: 3}
+  m_explode: {fileID: 8300000, guid: 5b869316dd2ffb848990139d82a185d4, type: 3}
+  m_generateExplode: {fileID: 8300000, guid: ff0723b94167883459abf45cf7f3fadd, type: 3}
+  m_gourd: {fileID: 8300000, guid: 6c37283d7b4c6734b97fc742e0fb797d, type: 3}
 --- !u!1 &894847828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5194065944089648858, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}

@@ -158,6 +158,7 @@ public class Controller : MonoBehaviour
                 case 0 :
                     break;
                 case 1 :
+                    SoundManager.m_instance.PlayWinSound();
                     m_skillController.GenerateLoadSkills(m_level);
                     m_level ++;
                     BoardShrink();
@@ -167,9 +168,9 @@ public class Controller : MonoBehaviour
                     Debug.Log("You win.");
                     break;
                 case 2:
+                    SoundManager.m_instance.PlayLoseSound();
                     m_loseBtn.m_activated = true;
-                    m_player.m_HP = 20;
-                    // m_player.InitUI();
+                    m_player.m_HP = 1;
                     m_player.controllable = false;
                     Debug.Log("You lose.");
                     break;
@@ -193,7 +194,6 @@ public class Controller : MonoBehaviour
 
     void ULoadCreature(){
         if(m_loadReady && !m_board.m_isExpanding){
-            Debug.Log("Me");
             m_loadReady = false;
             m_levelReminder.SetActive(false);
             m_blocker.enabled = false;

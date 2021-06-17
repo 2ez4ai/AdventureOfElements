@@ -10,6 +10,7 @@ public class SkillSelection : MonoBehaviour
 
     [SerializeField] Button m_btn;
     [SerializeField] DialogScript m_dialog;
+    [SerializeField] Text m_winInfoText;
     [SerializeField] Tooltip m_tooltip;
     [SerializeField] SkillController m_skillController;
 
@@ -30,6 +31,7 @@ public class SkillSelection : MonoBehaviour
 
     void Awake()
     {
+        m_winInfoText.text = LocalizationManager.m_instance.GetLocalisedString("WinInfo");
         m_toggles = GetComponentsInChildren<Toggle>();
         foreach(Toggle t in m_toggles){
             m_toggleID.Add(0);
@@ -65,6 +67,7 @@ public class SkillSelection : MonoBehaviour
                 if(oldIndex != -1){
                     m_toggles[oldIndex].isOn = false;
                 }
+                SoundManager.m_instance.PlaySelectSound();
                 m_toggles[m_selected].isOn = true;
                 m_controllerCooldownTimer = k_maxControllerCooldown;
                 m_controllerActivationTimer = k_maxControllerActivation;
@@ -83,11 +86,13 @@ public class SkillSelection : MonoBehaviour
 
     void CheckSelection()
     {
-        m_selected = -1;
         for(int i = 0; i < m_toggles.Length; i++){
             if (m_toggles[i].isOn){
-                m_selected = i;
-                break;
+                if(m_selected != i){
+                    m_selected = i;
+                    SoundManager.m_instance.PlaySelectSound();
+                    break;
+                }
             }
         }
 
