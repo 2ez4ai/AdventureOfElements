@@ -56,12 +56,18 @@ public class TileLogic : MonoBehaviour
     bool m_remove = false;
     public bool m_removeDone = true;
     float m_removeTimer = 0.0f;
-    float m_removeTime = 0.4f;//0.4f;
+    float m_removeTime = 0.4f;
 
     // special tile
     public bool m_isSpecial = false;
+
     // stomp damage
     public int m_stompDamage = 0;
+
+    // attack
+    Vector3 m_creaturePos = new Vector3(10.15f, 2.7f, 5.75f);
+    Vector3 m_playerPos = new Vector3(10.15f, -2.7f, -5.75f);
+    Vector3 m_targetPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -100,12 +106,16 @@ public class TileLogic : MonoBehaviour
         }
     }
 
-    public void SetRemoveState(bool state){
+    public void SetRemoveState(bool state, bool creatureIsAttacking=false){
         // if true, means it is removed
         // actually, no parameter is needed
         if(state){
             m_remove = true;
             m_removeDone = false;
+            m_targetPosition = m_creaturePos;
+            if(creatureIsAttacking){
+                m_targetPosition = m_playerPos;
+            }
         }
         else{
             m_colorRender.enabled = true;
@@ -229,11 +239,7 @@ public class TileLogic : MonoBehaviour
             m_particle.SetActive(true);
             // m_particle.GetComponent<TrailRenderer>().material.SetColor("_EmissionColor", m_effectMat[m_typeIndex].GetColor("_EmissionColor") * 2.0f);
             m_particle.GetComponent<TrailRenderer>().material = m_effectMat[m_typeIndex];
-            Vector3 targetPosition = m_position;
-            targetPosition.x = 10.15f;
-            targetPosition.y = 2.7f;
-            targetPosition.z = 5.75f;
-            m_particle.transform.position = Vector3.Lerp(m_position, targetPosition, 1.0f - m_removeTimer / (0.6f * m_removeTime));
+            m_particle.transform.position = Vector3.Lerp(m_position, m_targetPosition, 1.0f - m_removeTimer / (0.6f * m_removeTime));
         }
 
         // reset

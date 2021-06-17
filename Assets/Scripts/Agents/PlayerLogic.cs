@@ -22,6 +22,8 @@ public class PlayerLogic : MonoBehaviour
     public int m_maxHP = 100;
     [SerializeField] Text m_UIHP;
     [SerializeField] MouseOver m_UIHPIcon;
+    [SerializeField] Image m_HPBar;
+    [SerializeField] List<Sprite> m_HPBarColor;
     [SerializeField] AvatarController m_avatarController;
 
     // creature damage & freq
@@ -308,7 +310,18 @@ public class PlayerLogic : MonoBehaviour
 
     void SetHPUI(){
         string hpInfo = m_HP + " / " + m_maxHP;
-        m_UIHP.text = ": " + hpInfo;
+        m_UIHP.text = hpInfo;
+        float ratio = 1.0f * m_HP / m_maxHP;
+        if(ratio > 0.65){
+            m_HPBar.sprite = m_HPBarColor[0];   // green
+        }
+        else{
+            m_HPBar.sprite = m_HPBarColor[1];
+        }
+        if(ratio < 0.3f){
+            m_HPBar.sprite = m_HPBarColor[2];
+        }
+        m_HPBar.fillAmount = ratio;
         string effect = LocalizationManager.m_instance.GetLocalisedString("HPPart1") + hpInfo + LocalizationManager.m_instance.GetLocalisedString("HPPart2");
         UpdateIconTooltip(m_UIHPIcon, LocalizationManager.m_instance.GetLocalisedString("HP"), "", effect);
         m_avatarController.UpdateHealthStatus(1.0f * m_HP / m_maxHP);
@@ -328,8 +341,10 @@ public class PlayerLogic : MonoBehaviour
             // if(m_stompLevel != 0){
             //     StompActivation();
             // }
+
+            // effect
+            m_boardScript.TilesAttack();
             SoundManager.m_instance.PlayAttackSound(m_injureType);
-            m_avatarController.GetInjured();
             int temp = m_HP - damage;
             m_HP = m_HP - damage < 0? 0: m_HP-damage;
             if(m_HP == 0){
@@ -337,6 +352,9 @@ public class PlayerLogic : MonoBehaviour
                     // die
                     m_avatarController.DamageToDie(damage);
                 }
+            }
+            else{
+                m_avatarController.GetInjured(1.0f * m_HP / m_maxHP);
             }
             SetHPUI();
         }

@@ -11,6 +11,8 @@ public class CreatureLogic : MonoBehaviour
     public int m_injureType = 0;
 
     [SerializeField] Text m_textHP;
+    [SerializeField] Image m_HPBar;
+    [SerializeField] List<Sprite> m_HPBarColor;
     [SerializeField] MouseOver m_mouseOverHP;
 
     int m_damage = 0;
@@ -22,7 +24,8 @@ public class CreatureLogic : MonoBehaviour
 
     public void TakeDamage(){
         m_HP = m_HP - m_damage < 0? 0: m_HP-m_damage;
-        m_textHP.text = ": " + m_HP + " / " + m_maxHP;
+        // m_textHP.text = m_HP + " / " + m_maxHP;
+        SetHPUI();
         m_damage = 0;
     }
 
@@ -46,8 +49,20 @@ public class CreatureLogic : MonoBehaviour
 
     void SetHPUI(){
         string hpInfo = m_HP + " / " + m_maxHP;
-        m_textHP.text = ": " + hpInfo;
-        string effect = LocalizationManager.m_instance.GetLocalisedString("CreatureHPPart1") + hpInfo + LocalizationManager.m_instance.GetLocalisedString("CreatureHPPart2");
+        m_textHP.text = hpInfo;
+        float ratio = 1.0f * m_HP / m_maxHP;
+        if(ratio > 0.65){
+            m_HPBar.sprite = m_HPBarColor[0];   // green
+        }
+        else{
+            m_HPBar.sprite = m_HPBarColor[1];
+        }
+        if(ratio < 0.3f){
+            m_HPBar.sprite = m_HPBarColor[2];
+        }
+        m_HPBar.fillAmount = ratio;
+        string effect = LocalizationManager.m_instance.GetLocalisedString("HPPart1") + hpInfo + LocalizationManager.m_instance.GetLocalisedString("HPPart2");
+
         UpdateIconTooltip(m_mouseOverHP, LocalizationManager.m_instance.GetLocalisedString("HP"), "", effect);
     }
 }

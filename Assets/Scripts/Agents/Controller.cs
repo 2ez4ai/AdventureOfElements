@@ -169,7 +169,7 @@ public class Controller : MonoBehaviour
                 case 2:
                     m_loseBtn.m_activated = true;
                     m_player.m_HP = 20;
-                    m_player.InitUI();
+                    // m_player.InitUI();
                     m_player.controllable = false;
                     Debug.Log("You lose.");
                     break;

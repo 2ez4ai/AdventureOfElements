@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AvatarController : MonoBehaviour
 {
-    Animator m_animator;
+    public Animator animator;
 
     [SerializeField] int m_damage;
     [SerializeField] Camera m_cam;
@@ -15,62 +15,80 @@ public class AvatarController : MonoBehaviour
     bool m_died;
     const float k_injureDurationTime = 0.5f;
     float m_injureTime = 0.0f;
+    float m_blinkTimeFactor = 0.8f;
+    int m_avatarColor = 0;
     bool m_injured = false;
     bool m_colorChanged = false;
 
     void Start() {
         m_originalPos = transform.position;
         m_originalRot = transform.rotation;
-        m_animator = gameObject.GetComponent<Animator>();
+        animator = gameObject.GetComponent<Animator>();
     }
 
     void FixedUpdate(){
         if(m_injured){
             m_injured = false;
             m_colorChanged = true;
-            m_cam.backgroundColor = Color.red;
+            m_blinkTimeFactor = 0.75f;
+            m_avatarColor = 1;
+            m_cam.backgroundColor = m_avatarColor == 0 ? Color.white : Color.red;
             m_injureTime = k_injureDurationTime;
         }
 
         m_injureTime -= Time.deltaTime;
 
-        if(m_injureTime < 0 && m_colorChanged){
+        if(m_injureTime < m_blinkTimeFactor * k_injureDurationTime && m_colorChanged){
+            m_avatarColor = m_avatarColor ^ 1;
+            m_cam.backgroundColor = m_avatarColor == 0 ? Color.white : Color.red;
+            m_blinkTimeFactor -= 0.2f;
+        }
+
+        if(m_blinkTimeFactor < 0.1f && m_colorChanged){
+            m_colorChanged = false;
             m_cam.backgroundColor = Color.white;
         }
     }
 
     public void UpdateHealthStatus(float ratio){
-        m_animator.SetFloat("Blend", ratio);
+        animator.SetFloat("Blend", ratio);
     }
 
-    public void GetInjured(){
+    public void GetInjured(float ratio){
         m_injured = true;
+        if(ratio < 0.3f){
+            animator.SetBool("InjuredInIdling", true);
+        }
+        else{
+            animator.SetBool("InjuredInRunning", true);
+        }
     }
 
     public void DamageToDie(int damage){
+        Debug.Log("Damage :" + damage);
         if(damage > 0){
             m_cam.backgroundColor = Color.red;
             m_dying = true;
             m_died = true;
-            m_animator.SetBool("Dying", true);
+            animator.SetBool("Dying", true);
         }
-        if(damage > 0 && damage <= 5){
-            m_animator.SetBool("Dying0", true);
+        if(damage > 0 && damage <= 15){
+            animator.SetBool("Dying0", true);
         }
-        else if(damage > 5 && damage <= 10){
-            m_animator.SetBool("Dying1", true);
+        else if(damage > 15 && damage <= 22){
+            animator.SetBool("Dying1", true);
         }
-        else if(damage > 10){
-            m_animator.SetBool("Dying2", true);
+        else if(damage > 22){
+            animator.SetBool("Dying2", true);
         }
 
         if(damage == 0){
             m_cam.backgroundColor = Color.white;
             m_dying = false;
-            m_animator.SetBool("Dying", false);
-            m_animator.SetBool("Dying0", false);
-            m_animator.SetBool("Dying1", false);
-            m_animator.SetBool("Dying2", false);
+            animator.SetBool("Dying", false);
+            animator.SetBool("Dying0", false);
+            animator.SetBool("Dying1", false);
+            animator.SetBool("Dying2", false);
         }
 
         if(!m_dying && m_died){

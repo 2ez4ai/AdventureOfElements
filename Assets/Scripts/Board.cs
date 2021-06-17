@@ -31,8 +31,8 @@ public class Tile{
         logic.SetType(type);
     }
 
-    public void SetEmptyState(bool state){
-        logic.SetRemoveState(state);
+    public void SetEmptyState(bool state, bool creatureIsAttacking=false){
+        logic.SetRemoveState(state, creatureIsAttacking);
     }
 
     public void UpdateLogic(){
@@ -82,6 +82,8 @@ public class Board : MonoBehaviour
     float m_shrinkSpeed = 3f;
     public bool m_isExpanding = false;
     float m_expandSpeed = 3f;
+    // for attacking
+    bool m_isAttacking = false;
 
     // skill things
     // for special
@@ -109,6 +111,7 @@ public class Board : MonoBehaviour
         UAniRemove();
         UAniTileDrop();
         UCheckMap();
+        UAniAttack();
     }
 
     void FixedUpdate(){
@@ -700,6 +703,15 @@ public class Board : MonoBehaviour
         return tiles;
     }
 
+    public void TilesAttack(){
+        foreach(Tile t in m_tiles){
+            if(t.type == m_playerScript.m_injureType){
+                t.SetEmptyState(true, true);
+            }
+        }
+        m_isAttacking = true;
+    }
+
     // ------------------------------------------------------------------------
     // skill
     // ------------------------------------------------------------------------
@@ -866,6 +878,23 @@ public class Board : MonoBehaviour
                 SetDropState();
                 AniTileDrop();
                 m_isRemoving = false;
+            }
+        }
+    }
+
+    void UAniAttack(){
+        if(m_isAttacking){
+            bool attackAniDone = true;
+            foreach(Tile t in m_tiles){
+                attackAniDone &= t.logic.m_removeDone;
+            }
+            if(attackAniDone){
+                foreach(Tile t in m_tiles){
+                    if(t.type == m_playerScript.m_injureType){
+                        t.SetEmptyState(false, true);
+                    }
+                }
+                m_isAttacking = false;
             }
         }
     }
