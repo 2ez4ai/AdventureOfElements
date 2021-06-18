@@ -1205,6 +1205,10 @@ PrefabInstance:
       value: Quit
       objectReference: {fileID: 0}
     - target: {fileID: 5194065944089648836, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 02bff31fbf154fd4ea9743386f3ffc68, type: 3}
+    - target: {fileID: 5194065944089648836, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}
       propertyPath: m_FontData.m_MinSize
       value: 0
       objectReference: {fileID: 0}
@@ -1776,6 +1780,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_language: 0
+  m_eng: {fileID: 12800000, guid: 02bff31fbf154fd4ea9743386f3ffc68, type: 3}
+  m_title: {fileID: 12800000, guid: 3f489c2500a2ef84da089f6cea5937ba, type: 3}
+  m_chs: {fileID: 12800000, guid: 9680750441946aa4c88539cc549951d9, type: 3}
   loadChecker: 0
 --- !u!82 &879558090
 AudioSource:
@@ -2597,6 +2604,10 @@ PrefabInstance:
       value: Language
       objectReference: {fileID: 0}
     - target: {fileID: 5194065944089648836, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 02bff31fbf154fd4ea9743386f3ffc68, type: 3}
+    - target: {fileID: 5194065944089648836, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}
       propertyPath: m_FontData.m_MinSize
       value: 0
       objectReference: {fileID: 0}
@@ -2999,6 +3010,10 @@ PrefabInstance:
       propertyPath: m_Text
       value: Start
       objectReference: {fileID: 0}
+    - target: {fileID: 5194065944089648836, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 02bff31fbf154fd4ea9743386f3ffc68, type: 3}
     - target: {fileID: 5194065944089648836, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}
       propertyPath: m_FontData.m_MinSize
       value: 0

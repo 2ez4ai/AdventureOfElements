@@ -10,9 +10,6 @@ public class LoseButton : MonoBehaviour
     [SerializeField] Button m_quitBtn;
     [SerializeField] DialogScript m_dialog;
 
-    Text m_backText;
-    Text m_quitText;
-
     Language m_language;
 
     int m_currentIndex = 0;

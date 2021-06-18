@@ -31,7 +31,9 @@ public class IngameMenuButton : MonoBehaviour
         if(LocalizationManager.m_instance != null){
             m_language = LocalizationManager.m_instance.GetLanguage();
             m_backText.text = LocalizationManager.m_instance.GetLocalisedString("Back");
+            LocalizationManager.m_instance.SetLocalisedFont(m_backText);
             m_quitText.text = LocalizationManager.m_instance.GetLocalisedString("Quit");
+            LocalizationManager.m_instance.SetLocalisedFont(m_quitText);
         }
         else{
             m_language = Language.English;
@@ -50,7 +52,9 @@ public class IngameMenuButton : MonoBehaviour
         Language temp = LocalizationManager.m_instance.GetLanguage();
         if(temp != m_language){
             m_backText.text = LocalizationManager.m_instance.GetLocalisedString("Back");
+            LocalizationManager.m_instance.SetLocalisedFont(m_backText);
             m_quitText.text = LocalizationManager.m_instance.GetLocalisedString("Quit");
+            LocalizationManager.m_instance.SetLocalisedFont(m_quitText);
         }
         m_language = temp;
     }

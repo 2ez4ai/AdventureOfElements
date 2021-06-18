@@ -10,7 +10,6 @@ public class SkillSelection : MonoBehaviour
 
     [SerializeField] Button m_btn;
     [SerializeField] DialogScript m_dialog;
-    [SerializeField] Text m_winInfoText;
     [SerializeField] Tooltip m_tooltip;
     [SerializeField] SkillController m_skillController;
 
@@ -31,7 +30,6 @@ public class SkillSelection : MonoBehaviour
 
     void Awake()
     {
-        m_winInfoText.text = LocalizationManager.m_instance.GetLocalisedString("WinInfo");
         m_toggles = GetComponentsInChildren<Toggle>();
         foreach(Toggle t in m_toggles){
             m_toggleID.Add(0);

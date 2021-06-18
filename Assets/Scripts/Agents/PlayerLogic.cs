@@ -296,7 +296,7 @@ public class PlayerLogic : MonoBehaviour
     void SetAttackUI(int damage){
         m_textAttack.text = "x " + m_injureMultiplier + " (" + damage + ")";
         List<string> name = new List<string>{"Metal", "Wood", "Water", "Fire", "Earth"};
-        string effect = LocalizationManager.m_instance.GetLocalisedString("AtkTypePart1") + "<i>" + LocalizationManager.m_instance.GetLocalisedString(name[m_injureType]) + "</i>" + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart2") + damage + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart3");
+        string effect = LocalizationManager.m_instance.GetLocalisedString("AtkTypePart1") + "<i>" + LocalizationManager.m_instance.GetLocalisedString(name[m_injureType]) + "</i>" + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart2") + "<b>" + damage + "</b>" + LocalizationManager.m_instance.GetLocalisedString("AtkTypePart3");
         UpdateIconTooltip(m_mouseOverSwordIcon, LocalizationManager.m_instance.GetLocalisedString("AtkType"), "", effect);
     }
 
@@ -304,7 +304,7 @@ public class PlayerLogic : MonoBehaviour
         int step = m_injureFreq - m_stepCnt > 0? m_injureFreq - m_stepCnt: m_injureFreq;
         string stepInfo = step + "";
         m_textFreq.text = ": " + stepInfo;
-        string effect = LocalizationManager.m_instance.GetLocalisedString("AtkCooldownPart1") + stepInfo + LocalizationManager.m_instance.GetLocalisedString("AtkCooldownPart2");
+        string effect = LocalizationManager.m_instance.GetLocalisedString("AtkCooldownPart1") + "<b>" + stepInfo + "</b>" + LocalizationManager.m_instance.GetLocalisedString("AtkCooldownPart2");
         UpdateIconTooltip(m_mouseOverFreqIcon, LocalizationManager.m_instance.GetLocalisedString("AttackCooldown"), "", effect);
     }
 

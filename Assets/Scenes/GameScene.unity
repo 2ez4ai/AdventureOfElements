@@ -2213,7 +2213,6 @@ MonoBehaviour:
   - {fileID: 405769339}
   m_btn: {fileID: 66744740}
   m_dialog: {fileID: 711857163}
-  m_winInfoText: {fileID: 2107397949}
   m_tooltip: {fileID: 2113039148}
   m_skillController: {fileID: 910186081}
   m_activated: 0
@@ -7521,6 +7520,7 @@ GameObject:
   - component: {fileID: 2107397948}
   - component: {fileID: 2107397950}
   - component: {fileID: 2107397949}
+  - component: {fileID: 2107397951}
   m_Layer: 5
   m_Name: TextInDialog
   m_TagString: Untagged
@@ -7589,6 +7589,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2107397947}
   m_CullTransparentMesh: 1
+--- !u!114 &2107397951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107397947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648a1544e7747d845b1afde4d715aae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_key: WinInfo
 --- !u!114 &2113039148 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2558019636063867873, guid: 6f76e0aca801239469cebb7422c3ff65, type: 3}

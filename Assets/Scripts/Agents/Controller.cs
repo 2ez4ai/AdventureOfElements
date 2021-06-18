@@ -29,6 +29,7 @@ public class Controller : MonoBehaviour
 
     int m_level = 1;    // current map level
     [SerializeField] GameObject m_levelReminder;
+    Text m_levelText;
     int m_creatureIndex = 0;
     bool m_loadReady = false;
 
@@ -47,7 +48,8 @@ public class Controller : MonoBehaviour
             GenerateCreatureIndex();
         }
         m_levelReminder.SetActive(true);
-        m_levelReminder.GetComponent<Text>().text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
+        m_levelText = m_levelReminder.GetComponent<Text>();
+        m_levelText.text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
         m_blocker.enabled = true;
         m_firstLoadingDuration = 1.0f;
         LoadCreature();
@@ -187,7 +189,8 @@ public class Controller : MonoBehaviour
     public void BoardExpand(){
         m_board.m_isExpanding = true;
         m_levelReminder.SetActive(true);
-        m_levelReminder.GetComponent<Text>().text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
+        LocalizationManager.m_instance.SetLocalisedFont(m_levelText);
+        m_levelText.text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
         m_loadReady = true;
         m_blocker.enabled = true;
     }

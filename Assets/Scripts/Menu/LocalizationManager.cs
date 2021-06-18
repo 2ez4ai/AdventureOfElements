@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Xml;
 using System.IO;
 
@@ -15,6 +16,9 @@ public class LocalizationManager : MonoBehaviour
     public static LocalizationManager m_instance = null;
 
     [SerializeField] Language m_language = Language.Chinese;
+    [SerializeField] Font m_eng;
+    [SerializeField] Font m_title;
+    [SerializeField] Font m_chs;
 
     Dictionary<string, TextAsset> m_localizationFiles = new Dictionary<string, TextAsset>();
     Dictionary<string, string> m_localizationText = new Dictionary<string, string>();
@@ -116,5 +120,22 @@ public class LocalizationManager : MonoBehaviour
         }
 
         return localisedString;
+    }
+
+    public void SetLocalisedFont(Text text, bool title=false)
+    {
+        if(m_language == Language.Chinese){
+            text.font = m_chs;
+        }
+        else{
+            if(title){
+                text.font = m_title;
+            }
+            else{
+                text.font = m_eng;
+            }
+        }
+
+        // return localisedString;
     }
 }

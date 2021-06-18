@@ -169,6 +169,7 @@ public class Menu : MonoBehaviour
             if(textObj)
             {
                 textObj.text = LocalizationManager.m_instance.GetLocalisedString(locStringKey.ToString());
+                LocalizationManager.m_instance.SetLocalisedFont(textObj, index == 0);
             }
         }
     }
