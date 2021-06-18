@@ -17,6 +17,7 @@ public class DialogScript : MonoBehaviour
     // win or lose
     [SerializeField] GameObject m_winBoard;
     [SerializeField] GameObject m_loseBoard;
+    [SerializeField] GameObject m_tooltipObj;
 
     public void TurnOn(bool win){
         m_tooltip.m_disabled = true;
@@ -24,6 +25,7 @@ public class DialogScript : MonoBehaviour
         // m_rayRenderer.enabled = true;
         m_mouseOverWeakness.enabled = false;
         m_mouseOverAttack.enabled = false;
+        m_tooltipObj.SetActive(true);
         gameObject.SetActive(true);
         if(win){
             m_winBoard.SetActive(true);
@@ -35,6 +37,7 @@ public class DialogScript : MonoBehaviour
 
     public void TurnOff(){
         gameObject.SetActive(false);
+        m_tooltipObj.SetActive(false);
         m_winBoard.SetActive(false);
         m_loseBoard.SetActive(false);
         m_tooltip.m_disabled = false;

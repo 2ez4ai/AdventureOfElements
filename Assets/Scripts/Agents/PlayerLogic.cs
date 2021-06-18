@@ -309,7 +309,7 @@ public class PlayerLogic : MonoBehaviour
     }
 
     void SetHPUI(){
-        string hpInfo = m_HP + " / " + m_maxHP;
+        string hpInfo = m_HP + "/" + m_maxHP;
         m_UIHP.text = hpInfo;
         float ratio = 1.0f * m_HP / m_maxHP;
         if(ratio > 0.65){

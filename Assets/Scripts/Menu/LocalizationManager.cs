@@ -116,6 +116,7 @@ public class LocalizationManager : MonoBehaviour
         string localisedString = "";
         if (!m_localizationText.TryGetValue(key, out localisedString))
         {
+            Debug.Log("Fail to find!");
             localisedString = "LOC KEY: " + key;
         }
 
@@ -135,7 +136,5 @@ public class LocalizationManager : MonoBehaviour
                 text.font = m_eng;
             }
         }
-
-        // return localisedString;
     }
 }

@@ -49,6 +49,7 @@ public class Controller : MonoBehaviour
         }
         m_levelReminder.SetActive(true);
         m_levelText = m_levelReminder.GetComponent<Text>();
+        LocalizationManager.m_instance.SetLocalisedFont(m_levelText);
         m_levelText.text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
         m_blocker.enabled = true;
         m_firstLoadingDuration = 1.0f;
@@ -82,7 +83,7 @@ public class Controller : MonoBehaviour
     void LoadCreature(){
         // retrieve data, set info that wont be changed
         Sprite creatureAvatar = m_creatureList[m_creatureIndex].m_avatar;
-        string creatureName = m_creatureList[m_creatureIndex].name;
+        string creatureName = m_creatureList[m_creatureIndex].m_name;
         int creatureLv = m_creatureList[m_creatureIndex].m_lv;
         int maxHP = m_creatureList[m_creatureIndex].m_maxHP;
         int attackType = m_creatureList[m_creatureIndex].m_attackType;
