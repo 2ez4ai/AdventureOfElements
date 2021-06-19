@@ -9,9 +9,11 @@ public class SkillController : MonoBehaviour
     [SerializeField] SkillSlots m_playerSkillSlots;
     [SerializeField] SkillSelection m_skillSelection;
 
-    [SerializeField] List<Skill> m_skillList = new List<Skill>();    // all the skills with considering skill levels
+    [SerializeField] List<Skill> m_skillList;    // all the skills with considering skill levels
     List<int> m_learnedIDQueue = new List<int>();
     int m_queueIndex = 0;
+    // int m_blessingLevel = 0;
+    // int m_furnaceLevel = 0;
 
     [SerializeField] int m_numSkill;    // total number of skills without considering skill levels
     List<int> m_learnedSkillLV = new List<int>();    // m_learnedSkillLV.Count = m_numSkill
@@ -36,8 +38,23 @@ public class SkillController : MonoBehaviour
                 if(temp == -1){
                     break;
                 }
-                // Debug.Log("Learned " + m_skillList[temp].m_name);
-                SkillUpdate(temp, true);
+                if(temp == 2){ // 2, 9
+                    // blessing
+                    int lv = PlayerPrefs.GetInt("BlessingLevel");
+                    for(int j = 0; j < lv; j++){
+                        SkillUpdate(temp, true);
+                    }
+                }
+                else if(temp == 9){
+                    // furnace
+                    int lv = PlayerPrefs.GetInt("FurnaceLevel");
+                    for(int j = 0; j < lv; j++){
+                        SkillUpdate(temp, true);
+                    }
+                }
+                else{
+                    SkillUpdate(temp, true);
+                }
             }
             m_player.LoadData();
         }
@@ -156,19 +173,19 @@ public class SkillController : MonoBehaviour
             SoundManager.m_instance.PlayLearnSkillSound();
             m_playerSkillSlots.FillSkillSlot(skill);
             if(skill.m_linear){
+                if(m_learnedSkillLV[skill.m_skillID] == 0){
+                    // havent learned
+                    m_learnedIDQueue[m_queueIndex] = id;
+                    m_queueIndex ++;
+                }
                 m_learnedSkillLV[skill.m_skillID] ++;
             }
             else{
                 m_learnedSkillLV[skill.m_skillID] = m_skillList[id].m_lv;
+                m_learnedIDQueue[m_queueIndex] = id;
+                m_queueIndex ++;
             }
-            m_learnedIDQueue[m_queueIndex] = id;
-            m_queueIndex ++;
-            // foreach(int i in m_learnedIDQueue){
-            //     if(i == -1){
-            //         break;
-            //     }
-            //     Debug.Log("Learned " + m_skillList[i].m_name);
-            // }
+
         }
         m_player.controllable = true;
         if(!load){
@@ -199,5 +216,7 @@ public class SkillController : MonoBehaviour
             // Debug.Log("the " + i + "th skill is " + m_learnedIDQueue[i]);
             PlayerPrefs.SetInt("LearnedSkillQueue"+i, m_learnedIDQueue[i]);
         }
+        PlayerPrefs.SetInt("BlessingLevel", m_learnedSkillLV[2]);
+        PlayerPrefs.SetInt("FurnaceLevel", m_learnedSkillLV[5]);
     }
 }

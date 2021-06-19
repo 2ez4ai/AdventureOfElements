@@ -11,7 +11,7 @@ public class Tile{
     public int color;
     public int type;
     public bool empty;
-    public int emptyTilesCnt = 0;    // drop from where
+    public int emptyTilesCnt = 0;
     public bool drop = false;
     public bool dropUsed = false;
     public Vector3 dropStartV;
@@ -222,21 +222,18 @@ public class Board : MonoBehaviour
     // initialization
     // ------------------------------------------------------------------------
 
-    void InitSeed(){
-        // init random seed
-        // if(randomSeed == 0){
-        //     // generate a new randomseed
-        //     randomSeed = Random.Range(10000000, 99999999);
-        // }
-        randomSeed = Random.Range(10000000, 99999999);
-        if(LocalizationManager.m_instance.loadChecker){
-            randomSeed = PlayerPrefs.GetInt("RandomSeed");
+    void InitSeed(int seed=-1){
+        if(seed == -1){
+            randomSeed = Random.Range(10000000, 99999999);
+        }
+        else{
+            randomSeed = seed;
         }
         Random.InitState(randomSeed);
     }
 
-    public void Initialization(){
-        InitSeed();
+    public void Initialization(int seed=-1){
+        InitSeed(seed);
         InitTiles();
         InitCheck();    // make sure there is no matching at the begining
         InitDraw();
@@ -513,13 +510,14 @@ public class Board : MonoBehaviour
             t.emptyTilesCnt = 0;
         }
 
-        // counter how many empty tiles along the direction
+        // count how many empty tiles along the direction
         for(int i = 0; i< m_numTiles; i++){
             if(m_tiles[i].empty){
                 int numEmpty = 1;
                 (int eR, int eC) = IndexToRC(i);
                 int r = eR - m_direction[m_dirIndex].r;
                 int c = eC -  m_direction[m_dirIndex].c;
+                // count along the two directions
                 while(r > -1 && r < k_row && c > -1 && c < k_col){
                     int temp = RCToIndex(r, c);
                     if(m_tiles[temp].empty){
@@ -538,15 +536,16 @@ public class Board : MonoBehaviour
                     r += m_direction[m_dirIndex].r;
                     c += m_direction[m_dirIndex].c;
                 }
-                m_tiles[i].emptyTilesCnt = numEmpty;
+                m_tiles[i].emptyTilesCnt = numEmpty;    // number of empty tiles along the direction
                 m_tiles[i].dropUsed = true;
             }
         }
 
         // mark all tiles that need to drop, and update the counter for all
+        // each tile will know how many empty tiles along the direction of their position
         for(int i = 0; i < m_numTiles; i++){
             if(m_tiles[i].empty){
-                m_tiles[i].drop = true;
+                m_tiles[i].drop = true;    // needs to drop
                 (int destR, int destC) = IndexToRC(i);
                 int r = destR - m_direction[m_dirIndex].r;
                 int c = destC -  m_direction[m_dirIndex].c;
@@ -567,7 +566,7 @@ public class Board : MonoBehaviour
                 Vector3 startPos = Vector3.zero;
                 bool setDone = false;
                 (int r, int c) = IndexToRC(i);
-                // find unused first
+                // find the first unused tile
                 r -= m_direction[m_dirIndex].r;
                 c -= m_direction[m_dirIndex].c;
                 while(r > -1 && r < k_row && c > -1 && c < k_col){
@@ -582,6 +581,12 @@ public class Board : MonoBehaviour
                     m_tiles[index].dropUsed = true;
                     m_tiles[i].SetColor(m_tiles[index].color);
                     m_tiles[i].SetType(m_tiles[index].type);
+                    if(m_tiles[index].logic.m_isSpecial){
+                        // Debug.Log("tile " + i + "becomes special");
+                        m_tiles[i].logic.SetSpecial(true);
+                        // Debug.Log("tile " + index + "is not special anymore");
+                        m_tiles[index].logic.SetSpecial(false);
+                    }
                     setDone = true;
                     break;
                 }
@@ -595,7 +600,7 @@ public class Board : MonoBehaviour
                 }
                 SetTileEmpty(i, false);
                 m_tiles[i].dropStartV = startPos;
-                // target position is its corrent position
+                // target position is its current position
                 Vector3 destPos = m_tiles[i].tile.transform.position;
                 m_tiles[i].dropDestV = destPos;
             }
@@ -858,6 +863,9 @@ public class Board : MonoBehaviour
                     int dice = Random.Range(0, 100);
                     if(dice > m_diagonalChance[m_diagonalSwapLV]){
                         m_playerScript.IncreStepCnt();
+                    }
+                    else{
+                        SoundManager.m_instance.PlayDiagonalSound();
                     }
                 }
                 else{

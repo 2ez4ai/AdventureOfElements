@@ -30,6 +30,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip m_explode;
     [SerializeField] AudioClip m_generateExplode;
     [SerializeField] AudioClip m_gourd;
+    [SerializeField] AudioClip m_diagonalSound;
 
     AudioSource m_audioSource;
 
@@ -143,5 +144,9 @@ public class SoundManager : MonoBehaviour
 
     public void PlayLoseSound(){
         PlaySound(m_lose);
+    }
+
+    public void PlayDiagonalSound(){
+        PlaySound(m_diagonalSound);
     }
 }

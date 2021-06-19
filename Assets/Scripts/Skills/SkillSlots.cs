@@ -46,14 +46,13 @@ public class SkillSlots : MonoBehaviour
         if(m_creature){
             m_skillSlots[temp].SetActive(true);
             m_mouseOverSkillSlots[temp].ChangeIcon(skill.m_sprite);
-            m_mouseOverSkillSlots[temp].m_name = skill.m_name;
-            m_mouseOverSkillSlots[temp].m_level = "Lv. " + skill.m_lv;
-            m_mouseOverSkillSlots[temp].m_effect = skill.m_effect;
-            m_mouseOverSkillSlots[temp].m_description = skill.m_description;
+            m_mouseOverSkillSlots[temp].m_name = LocalizationManager.m_instance.GetLocalisedString(skill.m_name);
+            m_mouseOverSkillSlots[temp].m_level = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + skill.m_lv;
+            m_mouseOverSkillSlots[temp].m_effect = LocalizationManager.m_instance.GetLocalisedString(skill.m_name+"Effect");
+            m_mouseOverSkillSlots[temp].m_description = LocalizationManager.m_instance.GetLocalisedString(skill.m_name+"Description");
             m_skillLVText[temp].SetLevel(skill.m_lv, skill.m_linear);
             return;
         }
-
         if(m_skillOccupyWhichSlot[skill.m_skillID] != -1){
             // already occupied one slot
             temp = m_skillOccupyWhichSlot[skill.m_skillID];
@@ -79,5 +78,6 @@ public class SkillSlots : MonoBehaviour
             m_mouseOverSkillSlots[temp].m_level = LocalizationManager.m_instance.GetLocalisedString("LV") + " " + m_skillLVText[temp].GetLevel();
         }
         m_skillOccupyWhichSlot[skill.m_skillID] = temp;
+
     }
 }

@@ -10,7 +10,7 @@ public class AniMoveVariable{
     public Vector3 target;
 
     public float moveSpeed = 8.0f;
-    public float dropSpeed = 16.0f;
+    public float dropSpeed = 16.0f;    // 16
 
     public bool targetSpecial = false;
 
@@ -203,7 +203,7 @@ public class TileLogic : MonoBehaviour
         }
         else{
             m_isSpecial = false;
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            // transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 

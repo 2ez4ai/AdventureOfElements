@@ -9,6 +9,7 @@ public class CreatureLogic : MonoBehaviour
     public int m_HP = 100;
     public int m_maxHP = 100;
     public int m_injureType = 0;
+    public int m_weakPointDamage = 1;
 
     [SerializeField] Text m_textHP;
     [SerializeField] Image m_HPBar;
@@ -34,7 +35,7 @@ public class CreatureLogic : MonoBehaviour
         m_damage += 1;
         m_damagetType = t;
         if(t == m_injureType || m_injureType == -1){
-            m_damage += 1;
+            m_damage += m_weakPointDamage;
             SoundManager.m_instance.PlayWeakPointSound();
             return true;
         }

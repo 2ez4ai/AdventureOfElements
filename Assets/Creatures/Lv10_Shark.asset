@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2856e33e3fc2c9744836cfe76105dc28, type: 3}
+  m_Name: Lv10_Shark
+  m_EditorClassIdentifier: 
+  m_avatar: {fileID: 21300000, guid: 5f8efbb1faada9340b488ca02bb671b2, type: 3}
+  m_name: Shark
+  m_lv: 5
+  m_description: This is a bat.
+  m_maxHP: 55
+  m_attackType: 2
+  m_attackTypeIcon: {fileID: 21300000, guid: a67213e88b13b0343b321a3b0f82b799, type: 3}
+  m_attackMultiplier: 1
+  m_injureType: 4
+  m_injureTypeIcon: {fileID: 21300000, guid: c9f55b2a518d3cd4381a4ea592f52d13, type: 3}
+  m_attackFreq: 3
+  m_skills:
+  - {fileID: 11400000, guid: 6085ac3828716fc4894bac28c0527ba7, type: 2}

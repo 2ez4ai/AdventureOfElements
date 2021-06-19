@@ -24,6 +24,7 @@ public class Controller : MonoBehaviour
     [SerializeField] SkillController m_skillController;
     // if lose
     [SerializeField] LoseButton m_loseBtn;
+    [SerializeField] Text m_best;
 
     [SerializeField] Collider m_blocker;
 
@@ -31,14 +32,17 @@ public class Controller : MonoBehaviour
     [SerializeField] GameObject m_levelReminder;
     Text m_levelText;
     int m_creatureIndex = 0;
-    bool m_loadReady = false;
+    bool m_creatureLoadReady = false;
 
     float m_firstLoadingDuration;
     bool m_loadingFinish = false;
 
+    bool m_loaded;
+
     // Start is called before the first frame update
     void Start()
     {
+        m_loaded = false;
         if(LocalizationManager.m_instance.loadChecker){
             m_level = PlayerPrefs.GetInt("Level");
             m_creatureIndex = PlayerPrefs.GetInt("CreatureIndex");
@@ -52,7 +56,7 @@ public class Controller : MonoBehaviour
         LocalizationManager.m_instance.SetLocalisedFont(m_levelText);
         m_levelText.text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
         m_blocker.enabled = true;
-        m_firstLoadingDuration = 1.0f;
+        m_firstLoadingDuration = 1.5f;
         LoadCreature();
     }
 
@@ -70,10 +74,21 @@ public class Controller : MonoBehaviour
     }
 
     void GenerateCreatureIndex(int load=-1){
-        m_board.Initialization();
-        // m_player.m_HP = 150;
+        int randomSeed = -1;
+        if(LocalizationManager.m_instance.loadChecker && !m_loaded){
+            randomSeed = PlayerPrefs.GetInt("RandomSeed");
+            m_loaded = true;
+        }
+        m_board.Initialization(randomSeed);
+        m_creature.m_weakPointDamage = m_level / 5 + 1;
         if(load == -1){
-            m_creatureIndex = Random.Range(0, m_creatureList.Count);    // the generation should be based on the current level
+            // m_creatureIndex = Random.Range(0, m_creatureList.Count);    // the generation should be based on the current level
+            if(m_level < 10){
+                m_creatureIndex = m_level - 1;
+            }
+            else{
+                m_creatureIndex = Random.Range(0, m_creatureList.Count);
+            }
         }
         else{
             m_creatureIndex = load;
@@ -93,6 +108,12 @@ public class Controller : MonoBehaviour
         Sprite injureTypeIcon = m_creatureList[m_creatureIndex].m_injureTypeIcon;
         int injureType = m_creatureList[m_creatureIndex].m_injureType;
         List<Skill> creatureSkills = m_creatureList[m_creatureIndex].m_skills;
+
+        if(m_level > 9){
+            // start randomly generating
+            maxHP += (m_level - creatureLv) * 4;
+            attackMultiplier += (m_level - creatureLv) / 8;
+        }
 
         // Avatar Info: UI only
         m_creatureMouseOverAvatar.ChangeIcon(creatureAvatar);
@@ -175,6 +196,12 @@ public class Controller : MonoBehaviour
                     m_loseBtn.m_activated = true;
                     m_player.m_HP = 1;
                     m_player.controllable = false;
+                    int bestLv = PlayerPrefs.GetInt("BestLv");
+                    if(bestLv < m_level){
+                        SaveBest();;
+                        bestLv = m_level;
+                    }
+                    m_best.text = "Your best: level " + bestLv;
                     Debug.Log("You lose.");
                     break;
             }
@@ -192,13 +219,13 @@ public class Controller : MonoBehaviour
         m_levelReminder.SetActive(true);
         LocalizationManager.m_instance.SetLocalisedFont(m_levelText);
         m_levelText.text = LocalizationManager.m_instance.GetLocalisedString("Level") + " " + m_level;
-        m_loadReady = true;
+        m_creatureLoadReady = true;
         m_blocker.enabled = true;
     }
 
     void ULoadCreature(){
-        if(m_loadReady && !m_board.m_isExpanding){
-            m_loadReady = false;
+        if(m_creatureLoadReady && !m_board.m_isExpanding){
+            m_creatureLoadReady = false;
             m_levelReminder.SetActive(false);
             m_blocker.enabled = false;
             LoadCreature();
@@ -209,5 +236,9 @@ public class Controller : MonoBehaviour
         PlayerPrefs.SetInt("Level", m_level);
         PlayerPrefs.SetInt("CreatureIndex", m_creatureIndex);
         PlayerPrefs.SetInt("RandomSeed", m_board.randomSeed);
+    }
+
+    public void SaveBest(){
+        PlayerPrefs.SetInt("BestLv", m_level);
     }
 }

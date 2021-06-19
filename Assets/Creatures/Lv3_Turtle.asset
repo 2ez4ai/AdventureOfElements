@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2856e33e3fc2c9744836cfe76105dc28, type: 3}
-  m_Name: Creature7
+  m_Name: Lv3_Turtle
   m_EditorClassIdentifier: 
-  m_avatar: {fileID: 21300000, guid: 5f8efbb1faada9340b488ca02bb671b2, type: 3}
-  m_name: Creature7
-  m_lv: 8
-  m_description: This is a whale.
-  m_maxHP: 5
+  m_avatar: {fileID: 21300000, guid: 52ba78447a9ddd845a16cfcface05403, type: 3}
+  m_name: Turtle
+  m_lv: 3
+  m_description: This is a bat.
+  m_maxHP: 40
   m_attackType: 2
   m_attackTypeIcon: {fileID: 21300000, guid: a67213e88b13b0343b321a3b0f82b799, type: 3}
-  m_attackMultiplier: 1
+  m_attackMultiplier: 2
   m_injureType: 4
   m_injureTypeIcon: {fileID: 21300000, guid: c9f55b2a518d3cd4381a4ea592f52d13, type: 3}
-  m_attackFreq: 2
-  m_skills:
-  - {fileID: 11400000, guid: 6085ac3828716fc4894bac28c0527ba7, type: 2}
+  m_attackFreq: 6
+  m_skills: []

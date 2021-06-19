@@ -19,7 +19,7 @@ MonoBehaviour:
   m_lv: 1
   m_effect: Any restoration will restore <b>2</b> * <b>skill level</b> more HP.
   m_description: This ancient alchemy furnace somehow still works.
-  m_keyValue: 2
+  m_keyValue: 10
   m_prerequisiteSkill: 
   m_prerequisiteLV: 1
   m_exclusivePool: 
