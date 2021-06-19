@@ -62,7 +62,7 @@ public class CreatureLogic : MonoBehaviour
             m_HPBar.sprite = m_HPBarColor[2];
         }
         m_HPBar.fillAmount = ratio;
-        string effect = LocalizationManager.m_instance.GetLocalisedString("HPPart1") + hpInfo + LocalizationManager.m_instance.GetLocalisedString("HPPart2");
+        string effect = LocalizationManager.m_instance.GetLocalisedString("CreatureHPPart1") + hpInfo + LocalizationManager.m_instance.GetLocalisedString("CreatureHPPart2");
 
         UpdateIconTooltip(m_mouseOverHP, LocalizationManager.m_instance.GetLocalisedString("HP"), "", effect);
     }

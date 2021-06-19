@@ -82,7 +82,6 @@ public class Controller : MonoBehaviour
         m_board.Initialization(randomSeed);
         m_creature.m_weakPointDamage = m_level / 5 + 1;
         if(load == -1){
-            // m_creatureIndex = Random.Range(0, m_creatureList.Count);    // the generation should be based on the current level
             if(m_level < 10){
                 m_creatureIndex = m_level - 1;
             }

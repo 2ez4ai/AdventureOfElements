@@ -382,6 +382,8 @@ public class PlayerLogic : MonoBehaviour
         m_HP = PlayerPrefs.GetInt("HP");
         // load gourd
         m_gourdHP = PlayerPrefs.GetInt("GourdHP");
-        RegenHP(0);
+        string effect = m_gourdEffect + " " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart1") + " <b>" + m_gourdHP + "</b> " + LocalizationManager.m_instance.GetLocalisedString("EscapeGourdEffectPart2");
+        UpdateIconTooltip(m_mouseOverGourd, m_mouseOverGourd.m_name, m_mouseOverGourd.m_level, effect, m_mouseOverGourd.m_description);
+        SetHPUI();
     }
 }
