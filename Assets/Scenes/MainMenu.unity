@@ -1919,6 +1919,7 @@ MonoBehaviour:
   m_explode: {fileID: 8300000, guid: 5b869316dd2ffb848990139d82a185d4, type: 3}
   m_generateExplode: {fileID: 8300000, guid: ff0723b94167883459abf45cf7f3fadd, type: 3}
   m_gourd: {fileID: 8300000, guid: 6c37283d7b4c6734b97fc742e0fb797d, type: 3}
+  m_diagonalSound: {fileID: 0}
 --- !u!1 &894847828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5194065944089648858, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}
@@ -7760,7 +7761,7 @@ Transform:
   m_GameObject: {fileID: 9207348048187595561}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 12, y: 1, z: 10}
+  m_LocalScale: {x: 50, y: 1, z: 50}
   m_Children: []
   m_Father: {fileID: 543450652741802812}
   m_RootOrder: 9

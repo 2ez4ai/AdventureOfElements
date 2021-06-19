@@ -62,7 +62,7 @@ public class Menu : MonoBehaviour
             }
         }
 
-        if(PlayerPrefs.GetInt("Loadable") == 0){
+        if(PlayerPrefs.GetInt("Loadable") == 0 && m_uiElements[2].m_locStringKey == LocStringKey.Load){
             m_uiElements[2].m_gameObject.GetComponent<Button>().interactable = false;
         }
     }

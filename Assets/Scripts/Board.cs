@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tile{
     public GameObject tile;
@@ -43,6 +44,10 @@ public class Tile{
 
 public class Board : MonoBehaviour
 {
+    [SerializeField] GameObject m_gameObjWhite;
+    [SerializeField] GameObject m_gameObjBlue;
+    [SerializeField] GameObject m_gameObjRed;
+    [SerializeField] Text m_debugSelection;
     [SerializeField] public int randomSeed = 0;
 
     // board settings
@@ -112,6 +117,7 @@ public class Board : MonoBehaviour
         UAniTileDrop();
         UCheckMap();
         UAniAttack();
+        UDebugSelection();
     }
 
     void FixedUpdate(){
@@ -283,8 +289,8 @@ public class Board : MonoBehaviour
 
     void InitDraw(){
         foreach(Tile t in m_tiles){
-            t.SetColor();
             t.SetType();
+            t.SetColor();
         }
     }
 
@@ -948,6 +954,15 @@ public class Board : MonoBehaviour
         }
         else{
             m_isExpanding = false;
+        }
+    }
+
+    // Debug
+    void UDebugSelection(){
+        for(int i = 0; i < k_col * k_row; i++){
+            if(m_tiles[i].logic.m_selected){
+                m_debugSelection.text = "Selected : " + i;
+            }
         }
     }
 }

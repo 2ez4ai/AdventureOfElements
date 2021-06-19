@@ -12,6 +12,9 @@ public class Controller : MonoBehaviour
     [SerializeField] PlayerLogic m_player;
     [SerializeField] CreatureLogic m_creature;
     [SerializeField] List<Creature> m_creatureList = new List<Creature>();
+    [SerializeField] GameObject m_gameObjWhite;
+    [SerializeField] GameObject m_gameObjBlue;
+    [SerializeField] GameObject m_gameObjRed;
 
     [SerializeField] MouseOver m_creatureMouseOverAvatar;
     [SerializeField] MouseOver m_creatureMouseOverAttack;

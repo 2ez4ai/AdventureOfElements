@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerLogic : MonoBehaviour
 {
+    [SerializeField] GameObject m_gameObjWhite;
+    [SerializeField] GameObject m_gameObjBlue;
+    [SerializeField] GameObject m_gameObjRed;
     [SerializeField] Board m_boardScript;
 
     // CreatureLogic m_creatureScript;

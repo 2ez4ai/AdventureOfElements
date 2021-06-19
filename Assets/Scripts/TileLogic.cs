@@ -19,11 +19,14 @@ public class AniMoveVariable{
 
 public class TileLogic : MonoBehaviour
 {
+    [SerializeField] GameObject m_gameObjWhite;
+    [SerializeField] GameObject m_gameObjBlue;
+    [SerializeField] GameObject m_gameObjRed;
     [SerializeField] GameObject m_typer;
     [SerializeField] GameObject m_particle;
-    [SerializeField] List<Material> m_colorMat = new List<Material>();
-    [SerializeField] List<Material> m_typeMat = new List<Material>();
-    [SerializeField] List<Material> m_effectMat = new List<Material>();    // effect
+    [SerializeField] List<Material> m_colorMat;
+    [SerializeField] List<Material> m_typeMat;
+    [SerializeField] List<Material> m_effectMat;    // effect
     [SerializeField] bool m_onBoard;
 
     MeshRenderer m_colorRender;
@@ -70,7 +73,7 @@ public class TileLogic : MonoBehaviour
     Vector3 m_targetPosition;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         m_colorRender = GetComponent<MeshRenderer>();
         m_typeRender = m_typer.GetComponent<MeshRenderer>();
@@ -89,11 +92,13 @@ public class TileLogic : MonoBehaviour
 
     public void SetColor(int index){
         m_colorIndex = index;
+        // m_colorRender = GetComponent<MeshRenderer>();
         m_colorRender.material = m_colorMat[m_colorIndex];
     }
 
     public void SetType(int index){
         m_typeIndex = index;
+        // m_typeRender = m_typer.GetComponent<MeshRenderer>();
         m_typeRender.material = m_typeMat[m_typeIndex];
     }
 

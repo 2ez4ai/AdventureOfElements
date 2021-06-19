@@ -18,5 +18,5 @@ public class Creature : ScriptableObject
     public Sprite m_injureTypeIcon;    // fixed
     public int m_attackFreq;    // update
 
-    public List<Skill> m_skills;    // fixed skill list
+    public List<Skill> m_skills = new List<Skill>();    // fixed skill list
 }
