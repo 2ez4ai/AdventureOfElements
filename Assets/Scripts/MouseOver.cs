@@ -53,11 +53,11 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     void ShowTiles(bool state){
         int type = 0;
-        if(m_showTiles == 0){
-            type = m_player.m_injureType;
-        }
         if(m_showTiles == 1){
             type = m_creature.m_injureType;
+        }
+        if(m_showTiles == 0){
+            type = m_player.m_injureType;
         }
         foreach(TileLogic t in m_tileScripts){
             if(t.GetTypeIndex() == type){

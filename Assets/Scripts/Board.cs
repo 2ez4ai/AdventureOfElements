@@ -49,6 +49,8 @@ public class Board : MonoBehaviour
     [SerializeField] GameObject m_gameObjRed;
     [SerializeField] Text m_debugSelection;
     [SerializeField] public int randomSeed = 0;
+    [SerializeField] GameObject m_tilePrefab;
+    [SerializeField] Transform m_tilesParent;
 
     // board settings
     const int k_row = 8;
@@ -246,20 +248,39 @@ public class Board : MonoBehaviour
     }
 
     void InitTiles(){
-        m_tilesInit = new GameObject[k_row * k_col];
-        m_tiles = new List<Tile>();
-        m_tilesInit = GameObject.FindGameObjectsWithTag("Tiles");
+        // m_tilesInit = new GameObject[k_row * k_col];
+        // m_tiles = new List<Tile>();
+        // m_tilesInit = GameObject.FindGameObjectsWithTag("Tiles");
+        // m_numTiles = k_row * k_col;
+        // for(int i = 0; i < m_numTiles; i++){
+        //     Tile temp = new Tile();
+        //     temp.tile = m_tilesInit[i];
+        //     temp.logic = m_tilesInit[i].GetComponent<TileLogic>();
+        //     temp.logic.m_isSpecial = false;
+        //     temp.color = Random.Range(0, m_numColor);    // logically
+        //     temp.type = Random.Range(0, m_numType);    // logically
+        //     temp.empty = false;
+        //     m_tiles.Add(temp);
+        // }
         m_numTiles = k_row * k_col;
+        if(m_tiles.Count == m_numTiles){
+            foreach(Tile t in m_tiles){
+                t.logic.m_isSpecial = false;
+            }
+            return;
+        }
         for(int i = 0; i < m_numTiles; i++){
             Tile temp = new Tile();
-            temp.tile = m_tilesInit[i];
-            temp.logic = m_tilesInit[i].GetComponent<TileLogic>();
+            temp.tile = Instantiate(m_tilePrefab, new Vector3(0, -7 + (i / k_col) * 2, -7 + (i % k_row) * 2), Quaternion.Euler(Vector3.zero), m_tilesParent);
+            temp.tile.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+            temp.logic = temp.tile.GetComponent<TileLogic>();
             temp.logic.m_isSpecial = false;
             temp.color = Random.Range(0, m_numColor);    // logically
             temp.type = Random.Range(0, m_numType);    // logically
             temp.empty = false;
             m_tiles.Add(temp);
         }
+
         m_rDist = m_tiles[RCToIndex(1, 0)].tile.transform.position.y - m_tiles[RCToIndex(0, 0)].tile.transform.position.y;
         m_cDist = m_tiles[RCToIndex(0, 1)].tile.transform.position.z - m_tiles[RCToIndex(0, 0)].tile.transform.position.z;
     }
@@ -939,6 +960,9 @@ public class Board : MonoBehaviour
                 m_isExpanding = false;
             }
             transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(0.1f, 2.0f, 2.0f), m_shrinkSpeed * Time.deltaTime);
+            // foreach(Tile t in m_tiles){
+            //     t.tile.transform.localScale  = Vector3.Lerp(t.tile.transform.localScale, new Vector3(0.1f, 0.175f, 0.175f), m_shrinkSpeed * Time.deltaTime);
+            // }
         }
         else{
             m_isShrinking = false;
@@ -951,6 +975,9 @@ public class Board : MonoBehaviour
                 m_isShrinking = false;
             }
             transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(0.1f, 16.0f, 16.0f), m_expandSpeed * Time.deltaTime);
+            // foreach(Tile t in m_tiles){
+            //     t.tile.transform.localScale  = Vector3.Lerp(t.tile.transform.localScale, new Vector3(1.4f, 1.4f, 1.4f), m_shrinkSpeed * Time.deltaTime);
+            // }
         }
         else{
             m_isExpanding = false;

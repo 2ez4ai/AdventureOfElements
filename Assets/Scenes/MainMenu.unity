@@ -1919,7 +1919,7 @@ MonoBehaviour:
   m_explode: {fileID: 8300000, guid: 5b869316dd2ffb848990139d82a185d4, type: 3}
   m_generateExplode: {fileID: 8300000, guid: ff0723b94167883459abf45cf7f3fadd, type: 3}
   m_gourd: {fileID: 8300000, guid: 6c37283d7b4c6734b97fc742e0fb797d, type: 3}
-  m_diagonalSound: {fileID: 0}
+  m_diagonalSound: {fileID: 8300000, guid: 2860aef0cf8bb164bb53958658313c7c, type: 3}
 --- !u!1 &894847828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5194065944089648858, guid: 725e5ac3d43a7da4c8cb4693c99335ce, type: 3}

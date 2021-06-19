@@ -19,10 +19,12 @@ public class AvatarController : MonoBehaviour
     int m_avatarColor = 0;
     bool m_injured = false;
     bool m_colorChanged = false;
+    Color m_colorDefault;
 
     void Start() {
         m_originalPos = transform.position;
         m_originalRot = transform.rotation;
+        m_colorDefault = new Color32(231, 231, 231, 255);
         animator = gameObject.GetComponent<Animator>();
     }
 
@@ -32,7 +34,7 @@ public class AvatarController : MonoBehaviour
             m_colorChanged = true;
             m_blinkTimeFactor = 0.75f;
             m_avatarColor = 1;
-            m_cam.backgroundColor = m_avatarColor == 0 ? Color.white : Color.red;
+            m_cam.backgroundColor = m_avatarColor == 0 ? m_colorDefault : Color.red;
             m_injureTime = k_injureDurationTime;
         }
 
@@ -40,13 +42,13 @@ public class AvatarController : MonoBehaviour
 
         if(m_injureTime < m_blinkTimeFactor * k_injureDurationTime && m_colorChanged){
             m_avatarColor = m_avatarColor ^ 1;
-            m_cam.backgroundColor = m_avatarColor == 0 ? Color.white : Color.red;
+            m_cam.backgroundColor = m_avatarColor == 0 ? m_colorDefault : Color.red;
             m_blinkTimeFactor -= 0.2f;
         }
 
         if(m_blinkTimeFactor < 0.1f && m_colorChanged){
             m_colorChanged = false;
-            m_cam.backgroundColor = Color.white;
+            m_cam.backgroundColor = m_colorDefault;
         }
     }
 
@@ -82,7 +84,7 @@ public class AvatarController : MonoBehaviour
         }
 
         if(damage == 0){
-            m_cam.backgroundColor = Color.white;
+            m_cam.backgroundColor = m_colorDefault;
             m_dying = false;
             animator.SetBool("Dying", false);
             animator.SetBool("Dying0", false);
