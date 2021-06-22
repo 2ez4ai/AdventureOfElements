@@ -110,6 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01976864fb82a444b9075f081722632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_gameObjWhite: {fileID: 0}
+  m_gameObjBlue: {fileID: 0}
+  m_gameObjRed: {fileID: 0}
   m_typer: {fileID: 9082220226971652745}
   m_particle: {fileID: 7486895919007668569}
   m_colorMat:

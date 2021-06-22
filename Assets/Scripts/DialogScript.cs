@@ -25,9 +25,9 @@ public class DialogScript : MonoBehaviour
         // m_rayRenderer.enabled = true;
         m_mouseOverWeakness.enabled = false;
         m_mouseOverAttack.enabled = false;
-        m_tooltipObj.SetActive(true);
         gameObject.SetActive(true);
         if(win){
+            m_tooltipObj.SetActive(true);
             m_winBoard.SetActive(true);
         }
         else{

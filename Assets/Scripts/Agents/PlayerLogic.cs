@@ -51,6 +51,8 @@ public class PlayerLogic : MonoBehaviour
     float m_controllerActivationTimer;
     public bool controllable;
 
+    int m_cleanPrefas = 0;
+
     // skill
     int m_bonusHP = 0;
     // gourd
@@ -94,6 +96,15 @@ public class PlayerLogic : MonoBehaviour
         ClickMouse();
         Controller();    // for controller
         CheckLanguage();
+        if(Input.GetKeyDown(KeyCode.C)){
+            m_cleanPrefas ++;
+        }
+        if(m_cleanPrefas == 3){
+            m_cleanPrefas = 0;
+            PlayerPrefs.DeleteKey("Loadable");
+            Debug.Log("Delete!");
+            Debug.Log(PlayerPrefs.GetInt("Loadable"));
+        }
     }
 
     void CheckLanguage(){
